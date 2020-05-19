@@ -30,7 +30,18 @@ jobs:
       - name: Install packages
         if: steps.cache-packages.outputs.cache-hit != 'true'
         run: yarn install
-      - run: yarn lint
+      - name: Lint packages
+        run: yarn lint
+      - name: Lint using eslint
+        run: yarn run lint:es
+      - name: Lint scss stylesheets
+        run: yarn run lint:scss
+      - name: Lint css stylesheets
+        run: yarn run lint:css
+      - name: Lint markdown
+        run: yarn run lint:md
+      - name: Lint format
+        run: yarn run lint:format
   test:
     runs-on: ubuntu-latest
     strategy:
