@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "projects": {
+    "temp": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "apps/temp",
+      "sourceRoot": "apps/temp/src",
+      "prefix": "ngx-auth",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/temp",
+            "index": "apps/temp/src/index.html",
+            "main": "apps/temp/src/main.ts",
+            "polyfills": "apps/temp/src/polyfills.ts",
+            "tsConfig": "apps/temp/tsconfig.app.json",
+            "aot": true,
+            "assets": ["apps/temp/src/favicon.ico", "apps/temp/src/assets"],
+            "styles": ["apps/temp/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/temp/src/environments/environment.ts",
+                  "with": "apps/temp/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "temp:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "temp:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "temp:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/temp/tsconfig.app.json",
+              "apps/temp/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/temp/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/temp/jest.config.js",
+            "tsConfig": "apps/temp/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "apps/temp/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "temp-e2e": {
+      "root": "apps/temp-e2e",
+      "sourceRoot": "apps/temp-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/temp-e2e/cypress.json",
+            "tsConfig": "apps/temp-e2e/tsconfig.e2e.json",
+            "devServerTarget": "temp:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "temp:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/temp-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/temp-e2e/**"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular",
+    "analytics": false
+  },
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "temp"
+}
