@@ -13,6 +13,7 @@
 		"wix.vscode-import-cost",
 		"eamodio.gitlens",
 		"npxms.hide-gitignored",
+		"vivaxy.vscode-conventional-commits",
 		"cyrilletuzi.angular-schematics",
 		"msjsdiag.debugger-for-chrome",
 		"mikael.angular-beastcode",
