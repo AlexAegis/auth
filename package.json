@@ -11,8 +11,8 @@
 		"lint": "nx workspace-lint && ng lint",
 		"lint:styles": "stylelint **/*.scss",
 		"lint:files:ts": "tslint --project .",
-		"lint:files:css": "stylelint",
-		"lint:files:scss": "stylelint --syntax=scss",
+		"lint:files:css": "stylelint --syntax=css ./**/*.css",
+		"lint:files:scss": "stylelint --syntax=scss ./**/*.scss",
 		"lint:files:format": "prettier --check",
 		"e2e": "ng e2e",
 		"affected:apps": "nx affected:apps",
@@ -30,7 +30,8 @@
 		"workspace-schematic": "nx workspace-schematic",
 		"dep-graph": "nx dep-graph",
 		"help": "nx help",
-		"postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"
+		"postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
+		"release": "standard-version"
 	},
 	"workspaces": [
 		"./apps/*",
@@ -50,6 +51,7 @@
 		"@nrwl/linter": "^9.3.0",
 		"core-js": "^2.5.4",
 		"rxjs": "~6.5.4",
+		"stylelint": "^13.5.0",
 		"tslib": "^1.10.0",
 		"zone.js": "^0.10.2"
 	},
@@ -82,7 +84,9 @@
 		"markdownlint": "^0.20.3",
 		"markdownlint-cli": "^0.23.1",
 		"ng-packagr": "^9.0.0",
+		"npm-check-updates": "^6.0.1",
 		"prettier": "2.0.5",
+		"standard-version": "^8.0.0",
 		"stylelint-config-prettier": "^8.0.1",
 		"stylelint-prettier": "^1.1.2",
 		"ts-jest": "25.2.1",
