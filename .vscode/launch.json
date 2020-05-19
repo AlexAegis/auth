@@ -1,0 +1,17 @@
+{
+	"configurations": [
+		{
+			"type": "chrome",
+			"linux": {
+				"runtimeExecutable": "/usr/bin/chromium"
+			},
+			"request": "launch",
+			"name": "Launch Demo App",
+			"url": "http://localhost:4201",
+			"webRoot": "${workspaceFolder}",
+			"cwd": "${workspaceFolder}",
+			"preLaunchTask": "start:demo-app",
+			"userDataDir": "${workspaceFolder}/.vscode/chrome/"
+		}
+	]
+}
