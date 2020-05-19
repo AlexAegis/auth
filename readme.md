@@ -1,5 +1,11 @@
 # Angular JWT Tools
 
+<!-- markdownlint-disable MD013 -->
+
+[![CI](https://github.com/AlexAegis/auth/workflows/CI/badge.svg)](https://github.com/AlexAegis/auth/actions?query=workflow%3ALint) [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=AlexAegis/auth)](https://dependabot.com)
+
+<!-- markdownlint-enable MD013 -->
+
 ```json
 {
   "@aegis-auth/core": "^9.0.0"
