@@ -1,4 +1,4 @@
-# Angular JWT Tools
+# Angular Authentication Tools
 
 <!-- markdownlint-disable MD013 -->
 
