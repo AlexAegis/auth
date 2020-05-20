@@ -7,5 +7,4 @@ module.exports = {
 	'(*.json|.eslintrc|.prettierrc|.stylelintrc|.markdownlintrc)': [('eslint', 'prettier --check')],
 	'*.md': ['markdownlint', 'prettier --check'],
 	'*.(yml|yaml)': ['yamllint', 'prettier --check'],
-	'codecov.yml': ['curl --data-binary @- https://codecov.io/validate <'],
 };
