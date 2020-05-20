@@ -171,15 +171,10 @@
 			"schematics": {},
 			"architect": {
 				"lint": {
-					"builder": "@nrwl/linter:lint",
+					"builder": "@angular-devkit/build-angular:tslint",
 					"options": {
-						"linter": "eslint",
-						"config": "libs/toolbox/.eslintrc",
-						"tsConfig": [
-							"libs/toolbox/tsconfig.lib.json",
-							"libs/toolbox/tsconfig.spec.json"
-						],
-						"exclude": ["**/node_modules/**", "!libs/toolbox/**"]
+						"tsConfig": ["libs/core/tsconfig.lib.json", "libs/core/tsconfig.spec.json"],
+						"exclude": ["**/node_modules/**", "!libs/core/**"]
 					}
 				},
 				"test": {

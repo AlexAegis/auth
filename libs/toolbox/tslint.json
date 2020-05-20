@@ -1,0 +1,10 @@
+{
+	"extends": "../../tslint.json",
+	"rules": {
+		"directive-selector": [true, "attribute", "aegisAuth", "camelCase"],
+		"component-selector": [true, "element", "aegis-auth", "kebab-case"]
+	},
+	"linterOptions": {
+		"exclude": ["!**/*"]
+	}
+}
