@@ -71,3 +71,7 @@ jobs:
           export CODACY_PROJECT_TOKEN=${{ secrets.CODACY_PROJECT_TOKEN }}
           bash <(curl -Ls https://coverage.codacy.com/get.sh) \
           -- -r cove/**/*coverage.xml
+      - name: Upload coverage result to codecov
+        run: |
+          bash <(curl -s https://codecov.io/bash) \
+          -t ${{ secrets.CODECOV_TOKEN }}
