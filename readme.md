@@ -27,7 +27,8 @@ interceptors. Automatically refreshes them.
 
 ## [CSRF Package](./package/csrf)
 
-Partially configures the base token package, handles csrf tokens and interceptors
+Partially configures the base token package, handles csrf tokens and
+interceptors.
 
 ## [NgRX Package](./package/ngrx)
 
@@ -54,3 +55,6 @@ Fork the repository, then clone it.
 ```sh
 git clone https://www.github.com/AlexAegis/jwt
 ```
+
+- asd
+- ew
