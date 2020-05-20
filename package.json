@@ -27,6 +27,8 @@
 		"format": "nx format:write",
 		"format:write": "nx format:write",
 		"format:check": "nx format:check",
+		"ncu": "ncu",
+		"ncu:u": "ncu -u",
 		"update": "ng update @nrwl/workspace",
 		"workspace-schematic": "nx workspace-schematic",
 		"dep-graph": "nx dep-graph",
