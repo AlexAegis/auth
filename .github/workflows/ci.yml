@@ -40,6 +40,8 @@ jobs:
         run: yarn run lint:css
       - name: Lint markdown
         run: yarn run lint:md
+      - name: Lint markdown with remark
+        run: yarn run lint:rmd
       - name: Lint format
         run: yarn run lint:format
   test:
