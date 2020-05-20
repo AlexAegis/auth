@@ -67,6 +67,5 @@
 		"*.json": "jsonc"
 	},
 	"terminal.integrated.windowsEnableConpty": true,
-	"jestrunner.runOptions": ["-r ts-node/register", "-r tsconfig-paths/register"],
 	"liveServer.settings.multiRootWorkspaceName": "starter-stack"
 }
