@@ -3,6 +3,7 @@
 <!-- markdownlint-disable MD013 -->
 
 [![CI](https://github.com/AlexAegis/auth/workflows/CI/badge.svg)](https://github.com/AlexAegis/auth/actions?query=workflow%3ALint) [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=AlexAegis/auth)](https://dependabot.com)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAlexAegis%2Fauth.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FAlexAegis%2Fauth?ref=badge_shield)
 
 <!-- markdownlint-enable MD013 -->
 
@@ -54,3 +55,7 @@ Fork the repository, then clone it.
 ```sh
 git clone https://www.github.com/AlexAegis/jwt
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAlexAegis%2Fauth.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FAlexAegis%2Fauth?ref=badge_large)
