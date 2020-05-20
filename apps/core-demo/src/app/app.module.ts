@@ -1,3 +1,4 @@
+import { AuthCoreModule } from '@aegis-auth/core';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
@@ -5,7 +6,11 @@ import { AppComponent } from './app.component';
 
 @NgModule({
 	declarations: [AppComponent],
-	imports: [BrowserModule, RouterModule.forRoot([], { initialNavigation: 'enabled' })],
+	imports: [
+		BrowserModule,
+		RouterModule.forRoot([], { initialNavigation: 'enabled' }),
+		AuthCoreModule,
+	],
 	providers: [],
 	bootstrap: [AppComponent],
 })

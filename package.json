@@ -1,12 +1,37 @@
 {
 	"name": "aegis-auth",
-	"version": "0.0.0",
+	"description": "Angular authentication libaries",
+	"version": "0.0.1",
 	"license": "MIT",
+	"author": {
+		"email": "alexaegis@gmail.com",
+		"name": "AlexAegis",
+		"url": "https://www.github.com/AlexAegis"
+	},
+	"homepage": "https://www.github.com/AlexAegis/auth#readme",
+	"repository": "github:AlexAegis/auth",
+	"bugs": {
+		"url": "https://www.github.com/AlexAegis/auth/issues"
+	},
+	"private": true,
+	"config": {
+		"engine-strict": true
+	},
+	"engines": {
+		"node": ">=10.13.0",
+		"yarn": ">=1.0.0"
+	},
+	"workspaces": [
+		"./apps/*",
+		"./libs/*"
+	],
 	"scripts": {
 		"ng": "ng",
 		"nx": "nx",
 		"start": "ng serve",
+		"start:core": "nx serve core-demo",
 		"build": "ng build",
+		"build:prod": "ng build --prod",
 		"test": "ng test",
 		"lint": "nx workspace-lint && ng lint",
 		"lint:ts": "tslint --project .",
@@ -20,6 +45,7 @@
 		"affected:apps": "nx affected:apps",
 		"affected:libs": "nx affected:libs",
 		"affected:build": "nx affected:build",
+		"affected:build:prod": "nx affected:build --prod",
 		"affected:e2e": "nx affected:e2e",
 		"affected:test": "nx affected:test",
 		"affected:lint": "nx affected:lint",
@@ -37,11 +63,6 @@
 		"postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
 		"release": "standard-version"
 	},
-	"workspaces": [
-		"./apps/*",
-		"./libs/*"
-	],
-	"private": true,
 	"dependencies": {
 		"@angular/animations": "^9.1.7",
 		"@angular/common": "^9.1.7",
@@ -69,6 +90,8 @@
 		"@nrwl/eslint-plugin-nx": "9.3.0",
 		"@nrwl/jest": "9.3.0",
 		"@nrwl/linter": "^9.3.0",
+		"@nrwl/node": "^9.3.0",
+		"@nrwl/web": "^9.3.0",
 		"@nrwl/workspace": "9.3.0",
 		"@types/jest": "25.2.3",
 		"@types/node": "~14.0.4",
@@ -95,6 +118,8 @@
 		"remark-lint-maximum-line-length": "^2.0.0",
 		"remark-preset-lint-consistent": "^3.0.0",
 		"remark-preset-lint-recommended": "^4.0.0",
+		"rollup-plugin-gzip": "^2.5.0",
+		"rollup-plugin-terser": "^5.3.0",
 		"standard-version": "^8.0.0",
 		"stylelint": "^13.5.0",
 		"stylelint-config-prettier": "^8.0.1",

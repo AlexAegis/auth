@@ -170,11 +170,29 @@
 			"projectType": "library",
 			"schematics": {},
 			"architect": {
+				"build": {
+					"builder": "@nrwl/web:package",
+					"options": {
+						"project": "libs/toolbox/ng-package.json",
+						"entryFile": "libs/toolbox/src/index.ts",
+						"tsConfig": "libs/toolbox/tsconfig.lib.json",
+						"outputPath": "dist/libs/toolbox",
+						"packageJson": "libs/toolbox/package.json"
+					},
+					"configurations": {
+						"production": {
+							"tsConfig": "libs/toolbox/tsconfig.lib.prod.json"
+						}
+					}
+				},
 				"lint": {
 					"builder": "@angular-devkit/build-angular:tslint",
 					"options": {
-						"tsConfig": ["libs/core/tsconfig.lib.json", "libs/core/tsconfig.spec.json"],
-						"exclude": ["**/node_modules/**", "!libs/core/**"]
+						"tsConfig": [
+							"libs/toolbox/tsconfig.lib.json",
+							"libs/toolbox/tsconfig.spec.json"
+						],
+						"exclude": ["**/node_modules/**", "!libs/toolbox/**"]
 					}
 				},
 				"test": {

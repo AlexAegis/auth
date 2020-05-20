@@ -1,14 +1,14 @@
 import { async, TestBed } from '@angular/core/testing';
-import { CoreModule } from './core.module';
+import { AuthCoreModule } from './auth-core.module';
 
-describe('CoreModule', () => {
+describe('AuthCoreModule', () => {
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
-			imports: [CoreModule],
+			imports: [AuthCoreModule],
 		}).compileComponents();
 	}));
 
 	it('should create', () => {
-		expect(CoreModule).toBeDefined();
+		expect(AuthCoreModule).toBeDefined();
 	});
 });

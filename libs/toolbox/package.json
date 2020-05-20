@@ -1,6 +1,6 @@
 {
-	"name": "@aegis-auth/core",
-	"description": "Angular authentication libary core module",
+	"name": "@aegis-auth/toolbox",
+	"description": "Angular authentication libary toolbox module",
 	"version": "0.0.1",
 	"license": "MIT",
 	"author": {
@@ -26,11 +26,6 @@
 		"yarn": ">=1.0.0"
 	},
 	"dependencies": {
-		"@aegis-auth/toolbox": "link:../toolbox",
-		"tslib": "^1.10.0"
-	},
-	"peerDependencies": {
-		"@angular/common": "^9.1.0",
-		"@angular/core": "^9.1.0"
+		"js-base64": "^2.5.2"
 	}
 }
