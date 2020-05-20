@@ -32,7 +32,8 @@
 						"jestConfig": "libs/core/jest.config.js",
 						"tsConfig": "libs/core/tsconfig.spec.json",
 						"passWithNoTests": true,
-						"setupFile": "libs/core/src/test-setup.ts"
+						"setupFile": "libs/core/src/test-setup.ts",
+						"codeCoverage": true
 					}
 				}
 			},
@@ -130,7 +131,8 @@
 						"jestConfig": "apps/core-demo/jest.config.js",
 						"tsConfig": "apps/core-demo/tsconfig.spec.json",
 						"passWithNoTests": true,
-						"setupFile": "apps/core-demo/src/test-setup.ts"
+						"setupFile": "apps/core-demo/src/test-setup.ts",
+						"codeCoverage": true
 					}
 				}
 			}
@@ -185,7 +187,8 @@
 					"options": {
 						"jestConfig": "libs/toolbox/jest.config.js",
 						"tsConfig": "libs/toolbox/tsconfig.spec.json",
-						"passWithNoTests": true
+						"passWithNoTests": true,
+						"codeCoverage": true
 					}
 				}
 			}

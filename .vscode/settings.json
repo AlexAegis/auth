@@ -61,9 +61,7 @@
 	},
 	"files.exclude": {
 		"**/.git": true,
-		"**/.DS_Store": true,
-		"node_modules": false,
-		"coverage": true
+		"**/.DS_Store": true
 	},
 	"files.associations": {
 		"*.json": "jsonc"
