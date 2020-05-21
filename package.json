@@ -98,7 +98,7 @@
 		"@typescript-eslint/eslint-plugin": "2.34.0",
 		"@typescript-eslint/parser": "2.34.0",
 		"codelyzer": "~5.2.2",
-		"cypress": "^4.5.0",
+		"cypress": "^4.6.0",
 		"dotenv": "8.2.0",
 		"eslint": "7.0.0",
 		"eslint-config-prettier": "^6.11.0",
