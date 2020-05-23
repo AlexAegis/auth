@@ -16,7 +16,7 @@
 		"skipDefaultLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
-			"@aegis-auth/toolbox": ["libs/toolbox/src/index.ts"],
+			"@aegis-auth/token": ["libs/token/src/index.ts"],
 			"@aegis-auth/core": ["libs/core/src/index.ts"]
 		}
 	},

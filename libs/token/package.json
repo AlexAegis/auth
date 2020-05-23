@@ -1,6 +1,6 @@
 {
-	"name": "@aegis-auth/toolbox",
-	"description": "Angular authentication libary toolbox module",
+	"name": "@aegis-auth/token",
+	"description": "Angular authentication libary token module",
 	"version": "0.0.1",
 	"license": "MIT",
 	"author": {

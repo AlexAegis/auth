@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@aegis-auth/toolbox@link:libs/toolbox":
+"@aegis-auth/token@link:libs/token":
   version "0.0.1"
   dependencies:
     js-base64 "^2.5.2"

@@ -26,7 +26,7 @@
 		"yarn": ">=1.0.0"
 	},
 	"dependencies": {
-		"@aegis-auth/toolbox": "link:../toolbox",
+		"@aegis-auth/token": "link:../token",
 		"tslib": "^1.10.0"
 	},
 	"peerDependencies": {

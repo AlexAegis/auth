@@ -1,4 +1,4 @@
-import { countInString } from '@aegis-auth/toolbox';
+import { countInString } from '@aegis-auth/token';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 

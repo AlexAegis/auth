@@ -164,24 +164,24 @@
 				}
 			}
 		},
-		"toolbox": {
-			"root": "libs/toolbox",
-			"sourceRoot": "libs/toolbox/src",
+		"token": {
+			"root": "libs/token",
+			"sourceRoot": "libs/token/src",
 			"projectType": "library",
 			"schematics": {},
 			"architect": {
 				"build": {
 					"builder": "@nrwl/web:package",
 					"options": {
-						"project": "libs/toolbox/ng-package.json",
-						"entryFile": "libs/toolbox/src/index.ts",
-						"tsConfig": "libs/toolbox/tsconfig.lib.json",
-						"outputPath": "dist/libs/toolbox",
-						"packageJson": "libs/toolbox/package.json"
+						"project": "libs/token/ng-package.json",
+						"entryFile": "libs/token/src/index.ts",
+						"tsConfig": "libs/token/tsconfig.lib.json",
+						"outputPath": "dist/libs/token",
+						"packageJson": "libs/token/package.json"
 					},
 					"configurations": {
 						"production": {
-							"tsConfig": "libs/toolbox/tsconfig.lib.prod.json"
+							"tsConfig": "libs/token/tsconfig.lib.prod.json"
 						}
 					}
 				},
@@ -189,17 +189,17 @@
 					"builder": "@angular-devkit/build-angular:tslint",
 					"options": {
 						"tsConfig": [
-							"libs/toolbox/tsconfig.lib.json",
-							"libs/toolbox/tsconfig.spec.json"
+							"libs/token/tsconfig.lib.json",
+							"libs/token/tsconfig.spec.json"
 						],
-						"exclude": ["**/node_modules/**", "!libs/toolbox/**"]
+						"exclude": ["**/node_modules/**", "!libs/token/**"]
 					}
 				},
 				"test": {
 					"builder": "@nrwl/jest:jest",
 					"options": {
-						"jestConfig": "libs/toolbox/jest.config.js",
-						"tsConfig": "libs/toolbox/tsconfig.spec.json",
+						"jestConfig": "libs/token/jest.config.js",
+						"tsConfig": "libs/token/tsconfig.spec.json",
 						"passWithNoTests": true,
 						"codeCoverage": true
 					}
