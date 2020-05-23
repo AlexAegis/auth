@@ -29,7 +29,7 @@
 			"tags": [],
 			"implicitDependencies": ["core-demo"]
 		},
-		"toolbox": {
+		"token": {
 			"tags": ["lib"]
 		}
 	}

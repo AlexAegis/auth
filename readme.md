@@ -43,7 +43,7 @@ startup-time sensitive salt, like appending the timestamp. This would mean that
 after every restart, everybody has to relog. The benefit is that it requires
 minimal configuration)
 
-## [Toolbox Package](./packages/toolbox)
+## [token Package](./packages/token)
 
 Contains the base JWT Interactions, token parsing, data extraction methods.
 Can be used on it's own
