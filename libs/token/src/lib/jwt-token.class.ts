@@ -1,4 +1,5 @@
-import { Base64String, decode, decodeJsonLikeBase64 } from './base64-decoder.function';
+import { Base64 } from 'js-base64';
+import { Base64String, decodeJsonLikeBase64 } from './base64-decoder.function';
 
 export type JwtTokenString = string;
 export type UnixTime = number;
@@ -10,10 +11,40 @@ export interface JwtTokenHeader {
 
 export interface JwtTokenPayload {
 	nonce?: string;
-	aud: string; // audience, must match the Client ID
-	iss: string; // issuer
-	iat: UnixTime; // Issued at
-	sub: string;
+	/**
+	 * Audience
+	 *
+	 * validated against a client ID
+	 */
+	aud?: string;
+	/**
+	 * Issuer
+	 */
+	iss?: string;
+	/**
+	 * Issued at
+	 */
+	iat: UnixTime;
+	/**
+	 * Expires at
+	 */
+	exp?: UnixTime;
+	/**
+	 * Subject
+	 */
+	sub?: string;
+	/**
+	 * Claims
+	 */
+	[key: string]: unknown;
+}
+
+/**
+ * Common token pair
+ */
+export interface JwtTokenPair {
+	accessToken: JwtTokenString;
+	refreshToken: JwtTokenString;
 }
 
 export class JwtToken {
@@ -30,7 +61,7 @@ export class JwtToken {
 
 		const header = decodeJsonLikeBase64<JwtTokenHeader>(convertedSegments[0]);
 		const payload = decodeJsonLikeBase64<JwtTokenPayload>(convertedSegments[1]);
-		const signature = decode(convertedSegments[2]); // Not used, only for validation
+		const signature = Base64.decode(convertedSegments[2]); // Not used, only for validation
 		if (!header || !payload || !signature) return null;
 
 		return new JwtToken(header, payload, signature);

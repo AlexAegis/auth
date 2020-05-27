@@ -2,13 +2,13 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "start:demo-app",
+			"label": "start:core",
 			"group": {
 				"kind": "build",
 				"isDefault": true
 			},
 			"type": "npm",
-			"script": "start:demo-app",
+			"script": "start:core",
 			"isBackground": true,
 			"options": { "env": { "NODE_OPTIONS": "--max_old_space_size=8192 " } },
 			"problemMatcher": [

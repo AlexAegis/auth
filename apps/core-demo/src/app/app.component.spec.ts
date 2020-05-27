@@ -1,3 +1,4 @@
+import { AuthCoreModule } from '@aegis-auth/core';
 import { async, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
@@ -5,7 +6,14 @@ import { AppComponent } from './app.component';
 describe('AppComponent', () => {
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
-			imports: [RouterTestingModule],
+			imports: [
+				RouterTestingModule,
+				AuthCoreModule.forRoot({
+					useValue: {
+						getToken: () => '',
+					},
+				}),
+			],
 			declarations: [AppComponent],
 		}).compileComponents();
 	}));
@@ -26,6 +34,6 @@ describe('AppComponent', () => {
 		const fixture = TestBed.createComponent(AppComponent);
 		fixture.detectChanges();
 		const compiled = fixture.nativeElement;
-		expect(compiled.querySelector('h1').textContent).toContain('Welcome to core-demo!');
+		expect(compiled.querySelector('h1').textContent).toContain('core-demo');
 	});
 });
