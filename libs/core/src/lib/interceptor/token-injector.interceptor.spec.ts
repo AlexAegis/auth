@@ -1,12 +1,14 @@
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { AuthConfiguration, TypedValueProvider } from '../model';
 import { AuthCoreModuleConfigurationService } from '../token';
 import { TokenInjectorInterceptor } from './token-injector.interceptor';
 
 describe('TokenInjectorInterceptor', () => {
-	beforeEach(() =>
+	let http: HttpTestingController;
+	beforeEach(() => {
 		TestBed.configureTestingModule({
-			imports: [],
+			imports: [HttpClientTestingModule],
 			providers: [
 				TokenInjectorInterceptor,
 				{
@@ -16,11 +18,23 @@ describe('TokenInjectorInterceptor', () => {
 					},
 				} as TypedValueProvider<AuthConfiguration>,
 			],
-		})
-	);
+		});
+
+		http = TestBed.inject(HttpTestingController);
+	});
 
 	it('should be created', () => {
 		const interceptor: TokenInjectorInterceptor = TestBed.inject(TokenInjectorInterceptor);
 		expect(interceptor).toBeTruthy();
+	});
+
+	it('should be TODO', () => {
+		const interceptor: TokenInjectorInterceptor = TestBed.inject(TokenInjectorInterceptor);
+
+		expect(interceptor).toBeTruthy();
+	});
+
+	afterEach(() => {
+		http.verify();
 	});
 });

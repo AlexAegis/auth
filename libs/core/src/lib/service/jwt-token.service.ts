@@ -46,8 +46,11 @@ export class JwtTokenService {
 
 	public constructor(
 		@Inject(AuthCoreModuleConfigurationService)
-		public readonly rawConfig: AuthConfiguration
-	) {}
+		public readonly rawConfig: AuthConfiguration[]
+	) {
+		// TODO: refactor to an array configs
+		console.log('rawConfig', rawConfig);
+	}
 
 	public parseToken(tokenString: string): JwtToken | null {
 		return JwtToken.from(tokenString as JwtTokenString);

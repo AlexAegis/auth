@@ -10,7 +10,7 @@ describe('AppComponent', () => {
 			imports: [
 				RouterTestingModule,
 				HttpClientModule,
-				AuthCoreModule.forRoot({
+				AuthCoreModule.forRoot().withToken({
 					useValue: {
 						getToken: () => '',
 					},

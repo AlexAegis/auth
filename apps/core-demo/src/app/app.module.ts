@@ -14,7 +14,7 @@ import { AuthService } from './service/auth.service';
 		BrowserModule,
 		HttpClientModule,
 		RouterModule.forRoot([], { initialNavigation: 'enabled' }),
-		AuthCoreModule.forRoot<AuthService>({
+		AuthCoreModule.forRoot().withRefreshableToken<unknown, AuthService>({
 			useFactory: (authService) => ({
 				getToken: authService.accessTokenStorage$,
 				domainWhitelist: ['localhost', WHITELISTED_DOMAIN],
