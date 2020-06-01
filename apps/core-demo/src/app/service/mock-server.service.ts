@@ -10,13 +10,22 @@ export class MockServerService {
 		typ: 'JWT',
 	};
 
-	public getTokenPair(): JwtTokenPair {
+	/**
+	 * Refresh tokens lifetime will be twice that the access's
+	 *
+	 * @param lifetime seconds
+	 */
+	public getTokenPair(lifetime = 60): JwtTokenPair {
 		return {
-			accessToken: this.createValidToken(),
-			refreshToken: this.createValidToken(360),
+			accessToken: this.createValidToken(lifetime),
+			refreshToken: this.createValidToken(lifetime * 2),
 		};
 	}
 
+	/**
+	 *
+	 * @param lifetime seconds
+	 */
 	public createValidToken(lifetime = 60): string {
 		return [
 			this.toBase64(this.header),
@@ -25,8 +34,12 @@ export class MockServerService {
 		].join('.');
 	}
 
+	/**
+	 *
+	 * @param lifetime seconds
+	 */
 	private createPayload(lifetime = 60): JwtTokenPayload {
-		const now = new Date().getTime() / 1000;
+		const now = Math.floor(new Date().getTime() / 1000);
 		return {
 			sub: 'testtoken',
 			iat: now,

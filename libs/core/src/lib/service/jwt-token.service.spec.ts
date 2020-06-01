@@ -1,11 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { catchError, take, tap } from 'rxjs/operators';
-import {
-	AuthConfiguration,
-	AuthCoreModule,
-	AuthCoreModuleConfigurationService,
-} from '../auth-core.module';
+import { AuthCoreModule } from '../auth-core.module';
+import { AuthConfiguration, DEFAULT_AUTH_CONFIG } from '../model';
+import { AuthCoreModuleConfigurationService } from '../token';
 import { JwtTokenService } from './jwt-token.service';
 
 describe('JwtTokenService', () => {
@@ -20,6 +18,7 @@ describe('JwtTokenService', () => {
 				{
 					provide: AuthCoreModuleConfigurationService,
 					useValue: {
+						...DEFAULT_AUTH_CONFIG,
 						type: 'NON OVERRIDDEN',
 						getToken: () => validToken,
 					} as AuthConfiguration,

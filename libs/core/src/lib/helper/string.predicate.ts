@@ -1,3 +1,3 @@
-export const isString = <(a?: string | null) => a is string>(
-	((token) => token ?? typeof token === 'string')
-);
+export function isString(stringLike: unknown): stringLike is string {
+	return typeof stringLike === 'string';
+}

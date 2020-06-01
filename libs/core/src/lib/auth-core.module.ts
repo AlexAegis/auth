@@ -1,43 +1,14 @@
-import { JwtToken } from '@aegis-auth/token';
 import { CommonModule } from '@angular/common';
 import { HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { InjectionToken, ModuleWithProviders, NgModule, Provider } from '@angular/core';
-import { Observable } from 'rxjs';
+import { ModuleWithProviders, NgModule, Provider } from '@angular/core';
 import { TokenInjectorInterceptor, TokenRefreshInterceptor } from './interceptor';
-import { TypedProvider } from './model/typed-providers.interface';
-
-export const AuthCoreModuleConfigurationService = new InjectionToken<AuthConfiguration>(
-	'AuthCoreModuleConfiguration'
-);
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type AuthCoreModuleConfigurationProvider<
-	A = unknown,
-	B = unknown,
-	C = unknown,
-	D = unknown,
-	E = unknown
-> = Omit<TypedProvider<AuthConfiguration, A, B, C, D, E>, 'provide'>;
-
-export interface AuthConfiguration {
-	getToken: () =>
-		| string
-		| null
-		| undefined
-		| Promise<string | null | undefined>
-		| Observable<string | null | undefined>;
-}
+import { TypedProvider } from './model';
+import { AuthCoreModuleConfigurationProvider, AuthCoreModuleConfigurationService } from './token';
 
 @NgModule({
 	imports: [CommonModule],
 })
 export class AuthCoreModule {
-	constructor() {
-		console.log('AuthCoreModule loaded');
-		const token = JwtToken.from('');
-		console.log(token);
-	}
-
 	/**
 	 * Define any one of the `use...` functions.
 	 * If you defied `useFactory` you also have to define `deps`, which is
@@ -114,8 +85,8 @@ export class AuthCoreModule {
 			ngModule: AuthCoreModule,
 			providers: [
 				{
-					provide: AuthCoreModuleConfigurationService,
 					...configurationProvider,
+					provide: AuthCoreModuleConfigurationService,
 				} as TypedProvider<A, B, C, D, E>,
 				{
 					provide: HTTP_INTERCEPTORS,
