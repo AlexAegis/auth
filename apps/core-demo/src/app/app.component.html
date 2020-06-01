@@ -1,5 +1,23 @@
 <h1>core-demo</h1>
-<button (click)="login()">Login</button>
+<p>Open the network tab to see the injected tokens!</p>
 
-<span>token: {{ token$ | async }}</span>
-<span>tokenString: {{ tokenString$ | async }}</span>
+<div>
+	<button (click)="login()">Login (Create token)</button>
+	<span>Lifespan (seconds):</span>
+	<input #lifespan type="number" placeholder="60" />
+</div>
+<button (click)="logout()">Logout (Remove token)</button>
+
+<span>token: {{ token$ | async | json }}</span>
+
+<button (click)="requestWhitelistedPathOnWhitelistedDomain()">
+	Request whitelisted path on whitelisted domain
+</button>
+<button (click)="requestBlacklistedPathOnWhitelistedDomain()">
+	Request blacklisted path on whitelisted domain
+</button>
+<button (click)="requestOnBlacklistedDomain()">Request on blacklisted domain</button>
+<div>
+	<button (click)="customGet()">Get from here:</button>
+	<span>URL</span><input type="text" placeholder="url" />
+</div>
