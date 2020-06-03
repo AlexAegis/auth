@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { AuthConfiguration, TypedValueProvider } from '../model';
+import { AuthTokenConfiguration, TypedValueProvider } from '../model';
 import { AuthCoreModuleConfigurationService } from '../token';
 import { TokenInjectorInterceptor } from './token-injector.interceptor';
 
@@ -16,7 +16,7 @@ describe('TokenInjectorInterceptor', () => {
 					useValue: {
 						getToken: () => 'fakeToken',
 					},
-				} as TypedValueProvider<AuthConfiguration>,
+				} as TypedValueProvider<AuthTokenConfiguration>,
 			],
 		});
 

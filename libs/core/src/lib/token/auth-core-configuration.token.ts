@@ -1,10 +1,26 @@
 import { InjectionToken } from '@angular/core';
-import { AuthConfiguration, TypedProvider } from '../model';
+import { AuthTokenConfiguration, TypedProvider } from '../model';
 
-export const AuthCoreModuleConfigurationService = new InjectionToken<AuthConfiguration[]>(
-	'AuthCoreModuleConfiguration'
-);
+export const AuthCoreModuleConfigurationService = new InjectionToken<
+	AuthTokenConfiguration | AuthTokenConfiguration[]
+>('AuthCoreModuleConfiguration');
 
+/**
+ * To provide an {@link AuthTokenConfiguration |  AuthTokenConfiguration}
+ */
+export type TokenConfigurationProvider<
+	A = unknown,
+	B = unknown,
+	C = unknown,
+	D = unknown,
+	E = unknown
+> = TypedProvider<AuthTokenConfiguration, A, B, C, D, E>;
+
+/**
+ * This type describes a providerlike object that doesn't have a provide field
+ * because that will be defaulted by the createRefreshableAuthTokenProvider
+ * function
+ */
 export type AuthCoreModuleConfigurationProvider<
 	A = unknown,
 	B = unknown,
@@ -12,8 +28,8 @@ export type AuthCoreModuleConfigurationProvider<
 	D = unknown,
 	E = unknown
 > = Omit<
-	TypedProvider<Partial<Omit<AuthConfiguration<unknown>, 'autoRefresher'>>, A, B, C, D, E>,
-	'provide'
+	TypedProvider<Partial<Omit<AuthTokenConfiguration<unknown>, 'autoRefresher'>>, A, B, C, D, E>,
+	'provide' | 'multi'
 >;
 
 export type AuthCoreModuleRefreshableConfigurationProvider<
@@ -23,4 +39,7 @@ export type AuthCoreModuleRefreshableConfigurationProvider<
 	C = unknown,
 	D = unknown,
 	E = unknown
-> = Omit<TypedProvider<Partial<AuthConfiguration<RefreshResponse>>, A, B, C, D, E>, 'provide'>;
+> = Omit<
+	TypedProvider<Partial<AuthTokenConfiguration<RefreshResponse>>, A, B, C, D, E>,
+	'provide' | 'multi'
+>;
