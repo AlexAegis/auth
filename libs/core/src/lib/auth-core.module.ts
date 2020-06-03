@@ -7,10 +7,53 @@ import {
 	AuthCoreModuleConfigurationProvider,
 	AuthCoreModuleConfigurationService,
 	AuthCoreModuleRefreshableConfigurationProvider,
+	TokenConfigurationProvider,
 } from './token';
+
+export function createRefreshableAuthTokenProvider<
+	RefreshResponse,
+	A = unknown,
+	B = unknown,
+	C = unknown,
+	D = unknown,
+	E = unknown
+>(
+	tokenConfigurationProvider: AuthCoreModuleRefreshableConfigurationProvider<
+		RefreshResponse,
+		A,
+		B,
+		C,
+		D,
+		E
+	>
+): TokenConfigurationProvider<A, B, C, D, E> {
+	return {
+		provide: AuthCoreModuleConfigurationService,
+		multi: true,
+		...tokenConfigurationProvider,
+	} as TokenConfigurationProvider<A, B, C, D, E>;
+}
+
+/**
+ * Helps you define a TokenConfigProvider
+ */
+export function createAuthTokenProvider<
+	A = unknown,
+	B = unknown,
+	C = unknown,
+	D = unknown,
+	E = unknown
+>(
+	tokenConfigurationProvider: AuthCoreModuleConfigurationProvider<A, B, C, D, E>
+): TokenConfigurationProvider<A, B, C, D, E> {
+	return createRefreshableAuthTokenProvider<unknown, A, B, C, D, E>(tokenConfigurationProvider);
+}
 
 /**
  * Used to configure the AuthCoreModule
+ *
+ * @deprecated will only be useful in Angular 10. Also usable under that, but
+ * with Ivy disabled
  */
 class TokenConfigurationBuilder implements ModuleWithProviders<AuthCoreModule | HttpInterceptor[]> {
 	public ngModule = AuthCoreModule;
@@ -37,6 +80,7 @@ class TokenConfigurationBuilder implements ModuleWithProviders<AuthCoreModule | 
 			D,
 			E
 		>
+		// tslint:disable-next-line: deprecation
 	): TokenConfigurationBuilder {
 		this.providers.push({
 			...tokenConfigurationProvider,
@@ -80,6 +124,7 @@ class TokenConfigurationBuilder implements ModuleWithProviders<AuthCoreModule | 
 	 */
 	public withToken<A = unknown, B = unknown, C = unknown, D = unknown, E = unknown>(
 		tokenConfigurationProvider: AuthCoreModuleConfigurationProvider<A, B, C, D, E>
+		// tslint:disable-next-line: deprecation
 	): TokenConfigurationBuilder {
 		return this.withConfig<unknown, A, B, C, D, E>(tokenConfigurationProvider);
 	}
@@ -109,6 +154,7 @@ class TokenConfigurationBuilder implements ModuleWithProviders<AuthCoreModule | 
 			D,
 			E
 		>
+		// tslint:disable-next-line: deprecation
 	): TokenConfigurationBuilder {
 		return this.withConfig<RefreshResponse, A, B, C, D, E>(tokenConfigurationProvider);
 	}
@@ -132,45 +178,52 @@ export interface AuthCoreModuleRootOptions {
  * {@link AuthCoreModule#forFeature | forFeature} for more information.
  *
  *
- * Example:
  *
  * With `useValue` generics are not needed
  * With `useClass`, similarly to `useFactory` you have to define what gets
  * injected.
  *
+ * @example
+ *
  * ```ts
- * const conf: AuthConfiguration = {
- * 	getToken: () => {
- * 		return '';
- * 	},
- * };
- *
+ * (a)Injectable
  * class Foo {
- * 	getConf(): AuthConfiguration {
- * 		return conf;
- * 	}
- * }
- * class Bar implements AuthConfiguration {
- * 	constructor(private foo: Foo) {};
- * 	getToken() {
- * 		return this.foo.getConf().getToken();
- * 	}
+ * 		getConf(): AuthConfiguration {
+ * 			return { ... };
+ * 		}
  * }
  *
- *	(a)NgModule({
- *		mports: [
- *			AuthCoreModule.forRoot().withToken<Foo>({
+ * ```
+ *
+ * Using the builder methods: (Not supported with Ivy below Angular 10)
+ *
+ * ```ts
+ * (a)NgModule({
+ *		imports: [
+ *			AuthCoreModule.forRootWithBuilder().withToken<Foo>({
  *				useFactory: (foo) => foo.getConf(), // define either this
- *				useClass: Bar, // or this
- *				useValue: conf, // or this
  *				deps: [Foo] // if something has to be injected
+ *			}), // can chain as much as you like
+ *		,
+ *	})
+ *	export class CoreModule {}
+ * ```
+ *
+ * Using the helper functions:
+ *
+ * ```ts
+ * (a)NgModule({
+ *		imports: [
+ *			AuthCoreModule.forRoot(
+ *				createAuthTokenProvider<AuthService>({
+ *					useFactory: (foo) => foo.getConf(), // define either this
+ *					deps: [Foo] // if something has to be injected
+ *				}), // can define as much as you like
  *			}),
  *		,
  *	})
- *	export class AppModule {}
+ *	export class CoreModule {}
  * ```
- *
- * Remember, only define one of the `use...` functions, this is just an example.
  *
  * Q: Why the builder pattern? Why not just an array?
  *
@@ -191,6 +244,8 @@ export interface AuthCoreModuleRootOptions {
 })
 export class AuthCoreModule {
 	/**
+	 * @deprecated Won't work with ivy enabled below Angular 10
+	 *
 	 * Use this method to define the global token interceptors.
 	 *
 	 * The refresh feature can be disabled globally using the `options` object.
@@ -210,14 +265,12 @@ export class AuthCoreModule {
 	 * 		deps: [Foo]
 	 * }),
 	 * ```
-
-	 *
-	 *
-	 *
 	 */
-	public static forRoot = (
+	public static forRootWithBuilder = (
 		options: AuthCoreModuleRootOptions = { autoRefresh: true }
+		// tslint:disable-next-line: deprecation
 	): TokenConfigurationBuilder =>
+		// tslint:disable-next-line: deprecation
 		new TokenConfigurationBuilder([
 			{
 				provide: HTTP_INTERCEPTORS,
@@ -237,7 +290,70 @@ export class AuthCoreModule {
 
 	/**
 	 * For defining the module with extra tokens but with no interceptors
+	 *
+	 * @deprecated Won't work with ivy enabled under Angular 10
 	 */
-	public static forFeature = (): ModuleWithProviders<AuthCoreModule> =>
+	public static forFeatureWithBuilder = (): ModuleWithProviders<AuthCoreModule> =>
+		// tslint:disable-next-line: deprecation
 		new TokenConfigurationBuilder();
+
+	/**
+	 * To define the interceptors and the tokens with provided configs.
+	 * These token configuration can be provided by hand, or here, preferably
+	 * with the `createAuthTokenProvider` and
+	 * `createRefreshableAuthTokenProvider` helper methods. They will defaul
+	 * two fields and help with the typing when defining these providers.
+	 * They can also be used on their own in the providers array.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * (a)NgModule({
+	 *		imports: [
+	 *			AuthCoreModule.forRoot(
+	 *				createAuthTokenProvider<AuthService>({
+	 *					useFactory: (foo) => foo.getConf(), // define either this
+	 *					deps: [Foo] // if something has to be injected
+	 *				}), // can define as much as you like
+	 *			}),
+	 *		,
+	 *	})
+	 *	export class CoreModule {}
+	 * ```
+	 * @param tokenProviders create with `createAuthTokenProvider` or
+	 * 	`createRefreshableAuthTokenProvider`
+	 */
+	public static forRoot(...tokenProviders: TypedProvider[]): ModuleWithProviders<AuthCoreModule> {
+		return {
+			ngModule: AuthCoreModule,
+			providers: [
+				{
+					provide: HTTP_INTERCEPTORS,
+					useClass: TokenInjectorInterceptor,
+					multi: true,
+				},
+				{
+					provide: HTTP_INTERCEPTORS,
+					useClass: TokenRefreshInterceptor,
+					multi: true,
+				},
+				...tokenProviders,
+			],
+		};
+	}
+
+	/**
+	 * For defining the module with extra tokens but with no interceptors
+	 *
+	 * @param tokenProviders create with `createAuthTokenProvider` or
+	 * 	`createRefreshableAuthTokenProvider`
+	 */
+	public static forFeature(
+		...tokenProviders: TypedProvider[]
+	): ModuleWithProviders<AuthCoreModule> {
+		return {
+			ngModule: AuthCoreModule,
+			providers: [...tokenProviders],
+		};
+	}
 }

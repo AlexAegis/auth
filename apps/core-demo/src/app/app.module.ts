@@ -1,4 +1,4 @@
-import { AuthCoreModule } from '@aegis-auth/core';
+import { AuthCoreModule, createAuthTokenProvider } from '@aegis-auth/core';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -14,17 +14,19 @@ import { AuthService } from './service/auth.service';
 		BrowserModule,
 		HttpClientModule,
 		RouterModule.forRoot([], { initialNavigation: 'enabled' }),
-		AuthCoreModule.forRoot().withRefreshableToken<unknown, AuthService>({
-			useFactory: (authService) => ({
-				getToken: authService.accessTokenStorage$,
-				domainWhitelist: ['localhost', WHITELISTED_DOMAIN],
-				domainBlacklist: [BLACKLISTED_DOMAIN],
-				pathBlacklist: [/api\/something\/.*/],
-				pathWhitelist: [/api\/users\/.*/],
-				protocolBlacklist: environment.production ? ['http'] : undefined,
-			}),
-			deps: [AuthService],
-		}),
+		AuthCoreModule.forRoot(
+			createAuthTokenProvider<AuthService>({
+				useFactory: (authService) => ({
+					getToken: authService.accessTokenStorage$,
+					domainWhitelist: ['localhost', WHITELISTED_DOMAIN],
+					domainBlacklist: [BLACKLISTED_DOMAIN],
+					pathBlacklist: [/api\/something\/.*/],
+					pathWhitelist: [/api\/users\/.*/],
+					protocolBlacklist: environment.production ? ['http'] : undefined,
+				}),
+				deps: [AuthService],
+			})
+		),
 	],
 	providers: [],
 	bootstrap: [AppComponent],

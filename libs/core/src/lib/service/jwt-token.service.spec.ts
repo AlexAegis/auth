@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { catchError, take, tap } from 'rxjs/operators';
 import { AuthCoreModule } from '../auth-core.module';
-import { AuthConfiguration, DEFAULT_AUTH_CONFIG } from '../model';
+import { AuthTokenConfiguration, DEFAULT_AUTH_TOKEN_CONFIG } from '../model';
 import { AuthCoreModuleConfigurationService } from '../token';
 import { JwtTokenService } from './jwt-token.service';
 
@@ -18,10 +18,10 @@ describe('JwtTokenService', () => {
 				{
 					provide: AuthCoreModuleConfigurationService,
 					useValue: {
-						...DEFAULT_AUTH_CONFIG,
+						...DEFAULT_AUTH_TOKEN_CONFIG,
 						type: 'NON OVERRIDDEN',
 						getToken: () => validToken,
-					} as AuthConfiguration,
+					} as AuthTokenConfiguration,
 				},
 			],
 		});
@@ -36,7 +36,7 @@ describe('JwtTokenService', () => {
 		service = TestBed.overrideProvider(AuthCoreModuleConfigurationService, {
 			useValue: {
 				getToken: () => validToken,
-			} as AuthConfiguration,
+			} as AuthTokenConfiguration,
 		}).inject(JwtTokenService);
 		return service.token$
 			.pipe(
@@ -50,7 +50,7 @@ describe('JwtTokenService', () => {
 		service = TestBed.overrideProvider(AuthCoreModuleConfigurationService, {
 			useValue: {
 				getToken: () => 'eyJw5c',
-			} as AuthConfiguration,
+			} as AuthTokenConfiguration,
 		}).inject(JwtTokenService);
 		return service.token$
 			.pipe(

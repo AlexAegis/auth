@@ -192,7 +192,7 @@ export declare interface TypedFactorySansProvider<
 }
 
 export declare type TypedProvider<
-	T extends Record<string, any> | Type<T> | InjectionToken<T> = Record<string, any>,
+	T extends Record<string, any> | Type<any> | InjectionToken<any> = Record<string, any>,
 	A = any,
 	B = any,
 	C = any,

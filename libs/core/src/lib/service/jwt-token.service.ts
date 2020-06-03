@@ -3,15 +3,15 @@ import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, isObservable, of } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { isPromise, isString } from '../helper';
-import { AuthConfiguration, DEFAULT_AUTH_CONFIG } from '../model';
+import { AuthTokenConfiguration, DEFAULT_AUTH_TOKEN_CONFIG } from '../model';
 import { AuthCoreModuleConfigurationService } from '../token';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class JwtTokenService {
-	public readonly config$ = new BehaviorSubject<AuthConfiguration>({
-		...DEFAULT_AUTH_CONFIG,
+	public readonly config$ = new BehaviorSubject<AuthTokenConfiguration>({
+		...DEFAULT_AUTH_TOKEN_CONFIG,
 		...this.rawConfig,
 	});
 
@@ -46,7 +46,7 @@ export class JwtTokenService {
 
 	public constructor(
 		@Inject(AuthCoreModuleConfigurationService)
-		public readonly rawConfig: AuthConfiguration[]
+		public readonly rawConfig: AuthTokenConfiguration[]
 	) {
 		// TODO: refactor to an array configs
 		console.log('rawConfig', rawConfig);

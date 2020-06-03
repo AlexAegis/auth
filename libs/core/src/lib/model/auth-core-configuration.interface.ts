@@ -1,6 +1,6 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 
-export const DEFAULT_AUTH_CONFIG: AuthConfiguration = {
+export const DEFAULT_AUTH_TOKEN_CONFIG: AuthTokenConfiguration = {
 	getToken: new BehaviorSubject(null),
 	header: 'Authorization',
 	scheme: 'Bearer ',
@@ -67,7 +67,7 @@ export interface TokenRefresher<Response> {
  * })
  * ```
  */
-export interface AuthConfiguration<RefreshResponse = unknown> {
+export interface AuthTokenConfiguration<RefreshResponse = unknown> {
 	/**
 	 * A callback or observable that will be called or subscribed to
 	 * on every http request and returns a stored token
