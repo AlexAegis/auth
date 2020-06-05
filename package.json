@@ -110,7 +110,7 @@
 		"husky": "^4.2.5",
 		"jest": "26.0.1",
 		"jest-preset-angular": "8.2.0",
-		"lint-staged": "^10.2.8",
+		"lint-staged": "^10.2.9",
 		"markdownlint": "^0.20.3",
 		"markdownlint-cli": "^0.23.1",
 		"ng-packagr": "^9.1.5",
