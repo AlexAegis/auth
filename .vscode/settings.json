@@ -67,5 +67,11 @@
 		"*.json": "jsonc"
 	},
 	"terminal.integrated.windowsEnableConpty": true,
-	"liveServer.settings.multiRootWorkspaceName": "starter-stack"
+	"liveServer.settings.multiRootWorkspaceName": "starter-stack",
+	"json.schemas": [
+		{
+			"fileMatch": ["typedoc.json"],
+			"url": "https://json.schemastore.org/typedoc"
+		}
+	]
 }

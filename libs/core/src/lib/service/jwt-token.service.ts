@@ -26,7 +26,10 @@ export class JwtTokenService {
 			}
 		}),
 		startWith(null),
-		shareReplay(1)
+		shareReplay({
+			refCount: false,
+			bufferSize: 1,
+		})
 	);
 
 	public readonly token$ = this.tokenString$.pipe(
@@ -38,7 +41,10 @@ export class JwtTokenService {
 			if (!jwtToken) throw new Error('Non-valid token observed');
 			else return jwtToken;
 		}),
-		shareReplay(1)
+		shareReplay({
+			refCount: false,
+			bufferSize: 1,
+		})
 	);
 
 	public readonly header$ = this.token$.pipe(map((token) => token.header));
