@@ -18,7 +18,8 @@ export type TokenConfigurationProvider<
 
 /**
  * This type describes a providerlike object that doesn't have a provide field
- * because that will be defaulted by the createRefreshableAuthTokenProvider
+ * because that will be defaulted by the
+ * {@link createRefreshableAuthTokenProvider | createRefreshableAuthTokenProvider }
  * function
  */
 export type AuthCoreModuleConfigurationProvider<
