@@ -1,1 +1,2 @@
-export * from './jwt-token.service';
+export * from './base-config-service.class';
+export * from './config.service';

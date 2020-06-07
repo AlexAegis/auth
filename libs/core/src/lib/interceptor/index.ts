@@ -1,2 +1,1 @@
-export * from './token-injector.interceptor';
-export * from './token-refresh.interceptor';
+export * from './header-injector.interceptor';

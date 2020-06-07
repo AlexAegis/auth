@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class TokenRefreshInterceptor implements HttpInterceptor {
+export class JwtRefreshInterceptor implements HttpInterceptor {
 	public intercept(
 		request: HttpRequest<unknown>,
 		next: HttpHandler

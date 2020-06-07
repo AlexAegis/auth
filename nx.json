@@ -31,6 +31,19 @@
 		},
 		"token": {
 			"tags": ["lib"]
+		},
+		"ngrx": {
+			"tags": []
+		},
+		"jwt": {
+			"tags": []
+		},
+		"jwt-demo": {
+			"tags": []
+		},
+		"jwt-demo-e2e": {
+			"tags": [],
+			"implicitDependencies": ["jwt-demo"]
 		}
 	}
 }

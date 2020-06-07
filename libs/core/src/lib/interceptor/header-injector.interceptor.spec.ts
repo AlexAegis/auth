@@ -1,7 +1,7 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+/*import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { AuthTokenConfiguration, TypedValueProvider } from '../model';
-import { AuthCoreModuleConfigurationService } from '../token';
+import { AuthCoreModuleConfigurationService } from '../../../../jwt/src/lib/token';
 import { TokenInjectorInterceptor } from './token-injector.interceptor';
 
 describe('TokenInjectorInterceptor', () => {
@@ -38,3 +38,4 @@ describe('TokenInjectorInterceptor', () => {
 		http.verify();
 	});
 });
+*/

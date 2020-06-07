@@ -1,1 +1,1 @@
-export * from './auth-core-configuration.token';
+export * from './core-configuration.token';

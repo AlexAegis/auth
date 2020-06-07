@@ -13,6 +13,30 @@
 			"preLaunchTask": "start:core"
 		},
 		{
+			"type": "chrome",
+			"linux": {
+				"runtimeExecutable": "/usr/bin/chromium"
+			},
+			"request": "launch",
+			"name": "Launch Jwt Demo",
+			"url": "http://localhost:4802",
+			"webRoot": "${workspaceFolder}",
+			"cwd": "${workspaceFolder}",
+			"preLaunchTask": "start:jwt"
+		},
+		{
+			"type": "chrome",
+			"linux": {
+				"runtimeExecutable": "/usr/bin/chromium"
+			},
+			"request": "launch",
+			"name": "Launch Ngrx Demo",
+			"url": "http://localhost:4802",
+			"webRoot": "${workspaceFolder}",
+			"cwd": "${workspaceFolder}",
+			"preLaunchTask": "start:ngrx"
+		},
+		{
 			"name": "Current TS File",
 			"type": "node",
 			"request": "launch",

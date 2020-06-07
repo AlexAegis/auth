@@ -1,52 +1,29 @@
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { TokenInjectorInterceptor, TokenRefreshInterceptor } from './interceptor';
-import { TypedProvider } from './model';
+import { HeaderInjectorInterceptor } from './interceptor';
+import { DEFAULT_HEADER_CONFIG } from './model';
 import {
-	AuthCoreModuleConfigurationProvider,
-	AuthCoreModuleConfigurationService,
-	AuthCoreModuleRefreshableConfigurationProvider,
-	TokenConfigurationProvider,
+	DefaultHeaderConfigurationToken,
+	HeaderConfigurationProvider,
+	HeaderConfigurationToken,
+	HeaderModuleConfigurationProvider,
 } from './token';
 
-export function createRefreshableAuthTokenProvider<
-	RefreshResponse,
+export function createHeaderProvider<
 	A = unknown,
 	B = unknown,
 	C = unknown,
 	D = unknown,
 	E = unknown
 >(
-	tokenConfigurationProvider: AuthCoreModuleRefreshableConfigurationProvider<
-		RefreshResponse,
-		A,
-		B,
-		C,
-		D,
-		E
-	>
-): TokenConfigurationProvider<A, B, C, D, E> {
+	headerConfigurationProvider: HeaderModuleConfigurationProvider<A, B, C, D, E>
+): HeaderConfigurationProvider<A, B, C, D, E> {
 	return {
-		provide: AuthCoreModuleConfigurationService,
+		provide: HeaderConfigurationToken,
 		multi: true,
-		...tokenConfigurationProvider,
-	} as TokenConfigurationProvider<A, B, C, D, E>;
-}
-
-/**
- * Helps you define a TokenConfigProvider
- */
-export function createAuthTokenProvider<
-	A = unknown,
-	B = unknown,
-	C = unknown,
-	D = unknown,
-	E = unknown
->(
-	tokenConfigurationProvider: AuthCoreModuleConfigurationProvider<A, B, C, D, E>
-): TokenConfigurationProvider<A, B, C, D, E> {
-	return createRefreshableAuthTokenProvider<unknown, A, B, C, D, E>(tokenConfigurationProvider);
+		...headerConfigurationProvider,
+	} as HeaderConfigurationProvider<A, B, C, D, E>;
 }
 
 /**
@@ -133,21 +110,22 @@ export class AuthCoreModule {
 	 * @param tokenProviders create with `createAuthTokenProvider` or
 	 * 	`createRefreshableAuthTokenProvider`
 	 */
-	public static forRoot(...tokenProviders: TypedProvider[]): ModuleWithProviders<AuthCoreModule> {
+	public static forRoot(
+		...configurationProviders: HeaderModuleConfigurationProvider[]
+	): ModuleWithProviders<AuthCoreModule> {
 		return {
 			ngModule: AuthCoreModule,
 			providers: [
 				{
 					provide: HTTP_INTERCEPTORS,
-					useClass: TokenInjectorInterceptor,
+					useClass: HeaderInjectorInterceptor,
 					multi: true,
 				},
 				{
-					provide: HTTP_INTERCEPTORS,
-					useClass: TokenRefreshInterceptor,
-					multi: true,
+					provide: DefaultHeaderConfigurationToken,
+					useValue: DEFAULT_HEADER_CONFIG,
 				},
-				...tokenProviders,
+				...configurationProviders.map(createHeaderProvider),
 			],
 		};
 	}
@@ -159,11 +137,11 @@ export class AuthCoreModule {
 	 * 	`createRefreshableAuthTokenProvider`
 	 */
 	public static forFeature(
-		...tokenProviders: TypedProvider[]
+		...configurationProviders: HeaderModuleConfigurationProvider[]
 	): ModuleWithProviders<AuthCoreModule> {
 		return {
 			ngModule: AuthCoreModule,
-			providers: tokenProviders,
+			providers: configurationProviders.map(createHeaderProvider),
 		};
 	}
 }
