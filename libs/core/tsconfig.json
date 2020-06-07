@@ -3,5 +3,11 @@
 	"compilerOptions": {
 		"types": ["node", "jest"]
 	},
-	"include": ["**/*.ts"]
+	"include": [
+		"**/*.ts",
+		"../jwt/src/lib/token/auth-core-configuration.token.ts",
+		"../jwt/src/lib/token/index.ts",
+		"../jwt/src/lib/service/jwt-token.service.spec.ts",
+		"../jwt/src/lib/service/jwt-token.service.ts"
+	]
 }

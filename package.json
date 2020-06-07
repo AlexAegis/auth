@@ -32,6 +32,8 @@
 		"nx": "nx",
 		"start": "ng serve",
 		"start:core": "nx serve core-demo",
+		"start:jwt": "nx serve jwt-demo",
+		"start:ngrx": "nx serve ngrx-demo",
 		"build": "ng build",
 		"build:prod": "ng build --prod",
 		"test": "ng test",

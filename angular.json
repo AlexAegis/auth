@@ -206,6 +206,197 @@
 					}
 				}
 			}
+		},
+		"ngrx": {
+			"projectType": "library",
+			"root": "libs/ngrx",
+			"sourceRoot": "libs/ngrx/src",
+			"prefix": "aegis-auth",
+			"architect": {
+				"build": {
+					"builder": "@nrwl/angular:package",
+					"options": {
+						"tsConfig": "libs/ngrx/tsconfig.lib.json",
+						"project": "libs/ngrx/ng-package.json"
+					},
+					"configurations": {
+						"production": {
+							"tsConfig": "libs/ngrx/tsconfig.lib.prod.json"
+						}
+					}
+				},
+				"lint": {
+					"builder": "@angular-devkit/build-angular:tslint",
+					"options": {
+						"tsConfig": ["libs/ngrx/tsconfig.lib.json", "libs/ngrx/tsconfig.spec.json"],
+						"exclude": ["**/node_modules/**", "!libs/ngrx/**"]
+					}
+				},
+				"test": {
+					"builder": "@nrwl/jest:jest",
+					"options": {
+						"jestConfig": "libs/ngrx/jest.config.js",
+						"tsConfig": "libs/ngrx/tsconfig.spec.json",
+						"passWithNoTests": true,
+						"setupFile": "libs/ngrx/src/test-setup.ts"
+					}
+				}
+			},
+			"schematics": {}
+		},
+		"jwt": {
+			"projectType": "library",
+			"root": "libs/jwt",
+			"sourceRoot": "libs/jwt/src",
+			"prefix": "aegis-auth",
+			"architect": {
+				"build": {
+					"builder": "@nrwl/angular:package",
+					"options": {
+						"tsConfig": "libs/jwt/tsconfig.lib.json",
+						"project": "libs/jwt/ng-package.json"
+					},
+					"configurations": {
+						"production": {
+							"tsConfig": "libs/jwt/tsconfig.lib.prod.json"
+						}
+					}
+				},
+				"lint": {
+					"builder": "@angular-devkit/build-angular:tslint",
+					"options": {
+						"tsConfig": ["libs/jwt/tsconfig.lib.json", "libs/jwt/tsconfig.spec.json"],
+						"exclude": ["**/node_modules/**", "!libs/jwt/**"]
+					}
+				},
+				"test": {
+					"builder": "@nrwl/jest:jest",
+					"options": {
+						"jestConfig": "libs/jwt/jest.config.js",
+						"tsConfig": "libs/jwt/tsconfig.spec.json",
+						"passWithNoTests": true,
+						"setupFile": "libs/jwt/src/test-setup.ts"
+					}
+				}
+			},
+			"schematics": {}
+		},
+		"jwt-demo": {
+			"projectType": "application",
+			"schematics": {},
+			"root": "apps/jwt-demo",
+			"sourceRoot": "apps/jwt-demo/src",
+			"prefix": "aegis-auth",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-angular:browser",
+					"options": {
+						"outputPath": "dist/apps/jwt-demo",
+						"index": "apps/jwt-demo/src/index.html",
+						"main": "apps/jwt-demo/src/main.ts",
+						"polyfills": "apps/jwt-demo/src/polyfills.ts",
+						"tsConfig": "apps/jwt-demo/tsconfig.app.json",
+						"aot": true,
+						"assets": ["apps/jwt-demo/src/favicon.ico", "apps/jwt-demo/src/assets"],
+						"styles": ["apps/jwt-demo/src/styles.css"],
+						"scripts": []
+					},
+					"configurations": {
+						"production": {
+							"fileReplacements": [
+								{
+									"replace": "apps/jwt-demo/src/environments/environment.ts",
+									"with": "apps/jwt-demo/src/environments/environment.prod.ts"
+								}
+							],
+							"optimization": true,
+							"outputHashing": "all",
+							"sourceMap": false,
+							"extractCss": true,
+							"namedChunks": false,
+							"extractLicenses": true,
+							"vendorChunk": false,
+							"buildOptimizer": true,
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "2mb",
+									"maximumError": "5mb"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "6kb",
+									"maximumError": "10kb"
+								}
+							]
+						}
+					}
+				},
+				"serve": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"options": {
+						"browserTarget": "jwt-demo:build",
+						"port": 4802
+					},
+					"configurations": {
+						"production": {
+							"browserTarget": "jwt-demo:build:production"
+						}
+					}
+				},
+				"extract-i18n": {
+					"builder": "@angular-devkit/build-angular:extract-i18n",
+					"options": {
+						"browserTarget": "jwt-demo:build"
+					}
+				},
+				"lint": {
+					"builder": "@angular-devkit/build-angular:tslint",
+					"options": {
+						"tsConfig": [
+							"apps/jwt-demo/tsconfig.app.json",
+							"apps/jwt-demo/tsconfig.spec.json"
+						],
+						"exclude": ["**/node_modules/**", "!apps/jwt-demo/**"]
+					}
+				},
+				"test": {
+					"builder": "@nrwl/jest:jest",
+					"options": {
+						"jestConfig": "apps/jwt-demo/jest.config.js",
+						"tsConfig": "apps/jwt-demo/tsconfig.spec.json",
+						"passWithNoTests": true,
+						"setupFile": "apps/jwt-demo/src/test-setup.ts"
+					}
+				}
+			}
+		},
+		"jwt-demo-e2e": {
+			"root": "apps/jwt-demo-e2e",
+			"sourceRoot": "apps/jwt-demo-e2e/src",
+			"projectType": "application",
+			"architect": {
+				"e2e": {
+					"builder": "@nrwl/cypress:cypress",
+					"options": {
+						"cypressConfig": "apps/jwt-demo-e2e/cypress.json",
+						"tsConfig": "apps/jwt-demo-e2e/tsconfig.e2e.json",
+						"devServerTarget": "jwt-demo:serve"
+					},
+					"configurations": {
+						"production": {
+							"devServerTarget": "jwt-demo:serve:production"
+						}
+					}
+				},
+				"lint": {
+					"builder": "@angular-devkit/build-angular:tslint",
+					"options": {
+						"tsConfig": ["apps/jwt-demo-e2e/tsconfig.e2e.json"],
+						"exclude": ["**/node_modules/**", "!apps/jwt-demo-e2e/**"]
+					}
+				}
+			}
 		}
 	},
 	"cli": {
