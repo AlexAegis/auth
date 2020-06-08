@@ -123,7 +123,7 @@
 		"remark-lint-maximum-line-length": "^2.0.0",
 		"remark-preset-lint-consistent": "^3.0.0",
 		"remark-preset-lint-recommended": "^4.0.0",
-		"rollup": "^2.13.1",
+		"rollup": "^2.14.0",
 		"rollup-plugin-gzip": "^2.5.0",
 		"rollup-plugin-terser": "^6.1.0",
 		"standard-version": "^8.0.0",
