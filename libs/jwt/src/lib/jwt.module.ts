@@ -1,17 +1,15 @@
-import {
-	AuthCoreModule,
-	DefaultHeaderConfigurationToken,
-	HeaderConfigurationToken,
-} from '@aegis-auth/core';
+import { AuthCoreModule } from '@aegis-auth/core';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { JwtRefreshInterceptor } from './interceptor';
+import { JwtInjectorInterceptor, JwtRefreshInterceptor } from './interceptor';
 import { DEFAULT_JWT_CONFIG } from './model';
 import {
+	DEFAULT_JWT_CONFIGURATION_TOKEN,
 	JwtConfigurationProvider,
 	JwtModuleConfigurationProvider,
 	JwtModuleRefreshableConfigurationProvider,
+	JWT_CONFIGURATION_TOKEN,
 } from './token';
 
 export function createRefreshableJwtProvider<
@@ -32,8 +30,8 @@ export function createRefreshableJwtProvider<
 	>
 ): JwtConfigurationProvider<A, B, C, D, E> {
 	return {
-		provide: HeaderConfigurationToken,
-		multi: true,
+		provide: JWT_CONFIGURATION_TOKEN,
+		multi: false,
 		...tokenConfigurationProvider,
 	} as JwtConfigurationProvider<A, B, C, D, E>;
 }
@@ -51,22 +49,30 @@ export function createJwtProvider<A = unknown, B = unknown, C = unknown, D = unk
 	imports: [CommonModule, AuthCoreModule],
 })
 export class JwtModule {
-	public static forRoot(
-		...tokenProviders: JwtModuleConfigurationProvider[]
+	/**
+	 * refresh? separate method?
+	 */
+	public static forRoot<A = unknown, B = unknown, C = unknown, D = unknown, E = unknown>(
+		tokenProvider: JwtModuleConfigurationProvider<A, B, C, D, E>
 	): ModuleWithProviders<JwtModule> {
 		return {
 			ngModule: JwtModule,
 			providers: [
 				{
 					provide: HTTP_INTERCEPTORS,
+					useClass: JwtInjectorInterceptor,
+					multi: true,
+				},
+				{
+					provide: HTTP_INTERCEPTORS,
 					useClass: JwtRefreshInterceptor,
 					multi: true,
 				},
 				{
-					provide: DefaultHeaderConfigurationToken,
+					provide: DEFAULT_JWT_CONFIGURATION_TOKEN,
 					useValue: DEFAULT_JWT_CONFIG,
 				},
-				...tokenProviders.map(createJwtProvider),
+				createJwtProvider<A, B, C, D, E>(tokenProvider),
 			],
 		};
 	}

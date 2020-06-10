@@ -1,8 +1,8 @@
 import { DEFAULT_HEADER_CONFIG, HeaderConfiguration } from '@aegis-auth/core';
+import { Observable } from 'rxjs';
 
 export const DEFAULT_JWT_CONFIG: Partial<JwtConfiguration> = {
 	...DEFAULT_HEADER_CONFIG,
-	type: 'jwt',
 	header: 'Authorization',
 	scheme: 'Bearer ',
 	handleWithCredentials: true,
@@ -68,7 +68,24 @@ export interface TokenRefresher<Response> {
  * })
  * ```
  */
-export interface JwtConfiguration<RefreshResponse = unknown> extends HeaderConfiguration {
+export interface JwtConfiguration<RefreshResponse = unknown>
+	extends Omit<HeaderConfiguration, 'getValue'> {
+	/**
+	 * A callback or observable that will be called or subscribed to
+	 * on every http request and returns a value for the header
+	 *
+	 * @example getValue: () => localstorage.get('foo')
+	 * @example getValue: myTokenService.foo$
+	 */
+	getToken:
+		| Observable<string | null | undefined>
+		| (() =>
+				| string
+				| null
+				| undefined
+				| Promise<string | null | undefined>
+				| Observable<string | null | undefined>);
+
 	/**
 	 * The prefix of the token when injecting. Notice thet the trailing
 	 * whitespace has to be set here

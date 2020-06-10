@@ -1,1 +1,1 @@
-export * from './header-injector.interceptor';
+export default {};

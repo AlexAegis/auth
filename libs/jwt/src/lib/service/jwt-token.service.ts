@@ -1,39 +1,19 @@
-import {
-	BaseConfigService,
-	DefaultHeaderConfigurationToken,
-	HeaderConfiguration,
-	HeaderConfigurationToken,
-} from '@aegis-auth/core';
+import { BaseConfigService, HeaderConfiguration, isPromise, isString } from '@aegis-auth/core';
 import { JwtToken, JwtTokenString } from '@aegis-auth/token';
 import { Inject, Injectable } from '@angular/core';
-import { take, tap } from 'rxjs/operators';
-import { JwtModule } from '../jwt.module';
+import { from, isObservable, Observable, of } from 'rxjs';
+import { filter, map, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { JwtConfiguration } from '../model';
+import { DEFAULT_JWT_CONFIGURATION_TOKEN, JWT_CONFIGURATION_TOKEN } from '../token';
 
 @Injectable({
-	providedIn: JwtModule,
+	providedIn: 'root',
 })
-export class JwtTokenService extends BaseConfigService {
-	/*
-	public readonly tokenString$ = this.configService.configs$.pipe(
-		switchMap((configs) => {
-			return combineLatest(
-				configs.map((config) => {
-					if (isObservable(config.getToken)) {
-						return config.getToken;
-					} else {
-						const result = config.getToken();
-						if (isObservable(result) || isPromise(result)) return result;
-						else return of(result);
-					}
-				})
-			);
-		}),
-		startWith(null),
-		shareReplay({
-			refCount: false,
-			bufferSize: 1,
-		})
+export class JwtTokenService extends BaseConfigService<JwtConfiguration> {
+	public readonly tokenString$ = this.config$.pipe(
+		tap((config) => console.log('got config in pipe!', config)),
+		switchMap((config) => JwtTokenService.normalizeGetToken(config.getToken)),
+		startWith(null)
 	);
 
 	public readonly token$ = this.tokenString$.pipe(
@@ -44,29 +24,45 @@ export class JwtTokenService extends BaseConfigService {
 			console.log('jwtToken', jwtToken);
 			if (!jwtToken) throw new Error('Non-valid token observed');
 			else return jwtToken;
-		}),
-		shareReplay({
-			refCount: false,
-			bufferSize: 1,
 		})
 	);
 
 	public readonly header$ = this.token$.pipe(map((token) => token.header));
 	public readonly payload$ = this.token$.pipe(map((token) => token.payload));
-*/
+
 	public constructor(
-		@Inject(HeaderConfigurationToken)
-		protected readonly rawConfigs: JwtConfiguration[] = [],
-		@Inject(DefaultHeaderConfigurationToken)
-		public readonly defaultConfig: Partial<HeaderConfiguration>[]
+		@Inject(JWT_CONFIGURATION_TOKEN)
+		protected readonly rawConfig: JwtConfiguration,
+		@Inject(DEFAULT_JWT_CONFIGURATION_TOKEN)
+		public readonly defaultConfig: Partial<HeaderConfiguration>
 	) {
-		super(rawConfigs, defaultConfig);
-		this.configs$
+		super(rawConfig, defaultConfig);
+		this.config$
 			.pipe(
 				take(1),
 				tap((configs) => console.log('JWT ConfigService', configs))
 			)
 			.subscribe();
+	}
+
+	private static normalizeGetToken(
+		getValue:
+			| Observable<string | null | undefined>
+			| (() =>
+					| string
+					| null
+					| undefined
+					| Promise<string | null | undefined>
+					| Observable<string | null | undefined>)
+	): Observable<string | null | undefined> {
+		if (isObservable(getValue)) {
+			return getValue;
+		} else {
+			const result = getValue();
+			if (isObservable(result)) return result;
+			if (isPromise(result)) return from(result);
+			else return of(result);
+		}
 	}
 
 	public parseToken(tokenString: string): JwtToken | null {
