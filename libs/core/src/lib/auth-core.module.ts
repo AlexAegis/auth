@@ -1,7 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { HeaderInjectorInterceptor } from './interceptor';
 import { DEFAULT_HEADER_CONFIG } from './model';
 import {
 	DefaultHeaderConfigurationToken,
@@ -116,11 +114,6 @@ export class AuthCoreModule {
 		return {
 			ngModule: AuthCoreModule,
 			providers: [
-				{
-					provide: HTTP_INTERCEPTORS,
-					useClass: HeaderInjectorInterceptor,
-					multi: true,
-				},
 				{
 					provide: DefaultHeaderConfigurationToken,
 					useValue: DEFAULT_HEADER_CONFIG,

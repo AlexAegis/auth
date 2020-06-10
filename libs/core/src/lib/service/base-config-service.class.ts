@@ -1,23 +1,16 @@
 import { BehaviorSubject } from 'rxjs';
-import { HeaderConfiguration } from '../model';
+import { BaseDirective } from '../component';
 
-export class BaseConfigService {
-	public readonly configs$ = new BehaviorSubject<HeaderConfiguration[]>(
-		this.rawConfigs.map((rawConfig) => ({
-			...this.defaultConfig,
-			...rawConfig,
-		}))
-	);
-
-	/*
-	public readonly vals$ = this.configs$.pipe(
-		switchMap(configs => {
-
-			configs.map(config => config.)
-	);*/
+export class BaseConfigService<T> extends BaseDirective {
+	public readonly config$ = new BehaviorSubject<T>({
+		...this.defaultConfig,
+		...this.rawConfig,
+	});
 
 	public constructor(
-		protected readonly rawConfigs: HeaderConfiguration[] = [],
-		protected readonly defaultConfig: Partial<HeaderConfiguration>
-	) {}
+		protected readonly rawConfig: T,
+		protected readonly defaultConfig: Partial<T>
+	) {
+		super();
+	}
 }

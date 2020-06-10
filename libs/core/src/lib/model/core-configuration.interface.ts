@@ -1,7 +1,6 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 
 export const DEFAULT_HEADER_CONFIG: Partial<HeaderConfiguration> = {
-	type: 'basic',
 	getValue: new BehaviorSubject<string | null | undefined>(null),
 };
 
@@ -30,7 +29,6 @@ export interface NormalizedHeaderConfiguration extends HeaderConfiguration {
  * ```
  */
 export interface HeaderConfiguration {
-	type: 'basic' | 'jwt';
 	/**
 	 * A callback or observable that will be called or subscribed to
 	 * on every http request and returns a value for the header
