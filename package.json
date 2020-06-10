@@ -115,7 +115,7 @@
 		"markdownlint": "^0.20.3",
 		"markdownlint-cli": "^0.23.1",
 		"ng-packagr": "^9.1.5",
-		"npm-check-updates": "^6.0.1",
+		"npm-check-updates": "^7.0.0",
 		"prettier": "^2.0.5",
 		"remark": "^12.0.0",
 		"remark-cli": "^8.0.0",
