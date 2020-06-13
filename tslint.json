@@ -12,7 +12,7 @@
 			"severity": "warn"
 		},
 		"forin": true,
-		"import-blacklist": [true, "rxjs/Rx"],
+		"import-blacklist": [true, "rxjs/Rx", "@angular/compiler/src/core"],
 		"interface-over-type-literal": true,
 		"member-access": false,
 		"member-ordering": [
