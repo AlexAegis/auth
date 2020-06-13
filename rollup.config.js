@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const terserPlugin = require('rollup-plugin-terser').terser;
 const gzipPlugin = require('rollup-plugin-gzip').default;
 

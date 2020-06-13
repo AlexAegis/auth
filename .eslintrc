@@ -11,7 +11,7 @@
 		"amd": true,
 		"node": true
 	},
-	// "ignorePatterns": ["**/*"],
+	"ignorePatterns": ["dist", "node_modules", "typedocs"],
 	"plugins": ["@typescript-eslint", "@nrwl/nx"],
 	"extends": [
 		"eslint:recommended",

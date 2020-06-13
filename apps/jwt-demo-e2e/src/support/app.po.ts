@@ -1,1 +1,1 @@
-export const getGreeting = () => cy.get('h1');
+export const getGreeting = (): Cypress.Chainable => cy.get('h1');
