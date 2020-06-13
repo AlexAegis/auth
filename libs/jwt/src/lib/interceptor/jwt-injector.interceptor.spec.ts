@@ -1,41 +1,40 @@
-/*import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { AuthTokenConfiguration, TypedValueProvider } from '../model';
-import { AuthCoreModuleConfigurationService } from '../../../../jwt/src/lib/token';
-import { TokenInjectorInterceptor } from './token-injector.interceptor';
+import { JwtModule } from '../jwt.module';
+import { JwtInjectorInterceptor } from './jwt-injector.interceptor';
 
 describe('TokenInjectorInterceptor', () => {
 	let http: HttpTestingController;
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			imports: [HttpClientTestingModule],
-			providers: [
-				TokenInjectorInterceptor,
-				{
-					provide: AuthCoreModuleConfigurationService,
+			imports: [
+				HttpClientModule,
+				HttpClientTestingModule,
+				JwtModule.forRoot({
 					useValue: {
-						getToken: () => 'fakeToken',
+						getToken: () => 'asd',
 					},
-				} as TypedValueProvider<AuthTokenConfiguration>,
+				}),
 			],
+			providers: [],
 		});
 
 		http = TestBed.inject(HttpTestingController);
 	});
 
 	it('should be created', () => {
-		const interceptor: TokenInjectorInterceptor = TestBed.inject(TokenInjectorInterceptor);
-		expect(interceptor).toBeTruthy();
+		const interceptors = TestBed.inject(HTTP_INTERCEPTORS);
+		const jwtInterceptor = interceptors.find((i) => i instanceof JwtInjectorInterceptor);
+		expect(jwtInterceptor).toBeTruthy();
 	});
 
 	it('should be TODO', () => {
-		const interceptor: TokenInjectorInterceptor = TestBed.inject(TokenInjectorInterceptor);
-
-		expect(interceptor).toBeTruthy();
+		const interceptors = TestBed.inject(HTTP_INTERCEPTORS);
+		const jwtInterceptor = interceptors.find((i) => i instanceof JwtInjectorInterceptor);
+		expect(jwtInterceptor).toBeTruthy();
 	});
-
 	afterEach(() => {
 		http.verify();
 	});
 });
-*/

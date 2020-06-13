@@ -1,8 +1,14 @@
-/*import { TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { catchError, take, tap } from 'rxjs/operators';
-import { JwtTokenService } from './jwt-token.service';
 import { JwtModule } from '../jwt.module';
+import { DEFAULT_JWT_CONFIG } from '../model';
+import {
+	DEFAULT_JWT_CONFIGURATION_TOKEN,
+	JwtConfigurationProvider,
+	JWT_CONFIGURATION_TOKEN,
+} from '../token';
+import { JwtTokenService } from './jwt-token.service';
 
 describe('JwtTokenService', () => {
 	const validToken =
@@ -14,13 +20,15 @@ describe('JwtTokenService', () => {
 			imports: [JwtModule],
 			providers: [
 				{
-					provide: AuthCoreModuleConfigurationService,
-					useValue: {
-						...DEFAULT_AUTH_TOKEN_CONFIG,
-						type: 'NON OVERRIDDEN',
-						getToken: () => validToken,
-					} as AuthTokenConfiguration,
+					provide: DEFAULT_JWT_CONFIGURATION_TOKEN,
+					useValue: DEFAULT_JWT_CONFIG,
 				},
+				{
+					provide: JWT_CONFIGURATION_TOKEN,
+					useValue: {
+						getToken: () => validToken,
+					},
+				} as JwtConfigurationProvider,
 			],
 		});
 	});
@@ -31,11 +39,11 @@ describe('JwtTokenService', () => {
 	});
 
 	it('should be some', () => {
-		service = TestBed.overrideProvider(AuthCoreModuleConfigurationService, {
+		service = TestBed.overrideProvider(JWT_CONFIGURATION_TOKEN, {
 			useValue: {
 				getToken: () => validToken,
-			} as AuthTokenConfiguration,
-		}).inject(JwtTokenService);
+			},
+		} as JwtConfigurationProvider).inject(JwtTokenService);
 		return service.token$
 			.pipe(
 				take(1),
@@ -45,11 +53,11 @@ describe('JwtTokenService', () => {
 	});
 
 	it('should be invalid', () => {
-		service = TestBed.overrideProvider(AuthCoreModuleConfigurationService, {
+		service = TestBed.overrideProvider(JWT_CONFIGURATION_TOKEN, {
 			useValue: {
 				getToken: () => 'eyJw5c',
-			} as AuthTokenConfiguration,
-		}).inject(JwtTokenService);
+			},
+		} as JwtConfigurationProvider).inject(JwtTokenService);
 		return service.token$
 			.pipe(
 				take(1),
@@ -59,4 +67,3 @@ describe('JwtTokenService', () => {
 			.toPromise();
 	});
 });
-*/
