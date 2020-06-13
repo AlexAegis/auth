@@ -42,7 +42,7 @@
 		"lint:es": "eslint .",
 		"lint:css": "stylelint --allow-empty-input --syntax=css ./**/*.css",
 		"lint:scss": "stylelint --allow-empty-input --syntax=scss ./**/*.scss",
-		"lint:md": "markdownlint --ignore './node_modules' .",
+		"lint:md": "markdownlint --ignore-path '.gitignore' .",
 		"lint:rmd": "remark .",
 		"lint:format": "prettier --check .",
 		"e2e": "ng e2e",
