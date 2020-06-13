@@ -19,7 +19,7 @@ import { AuthService } from './service/auth.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent extends BaseDirective {
-	public title = 'core-demo';
+	public title = 'jwt-demo';
 
 	public token$ = this.jwtTokenService.token$;
 	public tokenString$ = this.jwtTokenService.tokenString$;
