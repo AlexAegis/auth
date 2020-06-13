@@ -13,12 +13,15 @@ describe('JwtToken', () => {
 
 	it('can be made from a valid token string', () => {
 		const result = JwtToken.from(validToken);
-
 		expect(result).toBeInstanceOf(JwtToken);
 	});
 	it("can't be made from a valid token string", () => {
 		const result = JwtToken.from(invalidToken);
+		expect(result).toBeNull();
+	});
 
+	it("can't be made from empty segments", () => {
+		const result = JwtToken.from('..');
 		expect(result).toBeNull();
 	});
 });

@@ -12,7 +12,12 @@ import {
 	JWT_CONFIGURATION_TOKEN,
 } from './token';
 
-export function createRefreshableJwtProvider<
+/**
+ * Helps you define a JwtConfigurationProvider
+ *
+ * @internal
+ */
+export function createRefreshableJwtConfigurationProvider<
 	RefreshResponse,
 	A = unknown,
 	B = unknown,
@@ -37,23 +42,53 @@ export function createRefreshableJwtProvider<
 }
 
 /**
- * Helps you define a TokenConfigProvider
+ * Helps you define a JwtConfigurationProvider
+ *
+ * @internal
  */
-export function createJwtProvider<A = unknown, B = unknown, C = unknown, D = unknown, E = unknown>(
+export function createJwtConfigurationProvider<
+	A = unknown,
+	B = unknown,
+	C = unknown,
+	D = unknown,
+	E = unknown
+>(
 	tokenConfigurationProvider: JwtModuleConfigurationProvider<A, B, C, D, E>
 ): JwtConfigurationProvider<A, B, C, D, E> {
-	return createRefreshableJwtProvider<unknown, A, B, C, D, E>(tokenConfigurationProvider);
+	return createRefreshableJwtConfigurationProvider<unknown, A, B, C, D, E>(
+		tokenConfigurationProvider
+	);
 }
 
+/**
+ * This module needs to be configured to use. See the
+ * {@link JwtModule#forRoot | forRoot} method for more information.
+ */
 @NgModule({
 	imports: [CommonModule, AuthCoreModule],
 })
 export class JwtModule {
 	/**
-	 * refresh? separate method?
+	 * To define the interceptors and the token with the provided config.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * (a)NgModule({
+	 *		imports: [
+	 *			JwtModule.forRoot<Foo>({
+	 *					useFactory: (foo) => foo.getConf(),
+	 *					deps: [Foo] // if something has to be injected
+	 *			})
+	 *		]
+	 *	})
+	 *	export class CoreModule {}
+	 * ```
+	 * @param tokenProvider create with `createAuthTokenProvider` or
+	 * 	`createRefreshableAuthTokenProvider`
 	 */
 	public static forRoot<A = unknown, B = unknown, C = unknown, D = unknown, E = unknown>(
-		tokenProvider: JwtModuleConfigurationProvider<A, B, C, D, E>
+		jwtModuleConfigurationProvider: JwtModuleConfigurationProvider<A, B, C, D, E>
 	): ModuleWithProviders<JwtModule> {
 		return {
 			ngModule: JwtModule,
@@ -72,7 +107,7 @@ export class JwtModule {
 					provide: DEFAULT_JWT_CONFIGURATION_TOKEN,
 					useValue: DEFAULT_JWT_CONFIG,
 				},
-				createJwtProvider<A, B, C, D, E>(tokenProvider),
+				createJwtConfigurationProvider<A, B, C, D, E>(jwtModuleConfigurationProvider),
 			],
 		};
 	}
