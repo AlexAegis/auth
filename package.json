@@ -1,7 +1,7 @@
 {
 	"name": "aegis-auth",
 	"description": "Angular authentication libaries",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"license": "MIT",
 	"author": {
 		"email": "alexaegis@gmail.com",
@@ -42,7 +42,7 @@
 		"lint:es": "eslint .",
 		"lint:css": "stylelint --allow-empty-input --syntax=css ./**/*.css",
 		"lint:scss": "stylelint --allow-empty-input --syntax=scss ./**/*.scss",
-		"lint:md": "markdownlint --ignore-path '.gitignore' .",
+		"lint:md": "markdownlint --ignore 'CHANGELOG.md' --ignore-path '.gitignore' .",
 		"lint:rmd": "remark .",
 		"lint:format": "prettier --check .",
 		"e2e": "ng e2e",
@@ -66,7 +66,7 @@
 		"dep-graph": "nx dep-graph",
 		"help": "nx help",
 		"postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
-		"release": "standard-version",
+		"release": "semantic-release",
 		"prepublishOnly": "yarn build"
 	},
 	"dependencies": {
@@ -128,6 +128,7 @@
 		"rollup": "^2.16.0",
 		"rollup-plugin-gzip": "^2.5.0",
 		"rollup-plugin-terser": "^6.1.0",
+		"semantic-release": "^17.0.8",
 		"standard-version": "^8.0.0",
 		"stylelint": "^13.6.0",
 		"stylelint-config-prettier": "^8.0.1",
