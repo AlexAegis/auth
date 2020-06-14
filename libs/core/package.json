@@ -1,7 +1,7 @@
 {
 	"name": "@aegis-auth/core",
 	"description": "Angular authentication libary core module",
-	"version": "0.0.1",
+	"version": "0.1.1",
 	"license": "MIT",
 	"author": {
 		"email": "alexaegis@gmail.com",
