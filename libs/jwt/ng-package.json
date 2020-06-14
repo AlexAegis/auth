@@ -3,5 +3,6 @@
 	"dest": "../../dist/libs/jwt",
 	"lib": {
 		"entryFile": "src/index.ts"
-	}
+	},
+	"whitelistedNonPeerDependencies": ["tslib", "@aegis-auth/core"]
 }

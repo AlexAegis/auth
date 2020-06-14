@@ -1,4 +1,4 @@
-import { BaseConfigService, HeaderConfiguration, isPromise, isString } from '@aegis-auth/core';
+import { BaseConfigService, isPromise, isString } from '@aegis-auth/core';
 import { JwtToken, JwtTokenString } from '@aegis-auth/token';
 import { Inject, Injectable } from '@angular/core';
 import { from, isObservable, Observable, of } from 'rxjs';
@@ -34,7 +34,7 @@ export class JwtTokenService extends BaseConfigService<JwtConfiguration> {
 		@Inject(JWT_CONFIGURATION_TOKEN)
 		protected readonly rawConfig: JwtConfiguration,
 		@Inject(DEFAULT_JWT_CONFIGURATION_TOKEN)
-		public readonly defaultConfig: Partial<HeaderConfiguration>
+		public readonly defaultConfig: JwtConfiguration
 	) {
 		super(rawConfig, defaultConfig);
 		this.config$
