@@ -1,4 +1,3 @@
-import { AuthCoreModule } from '@aegis-auth/core';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
@@ -65,7 +64,7 @@ export function createJwtConfigurationProvider<
  * {@link JwtModule#forRoot | forRoot} method for more information.
  */
 @NgModule({
-	imports: [CommonModule, AuthCoreModule],
+	imports: [CommonModule],
 })
 export class JwtModule {
 	/**

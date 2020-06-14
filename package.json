@@ -1,7 +1,7 @@
 {
 	"name": "aegis-auth",
 	"description": "Angular authentication libaries",
-	"version": "1.0.0",
+	"version": "0.1.0",
 	"license": "MIT",
 	"author": {
 		"email": "alexaegis@gmail.com",
@@ -36,7 +36,7 @@
 		"start:ngrx": "nx serve ngrx-demo",
 		"build": "nx build",
 		"build:prod": "nx affected:build --all --prod",
-		"test": "nx test",
+		"test": "nx run-many --all --target test",
 		"lint": "nx workspace-lint && ng lint",
 		"lint:ts": "tslint --project .",
 		"lint:es": "eslint .",
@@ -66,7 +66,7 @@
 		"dep-graph": "nx dep-graph",
 		"help": "nx help",
 		"postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
-		"release": "semantic-release",
+		"release": "standard-version",
 		"prepublishOnly": "yarn build"
 	},
 	"dependencies": {
@@ -129,8 +129,6 @@
 		"rollup": "^2.16.0",
 		"rollup-plugin-gzip": "^2.5.0",
 		"rollup-plugin-terser": "^6.1.0",
-		"semantic-release": "^17.0.8",
-		"semantic-release-monorepo": "^7.0.2",
 		"standard-version": "^8.0.0",
 		"stylelint": "^13.6.0",
 		"stylelint-config-prettier": "^8.0.1",

@@ -165,48 +165,6 @@
 				}
 			}
 		},
-		"token": {
-			"root": "libs/token",
-			"sourceRoot": "libs/token/src",
-			"projectType": "library",
-			"schematics": {},
-			"architect": {
-				"build": {
-					"builder": "@nrwl/web:package",
-					"options": {
-						"project": "libs/token/ng-package.json",
-						"entryFile": "libs/token/src/index.ts",
-						"tsConfig": "libs/token/tsconfig.lib.json",
-						"outputPath": "dist/libs/token",
-						"packageJson": "libs/token/package.json"
-					},
-					"configurations": {
-						"production": {
-							"tsConfig": "libs/token/tsconfig.lib.prod.json"
-						}
-					}
-				},
-				"lint": {
-					"builder": "@angular-devkit/build-angular:tslint",
-					"options": {
-						"tsConfig": [
-							"libs/token/tsconfig.lib.json",
-							"libs/token/tsconfig.spec.json"
-						],
-						"exclude": ["**/node_modules/**", "!libs/token/**"]
-					}
-				},
-				"test": {
-					"builder": "@nrwl/jest:jest",
-					"options": {
-						"jestConfig": "libs/token/jest.config.js",
-						"tsConfig": "libs/token/tsconfig.spec.json",
-						"passWithNoTests": true,
-						"codeCoverage": true
-					}
-				}
-			}
-		},
 		"ngrx": {
 			"projectType": "library",
 			"root": "libs/ngrx",

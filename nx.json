@@ -29,9 +29,6 @@
 			"tags": [],
 			"implicitDependencies": ["core-demo"]
 		},
-		"token": {
-			"tags": ["lib"]
-		},
 		"ngrx": {
 			"tags": []
 		},

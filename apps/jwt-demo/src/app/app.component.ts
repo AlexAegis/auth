@@ -1,5 +1,4 @@
-import { BaseDirective } from '@aegis-auth/core';
-import { JwtTokenService } from '@aegis-auth/jwt';
+import { BaseDirective, JwtTokenService } from '@aegis-auth/jwt';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import {

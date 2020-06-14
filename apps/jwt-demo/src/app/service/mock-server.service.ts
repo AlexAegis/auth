@@ -1,4 +1,4 @@
-import { JwtTokenPair, JwtTokenPayload } from '@aegis-auth/token';
+import { JwtTokenPair, JwtTokenPayload } from '@aegis-auth/jwt';
 import { Injectable } from '@angular/core';
 
 @Injectable({
