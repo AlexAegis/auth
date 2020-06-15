@@ -1,4 +1,3 @@
-import { BaseDirective } from '@aegis-auth/core';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
@@ -7,6 +6,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 	styleUrls: ['./app.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent extends BaseDirective {
+export class AppComponent {
 	public title = 'core-demo';
 }

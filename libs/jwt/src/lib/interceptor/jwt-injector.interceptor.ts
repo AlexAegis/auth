@@ -1,8 +1,8 @@
-import { matchAgainst } from '@aegis-auth/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
+import { matchAgainst } from '../function';
 import { JwtConfiguration } from '../model';
 import { JwtTokenService } from '../service';
 

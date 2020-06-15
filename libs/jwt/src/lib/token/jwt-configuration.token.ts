@@ -1,6 +1,5 @@
-import { TypedProvider } from '@aegis-auth/core';
 import { InjectionToken } from '@angular/core';
-import { JwtConfiguration } from '../model';
+import { JwtConfiguration, TypedProvider } from '../model';
 
 export const JWT_CONFIGURATION_TOKEN = new InjectionToken<JwtConfiguration>(
 	'AegisJwtConfiguration'

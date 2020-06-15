@@ -16,10 +16,14 @@ jobs:
           node-version: 12
       - name: Install dependencies
         run: yarn install
+      - name: Bump versions
+        run: yarn release
       - name: Build Library
-        run: yarn build
-      - name: Release
+        run: yarn build:prod
+      - name: Release jwt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: yarn release
+        run: |
+          npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
+          npm publish ./dist/libs/jwt --access public

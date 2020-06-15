@@ -1,5 +1,5 @@
 import { Base64 } from 'js-base64';
-import { Base64String, decodeJsonLikeBase64 } from './base64-decoder.function';
+import { Base64String, decodeJsonLikeBase64 } from '../function/base64-decoder.function';
 
 export type JwtTokenString = string;
 export type UnixTime = number;
@@ -67,14 +67,14 @@ export class JwtToken {
 		return new JwtToken(header, payload, signature);
 	}
 
-	public static splitTokenString = (
+	public static splitTokenString(
 		token: JwtTokenString,
 		separator: string = JwtToken.JWT_TOKEN_SEPARATOR
-	): [Base64String, Base64String, Base64String] | null => {
+	): [Base64String, Base64String, Base64String] | null {
 		const spl = token.split(separator);
 		if (spl.length !== 3) {
 			return null;
 		}
 		return spl as [Base64String, Base64String, Base64String];
-	};
+	}
 }

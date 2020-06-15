@@ -5,6 +5,6 @@ module.exports = {
 	'*.css': ['stylelint', 'prettier --list-different'],
 	'*.scss': ['stylelint --syntax=scss', 'prettier --check'],
 	'(*.json|.eslintrc|.prettierrc|.stylelintrc|.markdownlintrc)': [('eslint', 'prettier --check')],
-	'*.md': ['markdownlint', 'prettier --check'],
+	'*.md': ["markdownlint --ignore 'CHANGELOG.md' --ignore-path '.gitignore'", 'prettier --check'],
 	'*.(yml|yaml)': ['yamllint', 'prettier --check'],
 };

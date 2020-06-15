@@ -1,5 +1,8 @@
-import { DEFAULT_HEADER_CONFIG, HeaderConfiguration } from '@aegis-auth/core';
 import { Observable } from 'rxjs';
+import {
+	DEFAULT_HEADER_CONFIG,
+	HeaderConfiguration,
+} from '../model/header-configuration.interface';
 
 export const DEFAULT_JWT_CONFIG: Partial<JwtConfiguration> = {
 	...DEFAULT_HEADER_CONFIG,

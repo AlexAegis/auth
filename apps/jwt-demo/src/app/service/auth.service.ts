@@ -1,4 +1,4 @@
-import { JwtTokenPair } from '@aegis-auth/token';
+import { JwtTokenPair } from '@aegis-auth/jwt';
 import { Injectable } from '@angular/core';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
