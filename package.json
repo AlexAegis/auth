@@ -142,7 +142,7 @@
 		"tslint-plugin-prettier": "^2.3.0",
 		"typedoc": "^0.17.7",
 		"typedoc-plugin-external-module-name": "^4.0.3",
-		"typescript": "~3.8.3",
+		"typescript": "~3.9.5",
 		"yaml-lint": "^1.2.4"
 	}
 }
