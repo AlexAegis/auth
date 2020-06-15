@@ -16,8 +16,6 @@ jobs:
           node-version: 12
       - name: Install dependencies
         run: yarn install
-      - name: Bump versions
-        run: yarn release
       - name: Build Library
         run: yarn build:prod
       - name: Release jwt
