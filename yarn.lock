@@ -13122,10 +13122,10 @@ remark-lint-list-item-indent@^2.0.0:
     unist-util-position "^3.0.0"
     unist-util-visit "^2.0.0"
 
-remark-lint-maximum-line-length@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/remark-lint-maximum-line-length/-/remark-lint-maximum-line-length-2.0.0.tgz#e3e036fa1b611af6157cac9ca16eb15ce240832b"
-  integrity sha512-Qhe1QwDGisMP/UraUexWIPNBXJO8VQ7LIelz4NdftBQl/FxDVoXn3477Fm+8bGtcTXkMPF+QfllE4L1U7kJQgQ==
+remark-lint-maximum-line-length@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/remark-lint-maximum-line-length/-/remark-lint-maximum-line-length-2.0.1.tgz#f19c97a8aa66fdd60dac4bc999c2026e06763a96"
+  integrity sha512-EGP6Uv5DEmR6lgnSy2rxHdl62AycSJXdy278HApwk4Q6ju12sxjx4OIVnmxsbIjzG2lXJx3W0uo7OBC3M6XczQ==
   dependencies:
     unified-lint-rule "^1.0.0"
     unist-util-generated "^1.1.0"
