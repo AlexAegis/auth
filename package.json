@@ -99,7 +99,7 @@
 		"@nrwl/linter": "^9.4.0",
 		"@nrwl/node": "^9.4.0",
 		"@nrwl/web": "^9.4.0",
-		"@nrwl/workspace": "9.4.0",
+		"@nrwl/workspace": "9.4.3",
 		"@semantic-release/npm": "^7.0.5",
 		"@types/jest": "26.0.0",
 		"@types/js-base64": "^2.3.1",
