@@ -95,7 +95,7 @@ export interface JwtConfiguration<RefreshResponse = unknown>
 	 *
 	 * @default 'Bearer '
 	 */
-	scheme: string;
+	scheme?: string;
 
 	/**
 	 * Header name to be set

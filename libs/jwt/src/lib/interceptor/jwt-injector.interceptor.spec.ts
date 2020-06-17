@@ -1,26 +1,31 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
-import { JwtModule } from '../jwt.module';
+import { inject, TestBed } from '@angular/core/testing';
+import { DEFAULT_JWT_CONFIG, JwtConfiguration } from '../model';
+import { DEFAULT_JWT_CONFIGURATION_TOKEN, JWT_CONFIGURATION_TOKEN } from '../token';
 import { JwtInjectorInterceptor } from './jwt-injector.interceptor';
 
 describe('TokenInjectorInterceptor', () => {
-	let http: HttpTestingController;
+	const TEST_AUTH_HEADER = 'TestAuthHeader';
+	const TEST_AUTH_HEADER_VALUE = 'token';
+	const TEST_AUTH_SCHEME_VALUE = 'Prefix ';
+
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			imports: [
-				HttpClientModule,
-				HttpClientTestingModule,
-				JwtModule.forRoot({
-					useValue: {
-						getToken: () => 'asd',
-					},
-				}),
+			imports: [HttpClientModule, HttpClientTestingModule],
+			providers: [
+				{ provide: DEFAULT_JWT_CONFIGURATION_TOKEN, useValue: DEFAULT_JWT_CONFIG },
+				{
+					provide: HTTP_INTERCEPTORS,
+					multi: true,
+					useClass: JwtInjectorInterceptor,
+				},
+				{
+					provide: JWT_CONFIGURATION_TOKEN,
+					useValue: {},
+				},
 			],
-			providers: [],
 		});
-
-		http = TestBed.inject(HttpTestingController);
 	});
 
 	it('should be created', () => {
@@ -29,12 +34,52 @@ describe('TokenInjectorInterceptor', () => {
 		expect(jwtInterceptor).toBeTruthy();
 	});
 
-	it('should be TODO', () => {
-		const interceptors = TestBed.inject(HTTP_INTERCEPTORS);
-		const jwtInterceptor = interceptors.find((i) => i instanceof JwtInjectorInterceptor);
-		expect(jwtInterceptor).toBeTruthy();
+	it('should have made a request that has a header injected by the interceptor', () => {
+		TestBed.overrideProvider(JWT_CONFIGURATION_TOKEN, {
+			useValue: {
+				getToken: () => TEST_AUTH_HEADER_VALUE,
+				header: TEST_AUTH_HEADER,
+				scheme: undefined,
+			} as JwtConfiguration,
+		});
+
+		const httpClient = TestBed.inject(HttpClient);
+		const httpTestingController = TestBed.inject(HttpTestingController);
+
+		httpClient.get<unknown>('test').subscribe();
+
+		const mockResult = httpTestingController.expectOne(
+			(request) =>
+				request.headers.has(TEST_AUTH_HEADER) &&
+				request.headers.get(TEST_AUTH_HEADER) === TEST_AUTH_HEADER_VALUE
+		);
+		mockResult.flush({ result: 'okay' });
+		expect(mockResult).toBeTruthy();
 	});
-	afterEach(() => {
-		http.verify();
+
+	it('should have made a request that has a header injected by the interceptor with a prefix', () => {
+		TestBed.overrideProvider(JWT_CONFIGURATION_TOKEN, {
+			useValue: {
+				getToken: () => TEST_AUTH_HEADER_VALUE,
+				header: TEST_AUTH_HEADER,
+				scheme: TEST_AUTH_SCHEME_VALUE,
+			} as JwtConfiguration,
+		});
+
+		const httpClient = TestBed.inject(HttpClient);
+		const httpTestingController = TestBed.inject(HttpTestingController);
+
+		httpClient.get<unknown>('test').subscribe();
+
+		const mockResult = httpTestingController.expectOne(
+			(request) =>
+				request.headers.has(TEST_AUTH_HEADER) &&
+				request.headers.get(TEST_AUTH_HEADER) ===
+					TEST_AUTH_SCHEME_VALUE + TEST_AUTH_HEADER_VALUE
+		);
+		mockResult.flush({ result: 'okay' });
+		expect(mockResult).toBeTruthy();
 	});
+
+	afterEach(inject([HttpTestingController], (htc: HttpTestingController) => htc.verify()));
 });
