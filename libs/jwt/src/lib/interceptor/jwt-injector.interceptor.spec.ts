@@ -81,5 +81,71 @@ describe('TokenInjectorInterceptor', () => {
 		expect(mockResult).toBeTruthy();
 	});
 
+	it('should have made a request that did not have a header injected by the interceptor because its blacklisted', () => {
+		TestBed.overrideProvider(JWT_CONFIGURATION_TOKEN, {
+			useValue: {
+				getToken: () => TEST_AUTH_HEADER_VALUE,
+				header: TEST_AUTH_HEADER,
+				scheme: TEST_AUTH_SCHEME_VALUE,
+				domainBlacklist: ['test'],
+			} as JwtConfiguration,
+		});
+
+		const httpClient = TestBed.inject(HttpClient);
+		const httpTestingController = TestBed.inject(HttpTestingController);
+
+		httpClient.get<unknown>('test').subscribe();
+
+		const mockResult = httpTestingController.expectOne(
+			(request) => !request.headers.has(TEST_AUTH_HEADER)
+		);
+		mockResult.flush({ result: 'okay' });
+		expect(mockResult).toBeTruthy();
+	});
+
+	it('should have made a request that did not have a header injected by the interceptor because its path is blacklisted', () => {
+		TestBed.overrideProvider(JWT_CONFIGURATION_TOKEN, {
+			useValue: {
+				getToken: () => TEST_AUTH_HEADER_VALUE,
+				header: TEST_AUTH_HEADER,
+				scheme: TEST_AUTH_SCHEME_VALUE,
+				pathBlacklist: ['test'],
+			} as JwtConfiguration,
+		});
+
+		const httpClient = TestBed.inject(HttpClient);
+		const httpTestingController = TestBed.inject(HttpTestingController);
+
+		httpClient.get<unknown>('dom/test').subscribe();
+
+		const mockResult = httpTestingController.expectOne(
+			(request) => !request.headers.has(TEST_AUTH_HEADER)
+		);
+		mockResult.flush({ result: 'okay' });
+		expect(mockResult).toBeTruthy();
+	});
+
+	it('should have made a request that did not have a header injected by the interceptor because its path is not whitelisted', () => {
+		TestBed.overrideProvider(JWT_CONFIGURATION_TOKEN, {
+			useValue: {
+				getToken: () => TEST_AUTH_HEADER_VALUE,
+				header: TEST_AUTH_HEADER,
+				scheme: TEST_AUTH_SCHEME_VALUE,
+				pathWhitelist: ['foo'],
+			} as JwtConfiguration,
+		});
+
+		const httpClient = TestBed.inject(HttpClient);
+		const httpTestingController = TestBed.inject(HttpTestingController);
+
+		httpClient.get<unknown>('dom/bar').subscribe();
+
+		const mockResult = httpTestingController.expectOne(
+			(request) => !request.headers.has(TEST_AUTH_HEADER)
+		);
+		mockResult.flush({ result: 'okay' });
+		expect(mockResult).toBeTruthy();
+	});
+
 	afterEach(inject([HttpTestingController], (htc: HttpTestingController) => htc.verify()));
 });
