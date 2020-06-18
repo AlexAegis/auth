@@ -97,7 +97,7 @@
 		"@nrwl/eslint-plugin-nx": "9.4.0",
 		"@nrwl/jest": "9.4.0",
 		"@nrwl/linter": "^9.4.4",
-		"@nrwl/node": "^9.4.0",
+		"@nrwl/node": "^9.4.4",
 		"@nrwl/web": "^9.4.0",
 		"@nrwl/workspace": "9.4.3",
 		"@semantic-release/npm": "^7.0.5",
