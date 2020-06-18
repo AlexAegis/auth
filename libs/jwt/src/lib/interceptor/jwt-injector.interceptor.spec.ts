@@ -9,6 +9,8 @@ describe('TokenInjectorInterceptor', () => {
 	const TEST_AUTH_HEADER = 'TestAuthHeader';
 	const TEST_AUTH_HEADER_VALUE = 'token';
 	const TEST_AUTH_SCHEME_VALUE = 'Prefix ';
+	const TEST_REQUEST_DOMAIN = 'test';
+	const TEST_REQUEST_PATH = 'path';
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
@@ -87,17 +89,18 @@ describe('TokenInjectorInterceptor', () => {
 				getToken: () => TEST_AUTH_HEADER_VALUE,
 				header: TEST_AUTH_HEADER,
 				scheme: TEST_AUTH_SCHEME_VALUE,
-				domainBlacklist: ['test'],
+				domainBlacklist: [TEST_REQUEST_DOMAIN],
 			} as JwtConfiguration,
 		});
 
 		const httpClient = TestBed.inject(HttpClient);
 		const httpTestingController = TestBed.inject(HttpTestingController);
 
-		httpClient.get<unknown>('test').subscribe();
+		httpClient.get<unknown>(TEST_REQUEST_DOMAIN).subscribe();
 
 		const mockResult = httpTestingController.expectOne(
-			(request) => !request.headers.has(TEST_AUTH_HEADER)
+			(request) =>
+				request.url === TEST_REQUEST_DOMAIN && !request.headers.has(TEST_AUTH_HEADER)
 		);
 		mockResult.flush({ result: 'okay' });
 		expect(mockResult).toBeTruthy();
@@ -109,18 +112,21 @@ describe('TokenInjectorInterceptor', () => {
 				getToken: () => TEST_AUTH_HEADER_VALUE,
 				header: TEST_AUTH_HEADER,
 				scheme: TEST_AUTH_SCHEME_VALUE,
-				pathBlacklist: ['test'],
+				pathBlacklist: [TEST_REQUEST_PATH],
 			} as JwtConfiguration,
 		});
 
 		const httpClient = TestBed.inject(HttpClient);
 		const httpTestingController = TestBed.inject(HttpTestingController);
 
-		httpClient.get<unknown>('dom/test').subscribe();
+		const path = `${TEST_REQUEST_DOMAIN}/${TEST_REQUEST_PATH}`;
+
+		httpClient.get<unknown>(path).subscribe();
 
 		const mockResult = httpTestingController.expectOne(
-			(request) => !request.headers.has(TEST_AUTH_HEADER)
+			(request) => request.url === path && !request.headers.has(TEST_AUTH_HEADER)
 		);
+
 		mockResult.flush({ result: 'okay' });
 		expect(mockResult).toBeTruthy();
 	});
@@ -138,10 +144,12 @@ describe('TokenInjectorInterceptor', () => {
 		const httpClient = TestBed.inject(HttpClient);
 		const httpTestingController = TestBed.inject(HttpTestingController);
 
-		httpClient.get<unknown>('dom/bar').subscribe();
+		const path = `${TEST_REQUEST_DOMAIN}/${TEST_REQUEST_PATH}`;
+
+		httpClient.get<unknown>(path).subscribe();
 
 		const mockResult = httpTestingController.expectOne(
-			(request) => !request.headers.has(TEST_AUTH_HEADER)
+			(request) => request.url === path && !request.headers.has(TEST_AUTH_HEADER)
 		);
 		mockResult.flush({ result: 'okay' });
 		expect(mockResult).toBeTruthy();
