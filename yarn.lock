@@ -1871,24 +1871,24 @@
   dependencies:
     "@angular-devkit/architect" "~0.901.0"
 
-"@nrwl/linter@^9.4.4":
+"@nrwl/linter@9.4.4", "@nrwl/linter@^9.4.4":
   version "9.4.4"
   resolved "https://registry.yarnpkg.com/@nrwl/linter/-/linter-9.4.4.tgz#cd078157d74e2e1b08b31ccc55e54e236f59d574"
   integrity sha512-ZcnDRUjw2WmwIl/Ff2nGq6XcQ9KEBC/ZSya+ZRj9V+/Xzegd6wbEH3Gf1XW2zzZZvrEyn3t2Vv/AGdXQEqTu+w==
   dependencies:
     "@angular-devkit/architect" "~0.901.0"
 
-"@nrwl/node@^9.4.0":
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/@nrwl/node/-/node-9.4.0.tgz#2f10cecb0de1a61e53eb2b1fd2fa2037c08e82ed"
-  integrity sha512-EOHt5F2yLP77w+VgHKQc1Iy+So9kyJ3NnxXuTw3dCrGtaccC5hmZrXCbvw9i31+V6CCFw7QhNpPdVDU6s6vOJg==
+"@nrwl/node@^9.4.4":
+  version "9.4.4"
+  resolved "https://registry.yarnpkg.com/@nrwl/node/-/node-9.4.4.tgz#c0c4a4dafbfb69d23424f392c698661cb14db314"
+  integrity sha512-2DCDGRfiiG6yCkpLtQNEPBkeE8hr09halP3vau81FvuRjuC3HDMwrm0CBXM20PW44qjfBdIuwqzdmY1mUcMzXw==
   dependencies:
     "@angular-devkit/architect" "~0.901.0"
     "@angular-devkit/build-webpack" "~0.901.0"
     "@angular-devkit/core" "~9.1.0"
     "@angular-devkit/schematics" "~9.1.0"
-    "@nrwl/jest" "9.4.0"
-    "@nrwl/linter" "9.4.0"
+    "@nrwl/jest" "9.4.4"
+    "@nrwl/linter" "9.4.4"
     circular-dependency-plugin "5.2.0"
     copy-webpack-plugin "5.1.1"
     fork-ts-checker-webpack-plugin "^3.1.1"
