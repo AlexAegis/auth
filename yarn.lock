@@ -1864,13 +1864,6 @@
     "@angular-devkit/core" "~9.1.0"
     "@angular-devkit/schematics" "~9.1.0"
 
-"@nrwl/linter@9.4.0":
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/@nrwl/linter/-/linter-9.4.0.tgz#6bc3fc699868e5cafb30235dcbef3334b9d6ff85"
-  integrity sha512-QD1Dn4xk4u7Z+k/+YduhCZe9q+UokuYO5Gkrzy3dRLjUG2AtRauXVSaisVyoe6Zzcy1Vv3+jynputXbBgKjwRw==
-  dependencies:
-    "@angular-devkit/architect" "~0.901.0"
-
 "@nrwl/linter@9.4.4", "@nrwl/linter@^9.4.4":
   version "9.4.4"
   resolved "https://registry.yarnpkg.com/@nrwl/linter/-/linter-9.4.4.tgz#cd078157d74e2e1b08b31ccc55e54e236f59d574"
@@ -1915,10 +1908,10 @@
     minimist "^1.2.0"
     strip-json-comments "2.0.1"
 
-"@nrwl/web@^9.4.0":
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/@nrwl/web/-/web-9.4.0.tgz#e07f7cbf02fa41aa7ed4af9d08a4c18252e701fd"
-  integrity sha512-AcNGf3sY8FKgOOS7h3Nc7Hs5LXyDyHD/KwtHiTTIAPMVdqN5OFoprPLN1ZNKqC4HQMbk52lg1YRYe2n3mlJmIQ==
+"@nrwl/web@^9.4.4":
+  version "9.4.4"
+  resolved "https://registry.yarnpkg.com/@nrwl/web/-/web-9.4.4.tgz#4b6c8b8f530e317346594667efb9520c3efbc747"
+  integrity sha512-QMM4Ma5zp6KvTJcKl88iwJO7PF+yGLoAbjICF05WFdtnuZCN/z6uU4Wq+1VDN8xeGpmwfBZnXl6RYFtWBW9w9Q==
   dependencies:
     "@angular-devkit/architect" "~0.901.0"
     "@angular-devkit/build-optimizer" "~0.901.0"
@@ -1931,9 +1924,9 @@
     "@babel/plugin-transform-regenerator" "7.8.7"
     "@babel/preset-env" "7.9.6"
     "@babel/preset-typescript" "7.9.0"
-    "@nrwl/cypress" "9.4.0"
-    "@nrwl/jest" "9.4.0"
-    "@nrwl/linter" "9.4.0"
+    "@nrwl/cypress" "9.4.4"
+    "@nrwl/jest" "9.4.4"
+    "@nrwl/linter" "9.4.4"
     "@rollup/plugin-babel" "5.0.2"
     "@rollup/plugin-commonjs" "11.0.2"
     "@rollup/plugin-image" "2.0.4"

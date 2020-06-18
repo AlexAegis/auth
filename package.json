@@ -98,7 +98,7 @@
 		"@nrwl/jest": "9.4.0",
 		"@nrwl/linter": "^9.4.4",
 		"@nrwl/node": "^9.4.4",
-		"@nrwl/web": "^9.4.0",
+		"@nrwl/web": "^9.4.4",
 		"@nrwl/workspace": "9.4.4",
 		"@semantic-release/npm": "^7.0.5",
 		"@types/jest": "26.0.0",
