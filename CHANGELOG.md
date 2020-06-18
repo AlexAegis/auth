@@ -2,8 +2,9 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### 0.1.1 (2020-06-14)
+### [0.1.2](https://github.com/AlexAegis/auth/compare/v0.1.1...v0.1.2) (2020-06-18)
 
+### [0.1.1](https://github.com/AlexAegis/auth/compare/v0.0.0...v0.1.1) (2020-06-14)
 
 ### Features
 
@@ -17,7 +18,6 @@ All notable changes to this project will be documented in this file. See [standa
 * **core:** token injection and filtering ([28df932](https://github.com/AlexAegis/auth/commit/28df932c06c563d5994e283e598dfb7da6f92685))
 * **core:** token service ([b5d7ecd](https://github.com/AlexAegis/auth/commit/b5d7ecd27f527891b994428f81903a271fea85d0))
 * **token:** token model ([555f58b](https://github.com/AlexAegis/auth/commit/555f58bcf644dc4d357a238b8ccefce79e08f7dc))
-
 
 ### Bug Fixes
 
