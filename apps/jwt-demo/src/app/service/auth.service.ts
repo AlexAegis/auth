@@ -1,7 +1,8 @@
 import { JwtTokenPair } from '@aegis-auth/jwt';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, ReplaySubject } from 'rxjs';
-import { take, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { MockServerService } from './mock-server.service';
 
 @Injectable({
@@ -15,7 +16,10 @@ export class AuthService {
 	public accessTokenStorage$ = new ReplaySubject<string | undefined | null>(1);
 	public refreshTokenStorage$ = new ReplaySubject<string | undefined | null>(1);
 
-	public constructor(private readonly mockServerService: MockServerService) {}
+	public constructor(
+		private readonly http: HttpClient,
+		private readonly mockServerService: MockServerService
+	) {}
 
 	/**
 	 * Normally, a function like this in your app would do an http request
@@ -24,16 +28,28 @@ export class AuthService {
 	 *
 	 * @param tokenTimeout seconds
 	 */
+	public generateTokenPair(tokenTimeout = 60): JwtTokenPair {
+		return this.mockServerService.getTokenPair(tokenTimeout);
+	}
+
 	public login(tokenTimeout = 60): Observable<JwtTokenPair> {
-		const tokenPair = this.mockServerService.getTokenPair(tokenTimeout);
-		return of(tokenPair).pipe(
-			take(1),
-			tap((t) => {
-				console.log(tokenPair);
-				this.accessTokenStorage$.next(t.accessToken);
-				this.refreshTokenStorage$.next(t.refreshToken);
-			})
-		);
+		return this.http
+			.post<JwtTokenPair>(
+				'https://localhost/login',
+				{},
+				{
+					params: {
+						tokenTimeout: tokenTimeout.toString(),
+					},
+				}
+			)
+			.pipe(
+				tap((tokenPair) => {
+					console.log('tokenpair', tokenPair);
+					this.accessTokenStorage$.next(tokenPair.accessToken);
+					this.refreshTokenStorage$.next(tokenPair.refreshToken);
+				})
+			);
 	}
 
 	public logout(): Observable<boolean> {

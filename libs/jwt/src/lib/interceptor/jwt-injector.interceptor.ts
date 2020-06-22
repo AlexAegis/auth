@@ -6,11 +6,14 @@ import { matchAgainst } from '../function';
 import { JwtConfiguration } from '../model';
 import { JwtTokenService } from '../service';
 
+export type URLDomain = string;
+export type URLPath = string;
+
 @Injectable()
 export class JwtInjectorInterceptor implements HttpInterceptor {
 	public constructor(private readonly jwtTokenService: JwtTokenService) {}
 
-	private static checkAgainstRules(
+	public static checkAgainstRules(
 		config: JwtConfiguration,
 		domain?: string,
 		path?: string
@@ -32,16 +35,19 @@ export class JwtInjectorInterceptor implements HttpInterceptor {
 		);
 	}
 
+	public static separateUrl(url: string): [URLDomain, URLPath] {
+		const urlMatch = url.match(/^(.*:\/\/)?(.*?)(\/(.*))?$/);
+		return [urlMatch?.[2] as URLDomain, urlMatch?.[4] as URLPath];
+	}
+
 	public intercept(
 		request: HttpRequest<unknown>,
 		next: HttpHandler
 	): Observable<HttpEvent<unknown>> {
-		const urlMatch = request.url.match(/^(.*:\/\/)?(.*?)(\/(.*))?$/);
-		const domain = urlMatch?.[2];
-		const path = urlMatch?.[4];
-
+		console.log('JwtInterceptor intercepting!');
+		const [domain, path] = JwtInjectorInterceptor.separateUrl(request.url);
 		return combineLatest([
-			this.jwtTokenService.tokenString$,
+			this.jwtTokenService.rawAccessToken$,
 			this.jwtTokenService.config$,
 		]).pipe(
 			take(1),

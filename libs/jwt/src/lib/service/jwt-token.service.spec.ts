@@ -44,7 +44,7 @@ describe('JwtTokenService', () => {
 				getToken: () => validToken,
 			},
 		} as JwtConfigurationProvider).inject(JwtTokenService);
-		return service.token$
+		return service.accessToken$
 			.pipe(
 				take(1),
 				tap((token) => expect(token).toBeTruthy())
@@ -58,7 +58,7 @@ describe('JwtTokenService', () => {
 				getToken: () => 'eyJw5c',
 			},
 		} as JwtConfigurationProvider).inject(JwtTokenService);
-		return service.token$
+		return service.accessToken$
 			.pipe(
 				take(1),
 				catchError(() => of(null)),

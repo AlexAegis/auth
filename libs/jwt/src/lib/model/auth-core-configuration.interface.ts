@@ -11,6 +11,10 @@ export const DEFAULT_JWT_CONFIG: Partial<JwtConfiguration> = {
 	handleWithCredentials: true,
 };
 
+export interface JwtRefreshResponse {
+	accessToken: string;
+	refreshToken?: string;
+}
 /**
  * This configuration objects is responsible on how a token should be
  * refreshed.
@@ -18,12 +22,7 @@ export const DEFAULT_JWT_CONFIG: Partial<JwtConfiguration> = {
  * The generic type is meant to describe the shape of the refresh endpoints
  * response. So when you define the `setToken` method you'll get some help.
  */
-export interface TokenRefresher<Response> {
-	/**
-	 * Endpoint to call when the token needs a refresh
-	 */
-	endpoint: string;
-
+export interface TokenRefresher {
 	/**
 	 * After a successful refresh, this callback will be called.
 	 * You need to define a function which will save the the token in a way
@@ -40,7 +39,7 @@ export interface TokenRefresher<Response> {
 	 *			getToken: service.accessToken$
 	 *			autoRefresher: {
 	 * 				endpoint: `${environment.api}/auth/refresh`,
-	 * 				setToken: (response) => service.accessToken$.next(response.accessToken)
+	 * 				setRefreshToken: (response) => service.accessToken$.next(response.accessToken)
 	 * 			}
 	 *		}),
 	 *		deps: [TokenStorageService],
@@ -48,7 +47,19 @@ export interface TokenRefresher<Response> {
 	 * ```
 	 *
 	 */
-	setToken: (response: Response) => boolean;
+	setRefreshToken: (response: string) => void;
+	/**
+	 * Define a method that somehow refreshes the token,
+	 * It's usually an http request. Map the response so only
+	 * the new token(s) are returned. This function will be called
+	 * automatically when a refresh is needed.
+	 */
+	refresh: () => Observable<JwtRefreshResponse>;
+	/**
+	 * Define an observable that returns the refresh token when subscribed to.
+	 *
+	 */
+	getRefreshToken$?: Observable<string | null | undefined>;
 }
 
 /**
@@ -71,8 +82,7 @@ export interface TokenRefresher<Response> {
  * })
  * ```
  */
-export interface JwtConfiguration<RefreshResponse = unknown>
-	extends Omit<HeaderConfiguration, 'getValue'> {
+export interface JwtConfiguration extends Omit<HeaderConfiguration, 'getValue'> {
 	/**
 	 * A callback or observable that will be called or subscribed to
 	 * on every http request and returns a value for the header
@@ -125,7 +135,7 @@ export interface JwtConfiguration<RefreshResponse = unknown>
 	 *
 	 * @default undefined
 	 */
-	autoRefresher?: TokenRefresher<RefreshResponse>;
+	autoRefresher: TokenRefresher | undefined;
 
 	/**
 	 * Sets the 'withCredentials' to true along with the token

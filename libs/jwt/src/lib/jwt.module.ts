@@ -7,38 +7,8 @@ import {
 	DEFAULT_JWT_CONFIGURATION_TOKEN,
 	JwtConfigurationProvider,
 	JwtModuleConfigurationProvider,
-	JwtModuleRefreshableConfigurationProvider,
 	JWT_CONFIGURATION_TOKEN,
 } from './token';
-
-/**
- * Helps you define a JwtConfigurationProvider
- *
- * @internal
- */
-export function createRefreshableJwtConfigurationProvider<
-	RefreshResponse,
-	A = unknown,
-	B = unknown,
-	C = unknown,
-	D = unknown,
-	E = unknown
->(
-	tokenConfigurationProvider: JwtModuleRefreshableConfigurationProvider<
-		RefreshResponse,
-		A,
-		B,
-		C,
-		D,
-		E
-	>
-): JwtConfigurationProvider<A, B, C, D, E> {
-	return {
-		provide: JWT_CONFIGURATION_TOKEN,
-		multi: false,
-		...tokenConfigurationProvider,
-	} as JwtConfigurationProvider<A, B, C, D, E>;
-}
 
 /**
  * Helps you define a JwtConfigurationProvider
@@ -54,14 +24,20 @@ export function createJwtConfigurationProvider<
 >(
 	tokenConfigurationProvider: JwtModuleConfigurationProvider<A, B, C, D, E>
 ): JwtConfigurationProvider<A, B, C, D, E> {
-	return createRefreshableJwtConfigurationProvider<unknown, A, B, C, D, E>(
-		tokenConfigurationProvider
-	);
+	return {
+		provide: JWT_CONFIGURATION_TOKEN,
+		multi: false,
+		...tokenConfigurationProvider,
+	} as JwtConfigurationProvider<A, B, C, D, E>;
 }
 
 /**
  * This module needs to be configured to use. See the
  * {@link JwtModule#forRoot | forRoot} method for more information.
+ *
+ * TODO: The main configuration will probably have to be split up into multiple
+ * tokens. So that other, plug in configration modules can provide them.
+ * Like Ngrx and Local. They then transform their configs into this common one.
  */
 @NgModule({
 	imports: [CommonModule],

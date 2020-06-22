@@ -32,19 +32,4 @@ export type JwtModuleConfigurationProvider<
 	C = unknown,
 	D = unknown,
 	E = unknown
-> = Omit<
-	TypedProvider<Partial<Omit<JwtConfiguration<unknown>, 'autoRefresher'>>, A, B, C, D, E>,
-	'provide' | 'multi'
->;
-
-export type JwtModuleRefreshableConfigurationProvider<
-	RefreshResponse,
-	A = unknown,
-	B = unknown,
-	C = unknown,
-	D = unknown,
-	E = unknown
-> = Omit<
-	TypedProvider<Partial<JwtConfiguration<RefreshResponse>>, A, B, C, D, E>,
-	'provide' | 'multi'
->;
+> = Omit<TypedProvider<Partial<JwtConfiguration>, A, B, C, D, E>, 'provide' | 'multi'>;
