@@ -93,7 +93,7 @@
 		"@angular/language-service": "^9.1.11",
 		"@commitlint/cli": "^8.3.5",
 		"@commitlint/config-conventional": "^8.3.4",
-		"@nrwl/cypress": "9.4.4",
+		"@nrwl/cypress": "9.4.5",
 		"@nrwl/eslint-plugin-nx": "9.4.4",
 		"@nrwl/jest": "9.4.4",
 		"@nrwl/linter": "^9.4.4",
