@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { EMPTY, from, isObservable, Observable, of } from 'rxjs';
 import { map, startWith, switchMap, take, tap } from 'rxjs/operators';
-import { isPromise, isString } from '../function';
+import { isExpired, isPromise, isString } from '../function';
 import { JwtConfiguration, JwtToken, JwtTokenString } from '../model';
 import { DEFAULT_JWT_CONFIGURATION_TOKEN, JWT_CONFIGURATION_TOKEN } from '../token';
 import { BaseConfigService } from './base-config-service.class';
@@ -55,11 +55,11 @@ export class JwtTokenService extends BaseConfigService<JwtConfiguration> {
 	public readonly refreshTokenPayload$ = this.refreshToken$.pipe(map((token) => token?.payload));
 
 	public readonly isAccessTokenExpired$ = this.accessTokenPayload$.pipe(
-		map((payload) => JwtTokenService.isExpired(payload?.exp))
+		map((payload) => isExpired(payload?.exp))
 	);
 
 	public readonly isRefreshTokenExpired$ = this.refreshTokenPayload$.pipe(
-		map((payload) => JwtTokenService.isExpired(payload?.exp))
+		map((payload) => isExpired(payload?.exp))
 	);
 
 	public constructor(
@@ -76,14 +76,6 @@ export class JwtTokenService extends BaseConfigService<JwtConfiguration> {
 				tap((configs) => console.log('JWT ConfigService', configs))
 			)
 			.subscribe();
-	}
-
-	/**
-	 *
-	 * @param epoch if not supplied it will always be expired
-	 */
-	public static isExpired(epoch = -Infinity): boolean {
-		return epoch < Math.floor(new Date().getTime() / 1000);
 	}
 
 	private static normalizeGetToken(

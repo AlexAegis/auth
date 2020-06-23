@@ -1,14 +1,6 @@
 import { BaseDirective, JwtTokenService } from '@aegis-auth/jwt';
-import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
-import {
-	BLACKLISTED_DOMAIN,
-	BLACKLISTED_PATH,
-	BLACKLISTED_PROTOCOL,
-	WHITELISTED_DOMAIN,
-	WHITELISTED_PATH,
-	WHITELISTED_PROTOCOL,
-} from '../helper';
+import { ApiService } from '../service';
 import { AuthService } from '../service/auth.service';
 
 @Component({
@@ -25,12 +17,9 @@ export class DashboardComponent extends BaseDirective {
 	@ViewChild('lifespan')
 	public readonly lifespanInput!: ElementRef<HTMLInputElement>;
 
-	@ViewChild('urlInput')
-	public readonly urlInput!: ElementRef<HTMLInputElement>;
-
 	public constructor(
 		private readonly auth: AuthService,
-		private readonly http: HttpClient,
+		public readonly api: ApiService,
 		private readonly jwtTokenService: JwtTokenService
 	) {
 		super();
@@ -44,27 +33,5 @@ export class DashboardComponent extends BaseDirective {
 
 	public logout(): void {
 		this.teardown = this.auth.logout().subscribe();
-	}
-
-	public requestWhitelistedPathOnWhitelistedDomain(): void {
-		this.teardown = this.http
-			.get<unknown>(`${WHITELISTED_PROTOCOL}://${WHITELISTED_DOMAIN}/${WHITELISTED_PATH}`)
-			.subscribe();
-	}
-
-	public requestBlacklistedPathOnWhitelistedDomain(): void {
-		this.teardown = this.http
-			.get<unknown>(`${WHITELISTED_PROTOCOL}://${WHITELISTED_DOMAIN}/${BLACKLISTED_PATH}`)
-			.subscribe();
-	}
-
-	public requestOnBlacklistedDomain(): void {
-		this.teardown = this.http
-			.get<unknown>(`${BLACKLISTED_PROTOCOL}://${BLACKLISTED_DOMAIN}/api/v1/employees`)
-			.subscribe();
-	}
-
-	public customGet(): void {
-		this.teardown = this.http.get<unknown>(this.lifespanInput.nativeElement.value).subscribe();
 	}
 }

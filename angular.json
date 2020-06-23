@@ -241,7 +241,11 @@
 		},
 		"jwt-demo": {
 			"projectType": "application",
-			"schematics": {},
+			"schematics": {
+				"@nrwl/angular:service": {
+					"flat": true
+				}
+			},
 			"root": "apps/jwt-demo",
 			"sourceRoot": "apps/jwt-demo/src",
 			"prefix": "aegis-auth",

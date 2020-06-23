@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
-import { BLACKLISTED_DOMAIN, WHITELISTED_DOMAIN } from './helper';
+import { BLACKLISTED_DOMAIN, JWT_HEADER, WHITELISTED_DOMAIN } from './constants';
 import { FakeBackendInterceptor } from './interceptor/fake-backend.interceptor';
 import { DashboardComponent } from './page/dashboard.component';
 import { AuthService } from './service';
@@ -28,6 +28,7 @@ import { AuthService } from './service';
 		JwtModule.forRoot<AuthService>({
 			useFactory: (authService) => ({
 				getToken: authService.accessTokenStorage$,
+				header: JWT_HEADER,
 				domainWhitelist: ['localhost', WHITELISTED_DOMAIN],
 				domainBlacklist: [BLACKLISTED_DOMAIN],
 				pathBlacklist: [/api\/something\/.*/],
@@ -38,13 +39,11 @@ import { AuthService } from './service';
 					setRefreshToken: (refreshToken) =>
 						authService.refreshTokenStorage$.next(refreshToken),
 					refresh: () =>
-						authService.login().pipe(
-							map((res) => {
-								return {
-									accessToken: res.accessToken,
-									refreshToken: res.refreshToken,
-								};
-							})
+						authService.refresh().pipe(
+							map((res) => ({
+								accessToken: res.accessToken,
+								refreshToken: res.refreshToken,
+							}))
 						),
 				},
 			}),

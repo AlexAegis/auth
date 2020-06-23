@@ -1,7 +1,7 @@
 import { JwtTokenPair } from '@aegis-auth/jwt';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { MockServerService } from './mock-server.service';
 
@@ -13,8 +13,8 @@ export class AuthService {
 	 * TODO: These might have to be moved to a separate AuthStorageService
 	 * Try not to
 	 */
-	public accessTokenStorage$ = new ReplaySubject<string | undefined | null>(1);
-	public refreshTokenStorage$ = new ReplaySubject<string | undefined | null>(1);
+	public accessTokenStorage$ = new BehaviorSubject<string | undefined | null>(undefined);
+	public refreshTokenStorage$ = new BehaviorSubject<string | undefined | null>(undefined);
 
 	public constructor(
 		private readonly http: HttpClient,
@@ -37,6 +37,28 @@ export class AuthService {
 			.post<JwtTokenPair>(
 				'https://localhost/login',
 				{},
+				{
+					params: {
+						tokenTimeout: tokenTimeout.toString(),
+					},
+				}
+			)
+			.pipe(
+				tap((tokenPair) => {
+					console.log('tokenpair', tokenPair);
+					this.accessTokenStorage$.next(tokenPair.accessToken);
+					this.refreshTokenStorage$.next(tokenPair.refreshToken);
+				})
+			);
+	}
+
+	public refresh(tokenTimeout = 60): Observable<JwtTokenPair> {
+		return this.http
+			.post<JwtTokenPair>(
+				'https://localhost/refresh',
+				{
+					refreshToken: this.refreshTokenStorage$.value,
+				},
 				{
 					params: {
 						tokenTimeout: tokenTimeout.toString(),

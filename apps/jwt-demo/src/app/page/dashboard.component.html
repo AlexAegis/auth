@@ -10,14 +10,14 @@
 
 <span>token: {{ token$ | async | json }}</span>
 
-<button (click)="requestWhitelistedPathOnWhitelistedDomain()">
+<button (click)="api.requestWhitelistedPathOnWhitelistedDomain()">
 	Request whitelisted path on whitelisted domain
 </button>
-<button (click)="requestBlacklistedPathOnWhitelistedDomain()">
+<button (click)="api.requestBlacklistedPathOnWhitelistedDomain()">
 	Request blacklisted path on whitelisted domain
 </button>
-<button (click)="requestOnBlacklistedDomain()">Request on blacklisted domain</button>
+<button (click)="api.requestOnBlacklistedDomain()">Request on blacklisted domain</button>
 <div>
-	<button (click)="customGet()">Get from here:</button>
-	<span>URL</span><input type="text" placeholder="url" />
+	<button (click)="api.customGet(url.value)">Get from here:</button>
+	<span>URL</span><input #url type="text" placeholder="url" />
 </div>
