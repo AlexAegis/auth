@@ -116,7 +116,7 @@
 		"jest": "26.0.1",
 		"jest-preset-angular": "8.2.1",
 		"lint-staged": "^10.2.11",
-		"markdownlint": "^0.20.3",
+		"markdownlint": "^0.20.4",
 		"markdownlint-cli": "^0.23.1",
 		"ng-packagr": "^9.1.5",
 		"npm-check-updates": "^7.0.1",
