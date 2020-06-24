@@ -1,28 +1,40 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { EMPTY, from, isObservable, Observable, of } from 'rxjs';
-import { map, startWith, switchMap, take, tap } from 'rxjs/operators';
+import { BehaviorSubject, EMPTY, from, isObservable, Observable, of } from 'rxjs';
+import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { isExpired, isPromise, isString } from '../function';
-import { JwtConfiguration, JwtToken, JwtTokenString } from '../model';
-import { DEFAULT_JWT_CONFIGURATION_TOKEN, JWT_CONFIGURATION_TOKEN } from '../token';
-import { BaseConfigService } from './base-config-service.class';
+import { JwtConfiguration, JwtRefreshConfiguration, JwtToken, JwtTokenString } from '../model';
+import {
+	DEFAULT_JWT_CONFIGURATION_TOKEN,
+	JWT_CONFIGURATION_TOKEN,
+	JWT_REFRESH_CONFIGURATION_TOKEN,
+} from '../token';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class JwtTokenService extends BaseConfigService<JwtConfiguration> {
+export class JwtTokenService {
+	public readonly jwtConfig$ = new BehaviorSubject<JwtConfiguration>({
+		...this.defaultConfig,
+		...this.rawConfig,
+	});
+
+	public readonly refreshConfig$ = new BehaviorSubject<
+		JwtRefreshConfiguration<unknown, unknown> | undefined
+	>(this.rawRefreshConfig);
+
 	/**
 	 * Consider restricting getToken to observables only so things can be cached
 	 */
-	public readonly rawAccessToken$ = this.config$.pipe(
+	public readonly rawAccessToken$ = this.jwtConfig$.pipe(
 		tap((config) => console.log('got config in pipe!', config)),
 		switchMap((config) => JwtTokenService.normalizeGetToken(config.getToken)),
 		startWith(null)
 	);
 
-	public readonly rawRefreshToken$ = this.config$.pipe(
-		tap((config) => console.log('got config in refresh pipe!', config)),
-		switchMap((config) => config.autoRefresher?.getRefreshToken$ || EMPTY),
+	public readonly rawRefreshToken$ = this.refreshConfig$.pipe(
+		tap((config) => console.log('got refresh config in refresh pipe!', config)),
+		switchMap((config) => config?.getRefreshToken$ || EMPTY),
 		startWith(null)
 	);
 
@@ -65,18 +77,12 @@ export class JwtTokenService extends BaseConfigService<JwtConfiguration> {
 	public constructor(
 		private http: HttpClient,
 		@Inject(JWT_CONFIGURATION_TOKEN)
-		protected readonly rawConfig: JwtConfiguration,
+		private readonly rawConfig: JwtConfiguration,
 		@Inject(DEFAULT_JWT_CONFIGURATION_TOKEN)
-		public readonly defaultConfig: JwtConfiguration
-	) {
-		super(rawConfig, defaultConfig);
-		this.config$
-			.pipe(
-				take(1),
-				tap((configs) => console.log('JWT ConfigService', configs))
-			)
-			.subscribe();
-	}
+		private readonly defaultConfig: JwtConfiguration,
+		@Inject(JWT_REFRESH_CONFIGURATION_TOKEN)
+		private readonly rawRefreshConfig?: JwtRefreshConfiguration<unknown, unknown>
+	) {}
 
 	private static normalizeGetToken(
 		getValue:

@@ -1,13 +1,19 @@
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
 	DEFAULT_HEADER_CONFIG,
 	HeaderConfiguration,
+	UrlFilter,
 } from '../model/header-configuration.interface';
+import { HttpMethodType } from './http-method.enum';
+
+export const DEFAULT_JWT_HEADER = 'Authorization';
+export const DEFAULT_JWT_SCHEME = 'Bearer ';
 
 export const DEFAULT_JWT_CONFIG: Partial<JwtConfiguration> = {
 	...DEFAULT_HEADER_CONFIG,
-	header: 'Authorization',
-	scheme: 'Bearer ',
+	header: DEFAULT_JWT_HEADER,
+	scheme: DEFAULT_JWT_SCHEME,
 	handleWithCredentials: true,
 };
 
@@ -15,14 +21,42 @@ export interface JwtRefreshResponse {
 	accessToken: string;
 	refreshToken?: string;
 }
+
+export interface HttpRequestInit {
+	headers?: HttpHeaders;
+	reportProgress?: boolean;
+	params?: HttpParams;
+	responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
+	withCredentials?: boolean;
+}
+
 /**
+ * Enables the RefreshInterceptor which will automatically tries to
+ * refresh the accessToken on expiration or failure on the next request.
+ * If left undefined, the refresh feature for this token definition won't
+ * do anything. If none of the tokendefinitions have autoRefresh enabled
+ * then the RefreshInterceptor won't be loaded.
  * This configuration objects is responsible on how a token should be
  * refreshed.
  *
  * The generic type is meant to describe the shape of the refresh endpoints
  * response. So when you define the `setToken` method you'll get some help.
+ *
+ * @example configuration.
+ * AuthCoreModule.forRoot<TokenStorageService>({
+ *		useFactory: (service: TokenStorageService) => ({
+ *			getToken: service.accessToken$
+ *			autoRefresher: {
+ * 				endpoint: `${environment.api}/auth/refresh`,
+ * 				setToken: (response) => service.accessToken$.next(response.accessToken)
+ * 			}
+ *		}),
+ *		deps: [TokenStorageService],
+ * })
+ *
+ * @default undefined
  */
-export interface TokenRefresher {
+export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse> extends UrlFilter {
 	/**
 	 * After a successful refresh, this callback will be called.
 	 * You need to define a function which will save the the token in a way
@@ -48,18 +82,35 @@ export interface TokenRefresher {
 	 *
 	 */
 	setRefreshToken: (response: string) => void;
-	/**
-	 * Define a method that somehow refreshes the token,
-	 * It's usually an http request. Map the response so only
-	 * the new token(s) are returned. This function will be called
-	 * automatically when a refresh is needed.
-	 */
-	refresh: () => Observable<JwtRefreshResponse>;
+
 	/**
 	 * Define an observable that returns the refresh token when subscribed to.
 	 *
 	 */
 	getRefreshToken$?: Observable<string | null | undefined>;
+	/**
+	 * The method for the request, usually it's a POST so that's the default
+	 *
+	 * @default 'POST'
+	 */
+	method?: HttpMethodType;
+	/**
+	 * The endpoint that will be requested for a new token
+	 */
+	refreshUrl: string;
+	/**
+	 * A callback that should return the body of the request
+	 */
+	refreshRequestBody: () => RefreshRequest;
+	/**
+	 * A callback that should return the defaults on the request
+	 */
+	refreshRequestInitials?: (() => HttpRequestInit | undefined) | HttpRequestInit;
+	/**
+	 * This function have to transform the result of your refresh endpoint
+	 * into a digestable form. It will be called after successful refreshes.
+	 */
+	transformRefreshResponse: (response: RefreshResponse) => JwtRefreshResponse;
 }
 
 /**
@@ -82,7 +133,8 @@ export interface TokenRefresher {
  * })
  * ```
  */
-export interface JwtConfiguration extends Omit<HeaderConfiguration, 'getValue'> {
+export interface JwtConfiguration<RefreshRequest = unknown, RefreshResponse = unknown>
+	extends Omit<HeaderConfiguration, 'getValue'> {
 	/**
 	 * A callback or observable that will be called or subscribed to
 	 * on every http request and returns a value for the header
@@ -113,29 +165,6 @@ export interface JwtConfiguration extends Omit<HeaderConfiguration, 'getValue'> 
 	 * @default 'Authorization'
 	 */
 	header: string;
-
-	/**
-	 * Enables the RefreshInterceptor which will automatically tries to
-	 * refresh the accessToken on expiration or failure on the next request.
-	 * If left undefined, the refresh feature for this token definition won't
-	 * do anything. If none of the tokendefinitions have autoRefresh enabled
-	 * then the RefreshInterceptor won't be loaded.
-	 *
-	 * @example configuration.
-	 * AuthCoreModule.forRoot<TokenStorageService>({
-	 *		useFactory: (service: TokenStorageService) => ({
-	 *			getToken: service.accessToken$
-	 *			autoRefresher: {
-	 * 				endpoint: `${environment.api}/auth/refresh`,
-	 * 				setToken: (response) => service.accessToken$.next(response.accessToken)
-	 * 			}
-	 *		}),
-	 *		deps: [TokenStorageService],
-	 * })
-	 *
-	 * @default undefined
-	 */
-	autoRefresher: TokenRefresher | undefined;
 
 	/**
 	 * Sets the 'withCredentials' to true along with the token

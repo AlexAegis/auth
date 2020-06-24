@@ -49,6 +49,6 @@ export class MockServerService {
 	}
 
 	private toBase64(o: Record<string, unknown>) {
-		return Base64.encode(JSON.stringify(o));
+		return Base64.encode(JSON.stringify(o), true);
 	}
 }

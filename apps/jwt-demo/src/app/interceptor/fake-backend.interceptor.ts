@@ -12,6 +12,7 @@ import { delay, dematerialize, materialize, tap } from 'rxjs/operators';
 import {
 	BLACKLISTED_PATH,
 	JWT_HEADER,
+	JWT_SCHEME,
 	PATH_LOGIN,
 	PATH_REFRESH,
 	WHITELISTED_PATH,
@@ -27,13 +28,14 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 	) {}
 
 	public respond(request: HttpRequest<unknown>): Observable<HttpResponse<unknown>> | null {
-		console.log('Trying to fake response');
+		console.log('Trying to fake response', request);
 		if (request.url.indexOf(PATH_LOGIN) > 0 && request.method === HttpMethod.POST) {
 			// Unprotected endpoint
-			return this.makeResponse(this.auth.generateTokenPair());
+			const timeout = parseInt(request.params.get('tokenTimeout') || '60', 10);
+			return this.makeResponse(this.auth.generateTokenPair(timeout));
 		} else if (request.url.indexOf(PATH_REFRESH) > 0 && request.method === HttpMethod.POST) {
-			console.log('Refreshing');
 			const refreshRequest = request.body as RefreshRequest;
+			console.log('Refreshing', refreshRequest);
 			if (refreshRequest.refreshToken) {
 				if (!isExpired(JwtToken.from(refreshRequest.refreshToken)?.payload.exp)) {
 					return this.makeResponse(this.auth.generateTokenPair());
@@ -57,9 +59,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 		request: HttpRequest<unknown>,
 		response: unknown
 	): Observable<HttpResponse<unknown>> {
-		const jwt = request.headers.get(JWT_HEADER);
-		if (jwt) {
-			if (!isExpired(JwtToken.from(jwt)?.payload.exp)) {
+		const jwtHeader = request.headers.get(JWT_HEADER);
+		if (jwtHeader) {
+			const rawJwtToken = jwtHeader.split(JWT_SCHEME)[1];
+			if (!isExpired(JwtToken.from(rawJwtToken)?.payload.exp)) {
 				return this.makeResponse(response);
 			} else {
 				return throwError('Expired token on protected route');
@@ -84,8 +87,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 			return response.pipe(
 				materialize(),
 				delay(500),
-				dematerialize(),
-				tap((a) => console.log(a))
+				tap((a) => console.log('responded', a)),
+				dematerialize()
 			);
 		} else return next.handle(request);
 	}

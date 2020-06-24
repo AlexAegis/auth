@@ -3,11 +3,11 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { map } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
-import { BLACKLISTED_DOMAIN, JWT_HEADER, WHITELISTED_DOMAIN } from './constants';
+import { BLACKLISTED_DOMAIN, JWT_HEADER, JWT_SCHEME, WHITELISTED_DOMAIN } from './constants';
 import { FakeBackendInterceptor } from './interceptor/fake-backend.interceptor';
+import { RefreshRequest, RefreshResponse } from './model';
 import { DashboardComponent } from './page/dashboard.component';
 import { AuthService } from './service';
 
@@ -25,30 +25,44 @@ import { AuthService } from './service';
 			],
 			{ initialNavigation: 'enabled' }
 		),
-		JwtModule.forRoot<AuthService>({
-			useFactory: (authService) => ({
-				getToken: authService.accessTokenStorage$,
-				header: JWT_HEADER,
-				domainWhitelist: ['localhost', WHITELISTED_DOMAIN],
-				domainBlacklist: [BLACKLISTED_DOMAIN],
-				pathBlacklist: [/api\/something\/.*/],
-				pathWhitelist: [/api\/users\/.*/],
-				protocolBlacklist: environment.production ? ['http'] : undefined,
-				autoRefresher: {
+		JwtModule.forRoot<RefreshRequest, RefreshResponse>(
+			{
+				useFactory: (authService: AuthService) => ({
+					getToken: authService.accessTokenStorage$,
+					// Same as the default: 'Bearer '
+					scheme: JWT_SCHEME,
+					// The default is 'Authorization' but here it's changed to it doesn't interfere
+					header: JWT_HEADER,
+					domainWhitelist: ['localhost', WHITELISTED_DOMAIN],
+					domainBlacklist: [BLACKLISTED_DOMAIN],
+					pathBlacklist: [/api\/something\/.*/],
+					pathWhitelist: [/api\/users\/.*/],
+					protocolBlacklist: environment.production ? ['http'] : undefined,
+				}),
+				deps: [AuthService],
+			},
+			{
+				useFactory: (authService) => ({
 					getRefreshToken$: authService.refreshTokenStorage$,
 					setRefreshToken: (refreshToken) =>
 						authService.refreshTokenStorage$.next(refreshToken),
-					refresh: () =>
-						authService.refresh().pipe(
-							map((res) => ({
-								accessToken: res.accessToken,
-								refreshToken: res.refreshToken,
-							}))
-						),
-				},
-			}),
-			deps: [AuthService],
-		}),
+					// endpoint to hit to refresh
+					refreshUrl: `http://localhost/refresh`,
+					// This is not needed here, it's just for reference, refreshUrl is already
+					// excluded. But in case you do something fancy with your interceptors, having
+					// explicit control over on what url will be refreshed and what not, is useful.
+					pathBlacklist: [/refresh/],
+					// The default is POST, but you can override
+					method: 'POST',
+					// The result of this will be passed to the initials object of HttpRequest
+					refreshRequestBody: () => ({
+						refreshToken: authService.refreshTokenStorage$.value,
+					}), // Already has the correct shape, so it's just an identity function
+					transformRefreshResponse: (response) => response,
+				}),
+				deps: [AuthService],
+			}
+		),
 	],
 	providers: [
 		{
