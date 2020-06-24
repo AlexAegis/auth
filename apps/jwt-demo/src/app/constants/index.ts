@@ -1,1 +1,1 @@
-export * from './jwt.contants';
+export * from './jwt.constants';

@@ -18,7 +18,7 @@ export class MockServerService {
 	public getTokenPair(lifetime = 60): JwtTokenPair {
 		return {
 			accessToken: this.createValidToken(lifetime),
-			refreshToken: this.createValidToken(lifetime * 2),
+			refreshToken: this.createValidToken(lifetime * 20),
 		};
 	}
 

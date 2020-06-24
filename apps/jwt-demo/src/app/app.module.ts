@@ -42,10 +42,12 @@ import { AuthService } from './service';
 				deps: [AuthService],
 			},
 			{
-				useFactory: (authService) => ({
+				useFactory: (authService: AuthService) => ({
 					getRefreshToken$: authService.refreshTokenStorage$,
-					setRefreshToken: (refreshToken) =>
-						authService.refreshTokenStorage$.next(refreshToken),
+					setRefreshedTokens: (refreshResponse) => {
+						authService.accessTokenStorage$.next(refreshResponse.accessToken);
+						authService.refreshTokenStorage$.next(refreshResponse.refreshToken);
+					},
 					// endpoint to hit to refresh
 					refreshUrl: `http://localhost/refresh`,
 					// This is not needed here, it's just for reference, refreshUrl is already
@@ -57,8 +59,12 @@ import { AuthService } from './service';
 					// The result of this will be passed to the initials object of HttpRequest
 					refreshRequestBody: () => ({
 						refreshToken: authService.refreshTokenStorage$.value,
+						lifespan: 4,
 					}), // Already has the correct shape, so it's just an identity function
-					transformRefreshResponse: (response) => response,
+					transformRefreshResponse: (response) => {
+						console.log('transformRefreshResponse', response);
+						return response;
+					},
 				}),
 				deps: [AuthService],
 			}

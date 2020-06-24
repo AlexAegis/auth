@@ -18,14 +18,11 @@ import {
 	WHITELISTED_PATH,
 } from '../constants';
 import { RefreshRequest } from '../model';
-import { AuthService, MockServerService } from '../service';
+import { AuthService } from '../service';
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
-	public constructor(
-		private readonly mockBackend: MockServerService,
-		private readonly auth: AuthService
-	) {}
+	public constructor(private readonly auth: AuthService) {}
 
 	public respond(request: HttpRequest<unknown>): Observable<HttpResponse<unknown>> | null {
 		console.log('Trying to fake response', request);
@@ -38,7 +35,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 			console.log('Refreshing', refreshRequest);
 			if (refreshRequest.refreshToken) {
 				if (!isExpired(JwtToken.from(refreshRequest.refreshToken)?.payload.exp)) {
-					return this.makeResponse(this.auth.generateTokenPair());
+					return this.makeResponse(
+						this.auth.generateTokenPair(refreshRequest.lifespan ?? 60)
+					);
 				} else {
 					return throwError('Expired refresh token on refresh route');
 				}
@@ -80,14 +79,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 		request: HttpRequest<unknown>,
 		next: HttpHandler
 	): Observable<HttpEvent<unknown>> {
-		console.log('FakeBackendInterceptor intercepting!');
 		const response = this.respond(request);
-
 		if (response) {
 			return response.pipe(
 				materialize(),
 				delay(500),
-				tap((a) => console.log('responded', a)),
+				tap((a) => console.log('Fake Backend Responded: ', a)),
 				dematerialize()
 			);
 		} else return next.handle(request);

@@ -81,7 +81,7 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse> extend
 	 * ```
 	 *
 	 */
-	setRefreshToken: (response: string) => void;
+	setRefreshedTokens: (response: JwtRefreshResponse) => void;
 
 	/**
 	 * Define an observable that returns the refresh token when subscribed to.
