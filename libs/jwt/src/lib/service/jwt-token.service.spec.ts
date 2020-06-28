@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { catchError, take, tap } from 'rxjs/operators';
+import { catchError, filter, take, tap } from 'rxjs/operators';
 import { JwtModule } from '../jwt.module';
-import { DEFAULT_JWT_CONFIG } from '../model';
+import { DEFAULT_JWT_CONFIG, JwtToken } from '../model';
 import {
 	DEFAULT_JWT_CONFIGURATION_TOKEN,
 	JwtConfigurationProvider,
@@ -46,6 +46,7 @@ describe('JwtTokenService', () => {
 		} as JwtConfigurationProvider).inject(JwtTokenService);
 		return service.accessToken$
 			.pipe(
+				filter((v): v is JwtToken => v !== null),
 				take(1),
 				tap((token) => expect(token).toBeTruthy())
 			)

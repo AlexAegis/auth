@@ -1,7 +1,6 @@
-import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import { BehaviorSubject, EMPTY, from, isObservable, Observable, of } from 'rxjs';
-import { map, startWith, switchMap, tap } from 'rxjs/operators';
+import { map, startWith, switchMap } from 'rxjs/operators';
 import { isExpired, isPromise, isString } from '../function';
 import { JwtConfiguration, JwtRefreshConfiguration, JwtToken, JwtTokenString } from '../model';
 import {
@@ -27,13 +26,11 @@ export class JwtTokenService {
 	 * Consider restricting getToken to observables only so things can be cached
 	 */
 	public readonly rawAccessToken$ = this.jwtConfig$.pipe(
-		tap((config) => console.log('got config in pipe!', config)),
 		switchMap((config) => JwtTokenService.normalizeGetToken(config.getToken)),
 		startWith(null)
 	);
 
 	public readonly rawRefreshToken$ = this.refreshConfig$.pipe(
-		tap((config) => console.log('got refresh config in refresh pipe!', config)),
 		switchMap((config) => config?.getRefreshToken$ || EMPTY),
 		startWith(null)
 	);
@@ -42,8 +39,6 @@ export class JwtTokenService {
 		map((token) => {
 			if (isString(token)) {
 				const jwtToken = JwtToken.from(token);
-				console.log('token', token);
-				console.log('jwtToken', jwtToken);
 				if (!jwtToken) throw new Error('Non-valid token observed');
 				else return jwtToken;
 			} else return null;
@@ -75,12 +70,12 @@ export class JwtTokenService {
 	);
 
 	public constructor(
-		private http: HttpClient,
 		@Inject(JWT_CONFIGURATION_TOKEN)
 		private readonly rawConfig: JwtConfiguration,
 		@Inject(DEFAULT_JWT_CONFIGURATION_TOKEN)
 		private readonly defaultConfig: JwtConfiguration,
 		@Inject(JWT_REFRESH_CONFIGURATION_TOKEN)
+		@Optional()
 		private readonly rawRefreshConfig?: JwtRefreshConfiguration<unknown, unknown>
 	) {}
 

@@ -13,7 +13,6 @@ export class JwtInjectorInterceptor implements HttpInterceptor {
 		request: HttpRequest<unknown>,
 		next: HttpHandler
 	): Observable<HttpEvent<unknown>> {
-		console.log('JwtInterceptor intercepting!');
 		const [domain, path] = separateUrl(request.url);
 		return combineLatest([
 			this.jwtTokenService.rawAccessToken$,

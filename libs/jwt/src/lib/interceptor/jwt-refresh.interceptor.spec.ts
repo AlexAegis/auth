@@ -2,7 +2,11 @@ import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { DEFAULT_JWT_CONFIG, JwtConfiguration } from '../model';
-import { DEFAULT_JWT_CONFIGURATION_TOKEN, JWT_CONFIGURATION_TOKEN } from '../token';
+import {
+	DEFAULT_JWT_CONFIGURATION_TOKEN,
+	JWT_CONFIGURATION_TOKEN,
+	JWT_REFRESH_CONFIGURATION_TOKEN,
+} from '../token';
 import { JwtRefreshInterceptor } from './jwt-refresh.interceptor';
 
 describe('JwtRefreshInterceptor', () => {
@@ -26,6 +30,10 @@ describe('JwtRefreshInterceptor', () => {
 					provide: JWT_CONFIGURATION_TOKEN,
 					useValue: {},
 				},
+				{
+					provide: JWT_REFRESH_CONFIGURATION_TOKEN,
+					useValue: {},
+				},
 			],
 		});
 	});
@@ -36,7 +44,7 @@ describe('JwtRefreshInterceptor', () => {
 		expect(jwtRefreshInterceptor).toBeTruthy();
 	});
 
-	it('should have made a request that has a header injected by the interceptor', () => {
+	it('should have made a request ', () => {
 		TestBed.overrideProvider(JWT_CONFIGURATION_TOKEN, {
 			useValue: {
 				getToken: () => TEST_AUTH_HEADER_VALUE,
@@ -48,9 +56,9 @@ describe('JwtRefreshInterceptor', () => {
 		const httpClient = TestBed.inject(HttpClient);
 		const httpTestingController = TestBed.inject(HttpTestingController);
 
-		httpClient.get<unknown>(TEST_REQUEST_DOMAIN).subscribe();
+		httpClient.get<unknown>('test').subscribe((r) => console.log('adfsdfa', r));
 
-		const mockResult = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
+		const mockResult = httpTestingController.expectOne('test');
 		mockResult.flush({ result: 'okay' });
 		expect(mockResult).toBeTruthy();
 	});
