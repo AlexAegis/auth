@@ -9,7 +9,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import {
-	callIfFunction,
+	callWhenFunction,
 	checkAgainstUrlFilter,
 	isExpired,
 	matchAgainst,
@@ -71,7 +71,7 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 						this.refreshConfig.method ?? HttpMethod.POST,
 						this.refreshConfig.refreshUrl,
 						this.refreshConfig.refreshRequestBody(),
-						callIfFunction(this.refreshConfig.refreshRequestInitials)
+						callWhenFunction(this.refreshConfig.refreshRequestInitials)
 					);
 					return next.handle(refreshRequest).pipe(
 						map((response) => {
