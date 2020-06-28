@@ -196,7 +196,8 @@
 						"jestConfig": "libs/ngrx/jest.config.js",
 						"tsConfig": "libs/ngrx/tsconfig.spec.json",
 						"passWithNoTests": true,
-						"setupFile": "libs/ngrx/src/test-setup.ts"
+						"setupFile": "libs/ngrx/src/test-setup.ts",
+						"codeCoverage": true
 					}
 				}
 			},
@@ -233,7 +234,8 @@
 						"jestConfig": "libs/jwt/jest.config.js",
 						"tsConfig": "libs/jwt/tsconfig.spec.json",
 						"passWithNoTests": true,
-						"setupFile": "libs/jwt/src/test-setup.ts"
+						"setupFile": "libs/jwt/src/test-setup.ts",
+						"codeCoverage": true
 					}
 				}
 			},
@@ -328,7 +330,8 @@
 						"jestConfig": "apps/jwt-demo/jest.config.js",
 						"tsConfig": "apps/jwt-demo/tsconfig.spec.json",
 						"passWithNoTests": true,
-						"setupFile": "apps/jwt-demo/src/test-setup.ts"
+						"setupFile": "apps/jwt-demo/src/test-setup.ts",
+						"codeCoverage": true
 					}
 				}
 			}
