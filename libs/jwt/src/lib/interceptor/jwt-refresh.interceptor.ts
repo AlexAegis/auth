@@ -11,7 +11,7 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import {
 	callWhenFunction,
 	checkAgainstUrlFilter,
-	isExpired,
+	isUnixTimestampExpired,
 	matchAgainst,
 	separateUrl,
 } from '../function';
@@ -57,7 +57,7 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 			// todo make a function out of this
 			const token = jwtHeader.split(jwtScheme)[1];
 			// If the conversion would fail, that would handle the same as an expired token
-			return (isExpired(JwtToken.from(token)?.payload.exp)
+			return (isUnixTimestampExpired(JwtToken.from(token)?.payload.exp)
 				? // If the token is used and is expired, don't even try the request.
 				  throwError('Expired token, refresh first')
 				: // If it seems okay, try the request

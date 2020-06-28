@@ -1,7 +1,7 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import { BehaviorSubject, EMPTY, from, isObservable, Observable, of } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
-import { isExpired, isPromise, isString } from '../function';
+import { isPromise, isString, isUnixTimestampExpired } from '../function';
 import { JwtConfiguration, JwtRefreshConfiguration, JwtToken, JwtTokenString } from '../model';
 import {
 	DEFAULT_JWT_CONFIGURATION_TOKEN,
@@ -62,11 +62,11 @@ export class JwtTokenService {
 	public readonly refreshTokenPayload$ = this.refreshToken$.pipe(map((token) => token?.payload));
 
 	public readonly isAccessTokenExpired$ = this.accessTokenPayload$.pipe(
-		map((payload) => isExpired(payload?.exp))
+		map((payload) => isUnixTimestampExpired(payload?.exp))
 	);
 
 	public readonly isRefreshTokenExpired$ = this.refreshTokenPayload$.pipe(
-		map((payload) => isExpired(payload?.exp))
+		map((payload) => isUnixTimestampExpired(payload?.exp))
 	);
 
 	public constructor(
