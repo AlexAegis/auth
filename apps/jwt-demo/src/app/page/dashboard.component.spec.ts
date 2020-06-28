@@ -8,11 +8,14 @@ describe('DashboardComponent', () => {
 		TestBed.configureTestingModule({
 			imports: [
 				HttpClientModule,
-				JwtModule.forRoot({
-					useValue: {
-						getToken: () => 'authService.accessTokenStorage$',
+				JwtModule.forRoot(
+					{
+						useValue: {
+							getToken: () => 'authService.accessTokenStorage$',
+						},
 					},
-				}),
+					{ useValue: {} }
+				),
 			],
 			declarations: [DashboardComponent],
 		}).compileComponents();
