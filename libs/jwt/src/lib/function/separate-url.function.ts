@@ -1,10 +1,20 @@
-export type URLDomain = string;
-export type URLPath = string;
+export type UrlProtocol = string;
+export type UrlDomain = string;
+export type UrlPath = string;
 
+export interface SeparatedUrl {
+	protocol?: UrlProtocol;
+	domain?: UrlDomain;
+	path?: UrlPath;
+}
 /**
- * TODO: extract protocol too
+ * Returns the url split into parts
  */
-export function separateUrl(url: string): [URLDomain, URLPath] {
-	const urlMatch = url.match(/^(.*:\/\/)?(.*?)(\/(.*))?$/);
-	return [urlMatch?.[2] as URLDomain, urlMatch?.[4] as URLPath];
+export function separateUrl(url: string): SeparatedUrl {
+	const urlMatch = url.match(/^((.*):\/\/)?(.*?)(\/(.*))?$/);
+	return {
+		protocol: urlMatch?.[2] as UrlProtocol,
+		domain: urlMatch?.[3] as UrlDomain,
+		path: urlMatch?.[5] as UrlPath,
+	};
 }

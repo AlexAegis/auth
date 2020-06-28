@@ -13,14 +13,14 @@ export class JwtInjectorInterceptor implements HttpInterceptor {
 		request: HttpRequest<unknown>,
 		next: HttpHandler
 	): Observable<HttpEvent<unknown>> {
-		const [domain, path] = separateUrl(request.url);
+		const separatedUrl = separateUrl(request.url);
 		return combineLatest([
 			this.jwtTokenService.rawAccessToken$,
 			this.jwtTokenService.jwtConfig$,
 		]).pipe(
 			take(1),
 			switchMap(([token, config]) => {
-				if (token && checkAgainstUrlFilter(config, domain, path)) {
+				if (token && checkAgainstUrlFilter(config, separatedUrl)) {
 					let cloned = request.clone({
 						headers: request.headers.set(
 							config.header,

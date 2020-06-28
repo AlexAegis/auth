@@ -37,7 +37,7 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 		request: HttpRequest<unknown>,
 		next: HttpHandler
 	): Observable<HttpEvent<unknown>> {
-		const [domain, path] = separateUrl(request.url);
+		const separatedUrl = separateUrl(request.url);
 
 		const jwtHeaderKey = this.jwtConfig.header ?? this.defaultJwtConfig.header;
 		const jwtScheme = this.jwtConfig.scheme ?? this.defaultJwtConfig.scheme ?? '';
@@ -52,7 +52,7 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 		if (
 			jwtHeader &&
 			!matchAgainst(request.url)(this.refreshConfig.refreshUrl) &&
-			checkAgainstUrlFilter(this.refreshConfig, domain, path)
+			checkAgainstUrlFilter(this.refreshConfig, separatedUrl)
 		) {
 			// todo make a function out of this
 			const token = jwtHeader.split(jwtScheme)[1];
