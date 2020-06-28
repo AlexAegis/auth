@@ -56,9 +56,9 @@ describe('JwtRefreshInterceptor', () => {
 		const httpClient = TestBed.inject(HttpClient);
 		const httpTestingController = TestBed.inject(HttpTestingController);
 
-		httpClient.get<unknown>('test').subscribe((r) => console.log('adfsdfa', r));
+		httpClient.get<unknown>(TEST_REQUEST_DOMAIN).subscribe();
 
-		const mockResult = httpTestingController.expectOne('test');
+		const mockResult = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockResult.flush({ result: 'okay' });
 		expect(mockResult).toBeTruthy();
 	});
