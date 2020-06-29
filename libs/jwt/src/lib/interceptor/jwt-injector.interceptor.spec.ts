@@ -42,6 +42,7 @@ describe('TokenInjectorInterceptor', () => {
 				getToken: () => TEST_AUTH_HEADER_VALUE,
 				header: TEST_AUTH_HEADER,
 				scheme: undefined,
+				handleWithCredentials: false,
 			} as JwtConfiguration,
 		});
 
