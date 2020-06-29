@@ -25,10 +25,12 @@ export interface SeparatedUrl {
 }
 
 /**
- * Returns the url split into parts
+ * Returns the url split into parts, without the separators.
+ * Separator between protocol and domain is `://`, and between domain
+ * and path is `/`.
  */
-export function separateUrl(url: string): SeparatedUrl {
-	const urlMatch = url.match(/^((.*):\/\/)?([^/].*?)?(\/(.*))?$/);
+export function separateUrl(url?: string): SeparatedUrl {
+	const urlMatch = url?.match(/^((.*):\/\/)?([^/].*?)?(\/(.*))?$/);
 	return {
 		protocol: urlMatch?.[2] as UrlProtocol,
 		domain: urlMatch?.[3] as UrlDomain,

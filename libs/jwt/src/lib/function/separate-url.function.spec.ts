@@ -60,6 +60,14 @@ describe('separateUrl', () => {
 		expect(path).toBeUndefined();
 	});
 
+	it('can work with a non-existent url', () => {
+		const { protocol, domain, path } = separateUrl(undefined);
+
+		expect(protocol).toBeUndefined();
+		expect(domain).toBeUndefined();
+		expect(path).toBeUndefined();
+	});
+
 	it('can work with only a path', () => {
 		const { protocol, domain, path } = separateUrl(`/${LONG_PATH}`);
 
