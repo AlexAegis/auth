@@ -17,15 +17,15 @@ export function checkAgainstUrlFilter(
 
 	const protocolWhitelistRulesPass = urlFilter.protocolWhitelist?.some(protocolMatcher) ?? true;
 
-	const protocolBlacklistRulesPass = !urlFilter.protocolBlacklist?.some(protocolMatcher) ?? true;
+	const protocolBlacklistRulesPass = !urlFilter.protocolBlacklist?.some(protocolMatcher);
 
 	const domainWhitelistRulesPass = urlFilter.domainWhitelist?.some(domainMatcher) ?? true;
 
-	const domainBlacklistRulesPass = !urlFilter.domainBlacklist?.some(domainMatcher) ?? true;
+	const domainBlacklistRulesPass = !urlFilter.domainBlacklist?.some(domainMatcher);
 
 	const pathWhitelistRulesPass = urlFilter.pathWhitelist?.some(pathMatcher) ?? true;
 
-	const pathBlacklistRulesPass = !urlFilter.pathBlacklist?.some(pathMatcher) ?? true;
+	const pathBlacklistRulesPass = !urlFilter.pathBlacklist?.some(pathMatcher);
 
 	return (
 		protocolWhitelistRulesPass &&
