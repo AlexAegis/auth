@@ -2,23 +2,30 @@ import { UrlFilter } from '../model';
 import { matchAgainst } from './match-against.function';
 import { SeparatedUrl } from './separate-url.function';
 
+/**
+ * Matches the filter against a separated url. Non-existend rulesets
+ * automatically pass. **Empty whitelist rulesets never pass.** Empty blacklist
+ * rulesets always pass.
+ */
 export function checkAgainstUrlFilter(
 	urlFilter: UrlFilter,
 	{ domain, path, protocol }: SeparatedUrl
 ): boolean {
-	const protocolWhitelistRulesPass =
-		urlFilter.protocolWhitelist?.some(matchAgainst(protocol)) ?? true;
+	const protocolMatcher = matchAgainst(protocol);
+	const domainMatcher = matchAgainst(domain);
+	const pathMatcher = matchAgainst(path);
 
-	const protocolBlacklistRulesPass =
-		!urlFilter.protocolBlacklist?.some(matchAgainst(protocol)) ?? true;
+	const protocolWhitelistRulesPass = urlFilter.protocolWhitelist?.some(protocolMatcher) ?? true;
 
-	const domainWhitelistRulesPass = urlFilter.domainWhitelist?.some(matchAgainst(domain)) ?? true;
+	const protocolBlacklistRulesPass = !urlFilter.protocolBlacklist?.some(protocolMatcher) ?? true;
 
-	const domainBlacklistRulesPass = !urlFilter.domainBlacklist?.some(matchAgainst(domain)) ?? true;
+	const domainWhitelistRulesPass = urlFilter.domainWhitelist?.some(domainMatcher) ?? true;
 
-	const pathWhitelistRulesPass = urlFilter.pathWhitelist?.some(matchAgainst(path)) ?? true;
+	const domainBlacklistRulesPass = !urlFilter.domainBlacklist?.some(domainMatcher) ?? true;
 
-	const pathBlacklistRulesPass = !urlFilter.pathBlacklist?.some(matchAgainst(path)) ?? true;
+	const pathWhitelistRulesPass = urlFilter.pathWhitelist?.some(pathMatcher) ?? true;
+
+	const pathBlacklistRulesPass = !urlFilter.pathBlacklist?.some(pathMatcher) ?? true;
 
 	return (
 		protocolWhitelistRulesPass &&
