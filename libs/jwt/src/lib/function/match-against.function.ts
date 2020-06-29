@@ -6,6 +6,10 @@ export const matchRule = (rule: string | RegExp, against?: string | null): boole
 	else return false;
 };
 
+/**
+ *
+ * @param inverse easy negating when composing
+ */
 export const matchAgainst = (against?: string | null, inverse = false) => (
 	rule: string | RegExp
 ): boolean => (inverse ? !matchRule(rule, against) : matchRule(rule, against));
