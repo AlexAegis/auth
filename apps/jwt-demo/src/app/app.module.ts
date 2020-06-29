@@ -57,7 +57,7 @@ import { AuthService } from './service';
 					// The default is POST, but you can override
 					method: 'POST',
 					// The result of this will be passed to the initials object of HttpRequest
-					refreshRequestBody: () => ({
+					createRefreshRequestBody: () => ({
 						refreshToken: authService.refreshTokenStorage$.value,
 						lifespan: 4,
 					}), // Already has the correct shape, so it's just an identity function

@@ -17,6 +17,28 @@ export const DEFAULT_JWT_CONFIG: Partial<JwtConfiguration> = {
 	handleWithCredentials: true,
 };
 
+export const DEFAULT_JWT_REFRESH_CONFIG: Partial<JwtRefreshConfiguration<unknown, unknown>> = {
+	method: 'POST',
+};
+
+export function applyDefaultsOnJwtConfiguration(
+	jwtConfiguration: JwtRefreshConfiguration<unknown, unknown>
+): JwtRefreshConfiguration<unknown, unknown> {
+	return {
+		...DEFAULT_JWT_CONFIG,
+		...jwtConfiguration,
+	};
+}
+
+export function applyDefaultsOnJwtRefreshConfiguration(
+	jwtRefreshConfiguration: JwtRefreshConfiguration<unknown, unknown>
+): JwtRefreshConfiguration<unknown, unknown> {
+	return {
+		...DEFAULT_JWT_REFRESH_CONFIG,
+		...jwtRefreshConfiguration,
+	};
+}
+
 export interface JwtRefreshResponse {
 	accessToken: string;
 	refreshToken?: string;
@@ -28,6 +50,28 @@ export interface HttpRequestInit {
 	params?: HttpParams;
 	responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
 	withCredentials?: boolean;
+}
+
+/**
+ * TODO: optional generic matcher function
+ */
+export interface HttpErrorFilter {
+	/**
+	 * The error codes on which an act is allowed to happen,
+	 * an empty array means it can't act on anything
+	 *
+	 * @default undefined
+	 */
+	errorCodeWhitelist?: number[];
+
+	/**
+	 * The error codes on which an act is not allowed to happen,
+	 * an empty array (and if undefined) means it can always try a single
+	 * act in case of an error
+	 *
+	 * @default undefined
+	 */
+	errorCodeBlacklist?: number[];
 }
 
 /**
@@ -56,7 +100,9 @@ export interface HttpRequestInit {
  *
  * @default undefined
  */
-export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse> extends UrlFilter {
+export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
+	extends UrlFilter,
+		HttpErrorFilter {
 	/**
 	 * After a successful refresh, this callback will be called.
 	 * You need to define a function which will save the the token in a way
@@ -101,7 +147,7 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse> extend
 	/**
 	 * A callback that should return the body of the request
 	 */
-	refreshRequestBody: () => RefreshRequest;
+	createRefreshRequestBody: () => RefreshRequest;
 	/**
 	 * A callback that should return the defaults on the request
 	 */

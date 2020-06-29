@@ -13,6 +13,10 @@ export const JWT_REFRESH_CONFIGURATION_TOKEN = new InjectionToken<
 	JwtRefreshConfiguration<unknown, unknown>
 >('AegisJwtRefreshConfiguration');
 
+export const DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN = new InjectionToken<
+	Partial<JwtRefreshConfiguration<unknown, unknown>>
+>('DefaultAegisJwtRefreshConfiguration');
+
 /**
  * To provide an {@link AuthTokenConfiguration |  AuthTokenConfiguration}
  */

@@ -1,5 +1,6 @@
 export * from './base64-decoder.function';
 export * from './call-when-function.function';
+export * from './check-against-http-error-filter.function';
 export * from './check-against-url-filter.function';
 export * from './count-in-string.function';
 export * from './function.predicate';

@@ -2,9 +2,10 @@ import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { JwtInjectorInterceptor, JwtRefreshInterceptor } from './interceptor';
-import { DEFAULT_JWT_CONFIG } from './model';
+import { DEFAULT_JWT_CONFIG, DEFAULT_JWT_REFRESH_CONFIG } from './model';
 import {
 	DEFAULT_JWT_CONFIGURATION_TOKEN,
+	DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,
 	JwtConfigurationProvider,
 	JwtModuleConfigurationProvider,
 	JwtModuleRefreshConfigurationProvider,
@@ -113,6 +114,10 @@ export class JwtModule {
 								provide: HTTP_INTERCEPTORS,
 								useClass: JwtRefreshInterceptor,
 								multi: true,
+							},
+							{
+								provide: DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,
+								useValue: DEFAULT_JWT_REFRESH_CONFIG,
 							},
 							createJwtRefreshConfigurationProvider<RefreshRequest, RefreshResponse>(
 								jwtRefreshConfigurationProvider
