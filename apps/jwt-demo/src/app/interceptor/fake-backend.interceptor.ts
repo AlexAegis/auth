@@ -1,4 +1,4 @@
-import { HttpMethod, isExpired, JwtToken } from '@aegis-auth/jwt';
+import { HttpMethod, isUnixTimestampExpired, JwtToken } from '@aegis-auth/jwt';
 import {
 	HttpEvent,
 	HttpHandler,
@@ -34,7 +34,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 			const refreshRequest = request.body as RefreshRequest;
 			console.log('Refreshing', refreshRequest);
 			if (refreshRequest.refreshToken) {
-				if (!isExpired(JwtToken.from(refreshRequest.refreshToken)?.payload.exp)) {
+				if (
+					!isUnixTimestampExpired(JwtToken.from(refreshRequest.refreshToken)?.payload.exp)
+				) {
 					return this.makeResponse(
 						this.auth.generateTokenPair(refreshRequest.lifespan ?? 60)
 					);
@@ -61,7 +63,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 		const jwtHeader = request.headers.get(JWT_HEADER);
 		if (jwtHeader) {
 			const rawJwtToken = jwtHeader.split(JWT_SCHEME)[1];
-			if (!isExpired(JwtToken.from(rawJwtToken)?.payload.exp)) {
+			if (!isUnixTimestampExpired(JwtToken.from(rawJwtToken)?.payload.exp)) {
 				return this.makeResponse(response);
 			} else {
 				return throwError('Expired token on protected route');
