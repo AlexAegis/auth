@@ -11,4 +11,6 @@ describe('matchAgainst', () => {
 	it('can match against a regex', () => expect(fooMatcher(FOO_REGEX)).toBeTruthy());
 	it('cannot match against a different regex', () => expect(fooMatcher(BAR_REGEX)).toBeFalsy());
 	it('cannot match against a different string', () => expect(fooMatcher(BAR)).toBeFalsy());
+	it('can match with an inverted matcher against a different string', () =>
+		expect(matchAgainst(FOO, true)(BAR)).toBeTruthy());
 });
