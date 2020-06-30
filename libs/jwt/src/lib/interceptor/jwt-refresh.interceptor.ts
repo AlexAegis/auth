@@ -72,7 +72,7 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 			const rawToken = jwtHeader.substring((this.jwtConfiguration.scheme ?? '').length);
 			const token = JwtToken.from(rawToken);
 			// If the conversion would fail, that would handle the same as an expired token
-			return (token?.isExpired()
+			return (!token || token.isExpired()
 				? // If the token is used and is expired, don't even try the request.
 				  throwError('Expired token, refresh first')
 				: // If it seems okay, try the request
@@ -108,10 +108,7 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 										this.jwtConfiguration.scheme + refreshResponse.accessToken
 									),
 								});
-								return next.handle(requestWithUpdatedTokens).pipe(
-									// to avoid loops
-									catchError((_e) => next.handle(requestWithUpdatedTokens))
-								);
+								return next.handle(requestWithUpdatedTokens);
 							})
 						);
 					} else return throwError(error);
