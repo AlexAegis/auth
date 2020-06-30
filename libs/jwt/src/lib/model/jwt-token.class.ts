@@ -1,4 +1,5 @@
 import { Base64 } from 'js-base64';
+import { isUnixTimestampExpired } from '../function';
 import { Base64String, decodeJsonLikeBase64 } from '../function/base64-decoder.function';
 
 export type JwtTokenString = string;
@@ -48,7 +49,7 @@ export interface JwtTokenPair {
 }
 
 export class JwtToken {
-	private constructor(
+	public constructor(
 		public header: JwtTokenHeader,
 		public payload: JwtTokenPayload,
 		public signature: string
@@ -76,5 +77,9 @@ export class JwtToken {
 			return null;
 		}
 		return spl as [Base64String, Base64String, Base64String];
+	}
+
+	public isExpired(): boolean {
+		return isUnixTimestampExpired(this.payload.exp);
 	}
 }

@@ -1,6 +1,6 @@
 {
 	"name": "@aegis-auth/jwt",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"scripts": {
 		"release": "semantic-release"
 	},
@@ -11,6 +11,6 @@
 	},
 	"dependencies": {
 		"tslib": "^1.10.0",
-		"js-base64": "^2.5.2"
+		"js-base64": "^2.6.1"
 	}
 }

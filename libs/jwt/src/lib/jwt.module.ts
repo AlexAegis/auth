@@ -2,13 +2,16 @@ import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { JwtInjectorInterceptor, JwtRefreshInterceptor } from './interceptor';
-import { DEFAULT_JWT_CONFIG } from './model';
+import { DEFAULT_JWT_CONFIG, DEFAULT_JWT_REFRESH_CONFIG } from './model';
 import {
 	DEFAULT_JWT_CONFIGURATION_TOKEN,
+	DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,
 	JwtConfigurationProvider,
 	JwtModuleConfigurationProvider,
-	JwtModuleRefreshableConfigurationProvider,
+	JwtModuleRefreshConfigurationProvider,
+	JwtRefreshConfigurationProvider,
 	JWT_CONFIGURATION_TOKEN,
+	JWT_REFRESH_CONFIGURATION_TOKEN,
 } from './token';
 
 /**
@@ -16,28 +19,14 @@ import {
  *
  * @internal
  */
-export function createRefreshableJwtConfigurationProvider<
-	RefreshResponse,
-	A = unknown,
-	B = unknown,
-	C = unknown,
-	D = unknown,
-	E = unknown
->(
-	tokenConfigurationProvider: JwtModuleRefreshableConfigurationProvider<
-		RefreshResponse,
-		A,
-		B,
-		C,
-		D,
-		E
-	>
-): JwtConfigurationProvider<A, B, C, D, E> {
+export function createJwtConfigurationProvider(
+	tokenConfigurationProvider: JwtModuleConfigurationProvider
+): JwtConfigurationProvider {
 	return {
 		provide: JWT_CONFIGURATION_TOKEN,
 		multi: false,
 		...tokenConfigurationProvider,
-	} as JwtConfigurationProvider<A, B, C, D, E>;
+	} as JwtConfigurationProvider;
 }
 
 /**
@@ -45,23 +34,26 @@ export function createRefreshableJwtConfigurationProvider<
  *
  * @internal
  */
-export function createJwtConfigurationProvider<
-	A = unknown,
-	B = unknown,
-	C = unknown,
-	D = unknown,
-	E = unknown
->(
-	tokenConfigurationProvider: JwtModuleConfigurationProvider<A, B, C, D, E>
-): JwtConfigurationProvider<A, B, C, D, E> {
-	return createRefreshableJwtConfigurationProvider<unknown, A, B, C, D, E>(
-		tokenConfigurationProvider
-	);
+export function createJwtRefreshConfigurationProvider<RefreshRequest, RefreshResponse>(
+	tokenRefreshConfigurationProvider: JwtModuleRefreshConfigurationProvider<
+		RefreshRequest,
+		RefreshResponse
+	>
+): JwtRefreshConfigurationProvider<RefreshRequest, RefreshResponse> {
+	return {
+		provide: JWT_REFRESH_CONFIGURATION_TOKEN,
+		multi: false,
+		...tokenRefreshConfigurationProvider,
+	} as JwtRefreshConfigurationProvider<RefreshRequest, RefreshResponse>;
 }
 
 /**
  * This module needs to be configured to use. See the
  * {@link JwtModule#forRoot | forRoot} method for more information.
+ *
+ * TODO: The main configuration will probably have to be split up into multiple
+ * tokens. So that other, plug in configration modules can provide them.
+ * Like Ngrx and Local. They then transform their configs into this common one.
  */
 @NgModule({
 	imports: [CommonModule],
@@ -86,8 +78,22 @@ export class JwtModule {
 	 * @param tokenProvider create with `createAuthTokenProvider` or
 	 * 	`createRefreshableAuthTokenProvider`
 	 */
-	public static forRoot<A = unknown, B = unknown, C = unknown, D = unknown, E = unknown>(
-		jwtModuleConfigurationProvider: JwtModuleConfigurationProvider<A, B, C, D, E>
+	public static forRoot(
+		jwtModuleConfigurationProvider: JwtModuleConfigurationProvider
+	): ModuleWithProviders<JwtModule>;
+	public static forRoot<RefreshRequest, RefreshResponse>(
+		jwtModuleConfigurationProvider: JwtModuleConfigurationProvider,
+		jwtRefreshConfigurationProvider: JwtModuleRefreshConfigurationProvider<
+			RefreshRequest,
+			RefreshResponse
+		>
+	): ModuleWithProviders<JwtModule>;
+	public static forRoot<RefreshRequest, RefreshResponse>(
+		jwtModuleConfigurationProvider: JwtModuleConfigurationProvider,
+		jwtRefreshConfigurationProvider?: JwtModuleRefreshConfigurationProvider<
+			RefreshRequest,
+			RefreshResponse
+		>
 	): ModuleWithProviders<JwtModule> {
 		return {
 			ngModule: JwtModule,
@@ -98,15 +104,26 @@ export class JwtModule {
 					multi: true,
 				},
 				{
-					provide: HTTP_INTERCEPTORS,
-					useClass: JwtRefreshInterceptor,
-					multi: true,
-				},
-				{
 					provide: DEFAULT_JWT_CONFIGURATION_TOKEN,
 					useValue: DEFAULT_JWT_CONFIG,
 				},
-				createJwtConfigurationProvider<A, B, C, D, E>(jwtModuleConfigurationProvider),
+				createJwtConfigurationProvider(jwtModuleConfigurationProvider),
+				...(jwtRefreshConfigurationProvider
+					? [
+							{
+								provide: HTTP_INTERCEPTORS,
+								useClass: JwtRefreshInterceptor,
+								multi: true,
+							},
+							{
+								provide: DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,
+								useValue: DEFAULT_JWT_REFRESH_CONFIG,
+							},
+							createJwtRefreshConfigurationProvider<RefreshRequest, RefreshResponse>(
+								jwtRefreshConfigurationProvider
+							),
+					  ]
+					: []),
 			],
 		};
 	}

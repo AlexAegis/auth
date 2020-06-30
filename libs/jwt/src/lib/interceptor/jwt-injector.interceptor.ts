@@ -1,59 +1,45 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { combineLatest, Observable } from 'rxjs';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
-import { matchAgainst } from '../function';
+import { checkAgainstUrlFilter, intoObservable, separateUrl } from '../function';
 import { JwtConfiguration } from '../model';
-import { JwtTokenService } from '../service';
+import { DEFAULT_JWT_CONFIGURATION_TOKEN, JWT_CONFIGURATION_TOKEN } from '../token';
 
 @Injectable()
 export class JwtInjectorInterceptor implements HttpInterceptor {
-	public constructor(private readonly jwtTokenService: JwtTokenService) {}
+	private readonly jwtConfiguration!: JwtConfiguration;
 
-	private static checkAgainstRules(
-		config: JwtConfiguration,
-		domain?: string,
-		path?: string
-	): boolean {
-		const domainWhitelistRulesPass = config.domainWhitelist?.some(matchAgainst(domain)) ?? true;
-
-		const domainBlacklistRulesPass =
-			!config.domainBlacklist?.some(matchAgainst(domain)) ?? true;
-
-		const pathWhitelistRulesPass = config.pathWhitelist?.some(matchAgainst(path)) ?? true;
-
-		const pathBlacklistRulesPass = !config.pathBlacklist?.some(matchAgainst(path)) ?? true;
-
-		return (
-			domainWhitelistRulesPass &&
-			domainBlacklistRulesPass &&
-			pathWhitelistRulesPass &&
-			pathBlacklistRulesPass
-		);
+	public constructor(
+		@Inject(JWT_CONFIGURATION_TOKEN)
+		jwtConfig: JwtConfiguration,
+		@Inject(DEFAULT_JWT_CONFIGURATION_TOKEN)
+		defaultJwtConfig: JwtConfiguration
+	) {
+		this.jwtConfiguration = {
+			...defaultJwtConfig,
+			...jwtConfig,
+		};
 	}
 
 	public intercept(
 		request: HttpRequest<unknown>,
 		next: HttpHandler
 	): Observable<HttpEvent<unknown>> {
-		const urlMatch = request.url.match(/^(.*:\/\/)?(.*?)(\/(.*))?$/);
-		const domain = urlMatch?.[2];
-		const path = urlMatch?.[4];
-
-		return combineLatest([
-			this.jwtTokenService.tokenString$,
-			this.jwtTokenService.config$,
-		]).pipe(
+		const separatedUrl = separateUrl(request.url);
+		return intoObservable(this.jwtConfiguration.getToken).pipe(
 			take(1),
-			switchMap(([token, config]) => {
-				if (token && JwtInjectorInterceptor.checkAgainstRules(config, domain, path)) {
+			switchMap((token) => {
+				if (token && checkAgainstUrlFilter(this.jwtConfiguration, separatedUrl)) {
 					let cloned = request.clone({
 						headers: request.headers.set(
-							config.header,
-							config.scheme ? config.scheme + token : token
+							this.jwtConfiguration.header,
+							this.jwtConfiguration.scheme
+								? this.jwtConfiguration.scheme + token
+								: token
 						),
 					});
-					if (config.handleWithCredentials) {
+					if (this.jwtConfiguration.handleWithCredentials) {
 						cloned = cloned.clone({
 							withCredentials: true,
 						});

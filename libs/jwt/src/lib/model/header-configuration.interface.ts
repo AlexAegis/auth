@@ -28,7 +28,7 @@ export interface NormalizedHeaderConfiguration extends HeaderConfiguration {
  * })
  * ```
  */
-export interface HeaderConfiguration {
+export interface HeaderConfiguration extends UrlFilter {
 	/**
 	 * A callback or observable that will be called or subscribed to
 	 * on every http request and returns a value for the header
@@ -49,7 +49,9 @@ export interface HeaderConfiguration {
 	 * Header name to be set
 	 */
 	header: string;
+}
 
+export interface UrlFilter {
 	/**
 	 * These domains won't recieve this header even if they are listed in the
 	 * whitelist.

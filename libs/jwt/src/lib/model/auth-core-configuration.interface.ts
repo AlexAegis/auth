@@ -1,29 +1,90 @@
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
 	DEFAULT_HEADER_CONFIG,
 	HeaderConfiguration,
+	UrlFilter,
 } from '../model/header-configuration.interface';
+import { HttpMethodType } from './http-method.enum';
+
+export const DEFAULT_JWT_HEADER = 'Authorization';
+export const DEFAULT_JWT_SCHEME = 'Bearer ';
 
 export const DEFAULT_JWT_CONFIG: Partial<JwtConfiguration> = {
 	...DEFAULT_HEADER_CONFIG,
-	header: 'Authorization',
-	scheme: 'Bearer ',
+	header: DEFAULT_JWT_HEADER,
+	scheme: DEFAULT_JWT_SCHEME,
 	handleWithCredentials: true,
 };
 
+export const DEFAULT_JWT_REFRESH_CONFIG: Partial<JwtRefreshConfiguration<unknown, unknown>> = {
+	method: 'POST',
+};
+
+export interface JwtRefreshResponse {
+	accessToken: string;
+	refreshToken?: string;
+}
+
+export interface HttpRequestInit {
+	headers?: HttpHeaders;
+	reportProgress?: boolean;
+	params?: HttpParams;
+	responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
+	withCredentials?: boolean;
+}
+
 /**
+ * TODO: optional generic matcher function
+ */
+export interface HttpErrorFilter {
+	/**
+	 * The error codes on which an act is allowed to happen,
+	 * an empty array means it can't act on anything
+	 *
+	 * @default undefined
+	 */
+	errorCodeWhitelist?: number[];
+
+	/**
+	 * The error codes on which an act is not allowed to happen,
+	 * an empty array (and if undefined) means it can always try a single
+	 * act in case of an error
+	 *
+	 * @default undefined
+	 */
+	errorCodeBlacklist?: number[];
+}
+
+/**
+ * Enables the RefreshInterceptor which will automatically tries to
+ * refresh the accessToken on expiration or failure on the next request.
+ * If left undefined, the refresh feature for this token definition won't
+ * do anything. If none of the tokendefinitions have autoRefresh enabled
+ * then the RefreshInterceptor won't be loaded.
  * This configuration objects is responsible on how a token should be
  * refreshed.
  *
  * The generic type is meant to describe the shape of the refresh endpoints
  * response. So when you define the `setToken` method you'll get some help.
+ *
+ * @example configuration.
+ * AuthCoreModule.forRoot<TokenStorageService>({
+ *		useFactory: (service: TokenStorageService) => ({
+ *			getToken: service.accessToken$
+ *			autoRefresher: {
+ * 				endpoint: `${environment.api}/auth/refresh`,
+ * 				setToken: (response) => service.accessToken$.next(response.accessToken)
+ * 			}
+ *		}),
+ *		deps: [TokenStorageService],
+ * })
+ *
+ * @default undefined
  */
-export interface TokenRefresher<Response> {
-	/**
-	 * Endpoint to call when the token needs a refresh
-	 */
-	endpoint: string;
-
+export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
+	extends UrlFilter,
+		HttpErrorFilter {
 	/**
 	 * After a successful refresh, this callback will be called.
 	 * You need to define a function which will save the the token in a way
@@ -40,7 +101,7 @@ export interface TokenRefresher<Response> {
 	 *			getToken: service.accessToken$
 	 *			autoRefresher: {
 	 * 				endpoint: `${environment.api}/auth/refresh`,
-	 * 				setToken: (response) => service.accessToken$.next(response.accessToken)
+	 * 				setRefreshToken: (response) => service.accessToken$.next(response.accessToken)
 	 * 			}
 	 *		}),
 	 *		deps: [TokenStorageService],
@@ -48,7 +109,48 @@ export interface TokenRefresher<Response> {
 	 * ```
 	 *
 	 */
-	setToken: (response: Response) => boolean;
+	setRefreshedTokens: (response: JwtRefreshResponse) => void;
+
+	/**
+	 * A callback or observable that can be used to retrieve the refresh token
+	 * Not used in the interceptor unless you use it when defining
+	 * `createRefreshRequestBody` or `refreshRequestInitials`
+	 *
+	 * @example getValue: () => localstorage.get('foo')
+	 * @example getValue: myTokenService.foo$
+	 */
+	getRefreshToken?:
+		| Observable<string | null | undefined>
+		| (() =>
+				| string
+				| null
+				| undefined
+				| Promise<string | null | undefined>
+				| Observable<string | null | undefined>);
+
+	/**
+	 * The method for the request, usually it's a POST so that's the default
+	 *
+	 * @default 'POST'
+	 */
+	method?: HttpMethodType;
+	/**
+	 * The endpoint that will be requested for a new token
+	 */
+	refreshUrl: string;
+	/**
+	 * A callback that should return the body of the request
+	 */
+	createRefreshRequestBody: () => RefreshRequest;
+	/**
+	 * A callback that should return the defaults on the request
+	 */
+	refreshRequestInitials?: (() => HttpRequestInit | undefined) | HttpRequestInit;
+	/**
+	 * This function have to transform the result of your refresh endpoint
+	 * into a digestable form. It will be called after successful refreshes.
+	 */
+	transformRefreshResponse: (response: RefreshResponse) => JwtRefreshResponse;
 }
 
 /**
@@ -71,7 +173,7 @@ export interface TokenRefresher<Response> {
  * })
  * ```
  */
-export interface JwtConfiguration<RefreshResponse = unknown>
+export interface JwtConfiguration<RefreshRequest = unknown, RefreshResponse = unknown>
 	extends Omit<HeaderConfiguration, 'getValue'> {
 	/**
 	 * A callback or observable that will be called or subscribed to
@@ -103,29 +205,6 @@ export interface JwtConfiguration<RefreshResponse = unknown>
 	 * @default 'Authorization'
 	 */
 	header: string;
-
-	/**
-	 * Enables the RefreshInterceptor which will automatically tries to
-	 * refresh the accessToken on expiration or failure on the next request.
-	 * If left undefined, the refresh feature for this token definition won't
-	 * do anything. If none of the tokendefinitions have autoRefresh enabled
-	 * then the RefreshInterceptor won't be loaded.
-	 *
-	 * @example configuration.
-	 * AuthCoreModule.forRoot<TokenStorageService>({
-	 *		useFactory: (service: TokenStorageService) => ({
-	 *			getToken: service.accessToken$
-	 *			autoRefresher: {
-	 * 				endpoint: `${environment.api}/auth/refresh`,
-	 * 				setToken: (response) => service.accessToken$.next(response.accessToken)
-	 * 			}
-	 *		}),
-	 *		deps: [TokenStorageService],
-	 * })
-	 *
-	 * @default undefined
-	 */
-	autoRefresher?: TokenRefresher<RefreshResponse>;
 
 	/**
 	 * Sets the 'withCredentials' to true along with the token

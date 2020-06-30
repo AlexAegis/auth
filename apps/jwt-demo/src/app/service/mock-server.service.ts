@@ -18,7 +18,7 @@ export class MockServerService {
 	public getTokenPair(lifetime = 60): JwtTokenPair {
 		return {
 			accessToken: this.createValidToken(lifetime),
-			refreshToken: this.createValidToken(lifetime * 2),
+			refreshToken: this.createValidToken(lifetime * 20),
 		};
 	}
 
@@ -49,6 +49,6 @@ export class MockServerService {
 	}
 
 	private toBase64(o: Record<string, unknown>) {
-		return Base64.encode(JSON.stringify(o));
+		return Base64.encode(JSON.stringify(o), true);
 	}
 }

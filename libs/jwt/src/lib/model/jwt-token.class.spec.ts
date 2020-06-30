@@ -21,7 +21,9 @@ describe('JwtToken', () => {
 	});
 
 	it("can't be made from empty segments", () => {
+		console.error = jest.fn();
 		const result = JwtToken.from('..');
+		expect(console.error).toHaveBeenCalled();
 		expect(result).toBeNull();
 	});
 });
