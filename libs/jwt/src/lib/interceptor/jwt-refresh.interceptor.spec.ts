@@ -17,6 +17,42 @@ import {
 } from '../token';
 import { JwtRefreshInterceptor } from './jwt-refresh.interceptor';
 
+export const TEST_VALID_TOKEN = 'token';
+export const TEST_EXPIRED_TOKEN = 'expiredToken';
+export const TEST_INVALID_TOKEN = 'invalidToken';
+export const TEST_MALFORMED_TOKEN = 'malformedToken';
+
+export const mockJwtTokenCreation = (): void => {
+	const getCurrentUnixTimestamp = () => new Date().getTime() / 1000;
+	const getValidUnixTimestamp = () => getCurrentUnixTimestamp() + 10000;
+	const getInvalidUnixTimestamp = () => getCurrentUnixTimestamp() - 10000;
+
+	jest.spyOn(JwtToken, 'from').mockImplementation((token) => {
+		switch (token) {
+			case TEST_VALID_TOKEN:
+				return new JwtToken(
+					{ alg: '', typ: '' },
+					{ exp: getValidUnixTimestamp(), iat: getCurrentUnixTimestamp() },
+					''
+				);
+			case TEST_EXPIRED_TOKEN:
+				return new JwtToken(
+					{ alg: '', typ: '' },
+					{ exp: getInvalidUnixTimestamp(), iat: getCurrentUnixTimestamp() },
+					''
+				);
+			case TEST_INVALID_TOKEN:
+				return new JwtToken(
+					{ alg: '', typ: '' },
+					{ exp: getValidUnixTimestamp(), iat: getCurrentUnixTimestamp() },
+					'invalid'
+				);
+			case TEST_MALFORMED_TOKEN:
+			default:
+				return null;
+		}
+	});
+};
 interface TestRefreshRequest {
 	refreshToken: string;
 }
@@ -27,56 +63,16 @@ interface TestRefreshResponse {
 describe('JwtRefreshInterceptor', () => {
 	const TEST_REFRESH_URL = 'refresh';
 	const TEST_AUTH_HEADER = 'TestAuthHeader';
-	const TEST_AUTH_VALID_HEADER_VALUE = 'token';
-	const TEST_AUTH_EXPIRED_HEADER_VALUE = 'expiredToken';
-	const TEST_AUTH_INVALID_HEADER_VALUE = 'invalidToken';
-	const TEST_AUTH_MALFORMED_HEADER_VALUE = 'malformedToken';
+
 	const TEST_REQUEST_DOMAIN = 'test';
 
-	const validHeaders = new HttpHeaders().append(TEST_AUTH_HEADER, TEST_AUTH_VALID_HEADER_VALUE);
-	const expiredHeaders = new HttpHeaders().append(
-		TEST_AUTH_HEADER,
-		TEST_AUTH_EXPIRED_HEADER_VALUE
-	);
-	const invalidHeaders = new HttpHeaders().append(
-		TEST_AUTH_HEADER,
-		TEST_AUTH_INVALID_HEADER_VALUE
-	);
+	const validHeaders = new HttpHeaders().append(TEST_AUTH_HEADER, TEST_VALID_TOKEN);
+	const expiredHeaders = new HttpHeaders().append(TEST_AUTH_HEADER, TEST_EXPIRED_TOKEN);
+	const invalidHeaders = new HttpHeaders().append(TEST_AUTH_HEADER, TEST_INVALID_TOKEN);
 
-	const malformedHeaders = new HttpHeaders().append(
-		TEST_AUTH_HEADER,
-		TEST_AUTH_MALFORMED_HEADER_VALUE
-	);
+	const malformedHeaders = new HttpHeaders().append(TEST_AUTH_HEADER, TEST_MALFORMED_TOKEN);
 
-	const getCurrentUnixTimestamp = () => new Date().getTime() / 1000;
-	const getValidUnixTimestamp = () => getCurrentUnixTimestamp() + 10000;
-	const getInvalidUnixTimestamp = () => getCurrentUnixTimestamp() - 10000;
-
-	jest.spyOn(JwtToken, 'from').mockImplementation((token) => {
-		switch (token) {
-			case TEST_AUTH_VALID_HEADER_VALUE:
-				return new JwtToken(
-					{ alg: '', typ: '' },
-					{ exp: getValidUnixTimestamp(), iat: getCurrentUnixTimestamp() },
-					''
-				);
-			case TEST_AUTH_EXPIRED_HEADER_VALUE:
-				return new JwtToken(
-					{ alg: '', typ: '' },
-					{ exp: getInvalidUnixTimestamp(), iat: getCurrentUnixTimestamp() },
-					''
-				);
-			case TEST_AUTH_INVALID_HEADER_VALUE:
-				return new JwtToken(
-					{ alg: '', typ: '' },
-					{ exp: getValidUnixTimestamp(), iat: getCurrentUnixTimestamp() },
-					'invalid'
-				);
-			case TEST_AUTH_MALFORMED_HEADER_VALUE:
-			default:
-				return null;
-		}
-	});
+	mockJwtTokenCreation();
 
 	const setRefreshedTokensMock = jest.fn();
 
@@ -138,9 +134,7 @@ describe('JwtRefreshInterceptor', () => {
 		});
 	});
 
-	afterEach(() => {
-		jest.clearAllMocks();
-	});
+	afterEach(() => jest.clearAllMocks());
 
 	it('should be created', () => {
 		const interceptors = TestBed.inject(HTTP_INTERCEPTORS);

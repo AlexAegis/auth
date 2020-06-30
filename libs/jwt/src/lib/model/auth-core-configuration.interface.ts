@@ -21,24 +21,6 @@ export const DEFAULT_JWT_REFRESH_CONFIG: Partial<JwtRefreshConfiguration<unknown
 	method: 'POST',
 };
 
-export function applyDefaultsOnJwtConfiguration(
-	jwtConfiguration: JwtRefreshConfiguration<unknown, unknown>
-): JwtRefreshConfiguration<unknown, unknown> {
-	return {
-		...DEFAULT_JWT_CONFIG,
-		...jwtConfiguration,
-	};
-}
-
-export function applyDefaultsOnJwtRefreshConfiguration(
-	jwtRefreshConfiguration: JwtRefreshConfiguration<unknown, unknown>
-): JwtRefreshConfiguration<unknown, unknown> {
-	return {
-		...DEFAULT_JWT_REFRESH_CONFIG,
-		...jwtRefreshConfiguration,
-	};
-}
-
 export interface JwtRefreshResponse {
 	accessToken: string;
 	refreshToken?: string;
@@ -130,10 +112,22 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
 	setRefreshedTokens: (response: JwtRefreshResponse) => void;
 
 	/**
-	 * Define an observable that returns the refresh token when subscribed to.
+	 * A callback or observable that can be used to retrieve the refresh token
+	 * Not used in the interceptor unless you use it when defining
+	 * `createRefreshRequestBody` or `refreshRequestInitials`
 	 *
+	 * @example getValue: () => localstorage.get('foo')
+	 * @example getValue: myTokenService.foo$
 	 */
-	getRefreshToken$?: Observable<string | null | undefined>;
+	getRefreshToken?:
+		| Observable<string | null | undefined>
+		| (() =>
+				| string
+				| null
+				| undefined
+				| Promise<string | null | undefined>
+				| Observable<string | null | undefined>);
+
 	/**
 	 * The method for the request, usually it's a POST so that's the default
 	 *
