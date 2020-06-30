@@ -1810,6 +1810,20 @@
     tsconfig-paths-webpack-plugin "3.2.0"
     webpack-node-externals "1.7.2"
 
+"@nrwl/cypress@9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@nrwl/cypress/-/cypress-9.5.0.tgz#067c8b1c59e9f315b67685054108e115f86e2f81"
+  integrity sha512-qrPg24ECQdvAG6IFAC/psrUxaXlQ1qFKTgQZrnNXrrSkb0xeNmiPhoD5ZYYYUDuAabbq7koEtb9nN0c+eYFqBQ==
+  dependencies:
+    "@angular-devkit/architect" "~0.901.0"
+    "@angular-devkit/core" "~9.1.0"
+    "@cypress/webpack-preprocessor" "~4.1.2"
+    fork-ts-checker-webpack-plugin "^3.1.1"
+    tree-kill "1.2.2"
+    ts-loader "^5.3.1"
+    tsconfig-paths-webpack-plugin "3.2.0"
+    webpack-node-externals "1.7.2"
+
 "@nrwl/eslint-plugin-nx@~9.4.5":
   version "9.4.5"
   resolved "https://registry.yarnpkg.com/@nrwl/eslint-plugin-nx/-/eslint-plugin-nx-9.4.5.tgz#6921228c02688e8afc506580aacc3f0f4d8d2175"
@@ -1826,10 +1840,26 @@
     "@angular-devkit/core" "~9.1.0"
     "@angular-devkit/schematics" "~9.1.0"
 
+"@nrwl/jest@9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@nrwl/jest/-/jest-9.5.0.tgz#e7713a3f18e2226bf2592ecbf65619bc013a9e42"
+  integrity sha512-4Z1faGkY46j0dgqtT8hZVHyv0x1MMGuQ7iCn/yrujt5ErW7BIOHT6aN7YymwMXpyD9QkSZNWi+WlBmMWb++b1g==
+  dependencies:
+    "@angular-devkit/architect" "~0.901.0"
+    "@angular-devkit/core" "~9.1.0"
+    "@angular-devkit/schematics" "~9.1.0"
+
 "@nrwl/linter@9.4.5", "@nrwl/linter@~9.4.5":
   version "9.4.5"
   resolved "https://registry.yarnpkg.com/@nrwl/linter/-/linter-9.4.5.tgz#5a84273ce5ac1dcf87062775e2e69815aad9bf22"
   integrity sha512-I6ypA7GDhAPLF6KL1FzeYvvOXttrPD/H5WgecVxM0FiMSDxvCYvc3+FQJTMAig3V3xfu+hZ2oK5bayJsBzZezg==
+  dependencies:
+    "@angular-devkit/architect" "~0.901.0"
+
+"@nrwl/linter@9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@nrwl/linter/-/linter-9.5.0.tgz#7e4db303ad265e8d14a025901b26aa5a1ea11a40"
+  integrity sha512-Gb+3dp8HVXvBFB5IU3MuurnjXo5wT5CgUkA2HiGUTOcuvKMpifvU/ImcFpESV6T5bCCxxlrVU1D6aE6lHsBrmQ==
   dependencies:
     "@angular-devkit/architect" "~0.901.0"
 
@@ -1870,10 +1900,10 @@
     minimist "^1.2.0"
     strip-json-comments "2.0.1"
 
-"@nrwl/web@~9.4.5":
-  version "9.4.5"
-  resolved "https://registry.yarnpkg.com/@nrwl/web/-/web-9.4.5.tgz#2f582dabdec9854ddd72ba60b4bd3f80446ce9cb"
-  integrity sha512-8WjYRd9KoAe4OkA8MbUQAyI3ZoBNZ/PP6mQGPfKqeKu81cRdUhWtVNlOBIV1aQ3l0tzmKKtnZ0vTBNvmI/IQTw==
+"@nrwl/web@~9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@nrwl/web/-/web-9.5.0.tgz#bc0f9c2520e4b0e177672bbbf3f44582cdaa5a9e"
+  integrity sha512-w+HHbf121FDgcy4OgSM2e0XLmalnm05bAuolDLw565L9Avs/FEZAtQK8gG13W3dOtvUy0J+G3zYwMCQRz+02Pw==
   dependencies:
     "@angular-devkit/architect" "~0.901.0"
     "@angular-devkit/build-optimizer" "~0.901.0"
@@ -1886,9 +1916,9 @@
     "@babel/plugin-transform-regenerator" "7.8.7"
     "@babel/preset-env" "7.9.6"
     "@babel/preset-typescript" "7.9.0"
-    "@nrwl/cypress" "9.4.5"
-    "@nrwl/jest" "9.4.5"
-    "@nrwl/linter" "9.4.5"
+    "@nrwl/cypress" "9.5.0"
+    "@nrwl/jest" "9.5.0"
+    "@nrwl/linter" "9.5.0"
     "@rollup/plugin-babel" "5.0.2"
     "@rollup/plugin-commonjs" "11.0.2"
     "@rollup/plugin-image" "2.0.4"
@@ -2390,6 +2420,17 @@
     eslint-scope "^5.0.0"
     eslint-utils "^2.0.0"
 
+"@typescript-eslint/experimental-utils@3.5.0":
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/experimental-utils/-/experimental-utils-3.5.0.tgz#d09f9ffb890d1b15a7ffa9975fae92eee05597c4"
+  integrity sha512-zGNOrVi5Wz0jcjUnFZ6QUD0MCox5hBuVwemGCew2qJzUX5xPoyR+0EzS5qD5qQXL/vnQ8Eu+nv03tpeFRwLrDg==
+  dependencies:
+    "@types/json-schema" "^7.0.3"
+    "@typescript-eslint/types" "3.5.0"
+    "@typescript-eslint/typescript-estree" "3.5.0"
+    eslint-scope "^5.0.0"
+    eslint-utils "^2.0.0"
+
 "@typescript-eslint/experimental-utils@^2.19.2":
   version "2.34.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/experimental-utils/-/experimental-utils-2.34.0.tgz#d3524b644cdb40eebceca67f8cf3e4cc9c8f980f"
@@ -2400,15 +2441,21 @@
     eslint-scope "^5.0.0"
     eslint-utils "^2.0.0"
 
-"@typescript-eslint/parser@~3.4.0":
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-3.4.0.tgz#fe52b68c5cb3bba3f5d875bd17adb70420d49d8d"
-  integrity sha512-ZUGI/de44L5x87uX5zM14UYcbn79HSXUR+kzcqU42gH0AgpdB/TjuJy3m4ezI7Q/jk3wTQd755mxSDLhQP79KA==
+"@typescript-eslint/parser@~3.5.0":
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-3.5.0.tgz#9ff8c11877c48df24e10e19d7bf542ee0359500d"
+  integrity sha512-sU07VbYB70WZHtgOjH/qfAp1+OwaWgrvD1Km1VXqRpcVxt971PMTU7gJtlrCje0M+Sdz7xKAbtiyIu+Y6QdnVA==
   dependencies:
     "@types/eslint-visitor-keys" "^1.0.0"
-    "@typescript-eslint/experimental-utils" "3.4.0"
-    "@typescript-eslint/typescript-estree" "3.4.0"
+    "@typescript-eslint/experimental-utils" "3.5.0"
+    "@typescript-eslint/types" "3.5.0"
+    "@typescript-eslint/typescript-estree" "3.5.0"
     eslint-visitor-keys "^1.1.0"
+
+"@typescript-eslint/types@3.5.0":
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/types/-/types-3.5.0.tgz#4e3d2a2272268d8ec3e3e4a37152a64956682639"
+  integrity sha512-Dreqb5idi66VVs1QkbAwVeDmdJG+sDtofJtKwKCZXIaBsINuCN7Jv5eDIHrS0hFMMiOvPH9UuOs4splW0iZe4Q==
 
 "@typescript-eslint/typescript-estree@2.34.0":
   version "2.34.0"
@@ -2435,6 +2482,27 @@
     lodash "^4.17.15"
     semver "^7.3.2"
     tsutils "^3.17.1"
+
+"@typescript-eslint/typescript-estree@3.5.0":
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-3.5.0.tgz#dfc895db21a381b84f24c2a719f5bf9c600dcfdc"
+  integrity sha512-Na71ezI6QP5WVR4EHxwcBJgYiD+Sre9BZO5iJK2QhrmRPo/42+b0no/HZIrdD1sjghzlYv7t+7Jis05M1uMxQg==
+  dependencies:
+    "@typescript-eslint/types" "3.5.0"
+    "@typescript-eslint/visitor-keys" "3.5.0"
+    debug "^4.1.1"
+    glob "^7.1.6"
+    is-glob "^4.0.1"
+    lodash "^4.17.15"
+    semver "^7.3.2"
+    tsutils "^3.17.1"
+
+"@typescript-eslint/visitor-keys@3.5.0":
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/visitor-keys/-/visitor-keys-3.5.0.tgz#73c1ea2582f814735e4afdc1cf6f5e3af78db60a"
+  integrity sha512-7cTp9rcX2sz9Z+zua9MCOX4cqp5rYyFD5o8LlbSpXrMTXoRdngTtotRZEkm8+FNMHPWYFhitFK+qt/brK8BVJQ==
+  dependencies:
+    eslint-visitor-keys "^1.1.0"
 
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"
