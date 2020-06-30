@@ -133,7 +133,7 @@
 						"tsConfig": "apps/core-demo/tsconfig.spec.json",
 						"passWithNoTests": true,
 						"setupFile": "apps/core-demo/src/test-setup.ts",
-						"codeCoverage": true
+						"codeCoverage": false
 					}
 				}
 			}
@@ -331,7 +331,7 @@
 						"tsConfig": "apps/jwt-demo/tsconfig.spec.json",
 						"passWithNoTests": true,
 						"setupFile": "apps/jwt-demo/src/test-setup.ts",
-						"codeCoverage": true
+						"codeCoverage": false
 					}
 				}
 			}
