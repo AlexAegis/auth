@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/AlexAegis/auth/compare/v0.1.2...v0.1.3) (2020-06-30)
+
+
+### Features
+
+* **jwt:** implemented the refresh interceptor ([f3f5f27](https://github.com/AlexAegis/auth/commit/f3f5f2725961fbd9ca02869bcea15b779a4cf64d))
+* **jwt:** refresh testing setup ([63d4419](https://github.com/AlexAegis/auth/commit/63d44193b08ba9bcc9525e2177614710af2018a6))
+* **jwt:** separate url now matches only paths too ([5084c9e](https://github.com/AlexAegis/auth/commit/5084c9e58afc841659336401fd70c08b12550516))
+* **jwt:** separate url now supports optional input ([3c56b47](https://github.com/AlexAegis/auth/commit/3c56b47c62bdfb5e613b7f046086d9f6cb588110))
+* **jwt:** split refreshconfig off ([d3e7103](https://github.com/AlexAegis/auth/commit/d3e710356399a8bb173b2af4059642a4c2da549e))
+
 ### [0.1.2](https://github.com/AlexAegis/auth/compare/v0.1.1...v0.1.2) (2020-06-18)
 
 ### [0.1.1](https://github.com/AlexAegis/auth/compare/v0.0.0...v0.1.1) (2020-06-14)
