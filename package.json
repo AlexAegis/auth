@@ -72,7 +72,7 @@
 	},
 	"dependencies": {
 		"@angular/animations": "~9.1.11",
-		"@angular/common": "~9.1.11",
+		"@angular/common": "~10.0.1",
 		"@angular/compiler": "~9.1.11",
 		"@angular/core": "~9.1.11",
 		"@angular/forms": "~9.1.11",
