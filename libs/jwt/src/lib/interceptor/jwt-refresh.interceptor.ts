@@ -78,13 +78,12 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 				: // If it seems okay, try the request
 				  next.handle(request)
 			).pipe(
-				catchError((error: HttpErrorResponse) => {
+				catchError((error: HttpErrorResponse | string) => {
 					// If the request failed, or we failed at the precheck
 					// Acquire a new token, but only if the error is allowing it
-					const isRefreshAllowed = checkAgainstHttpErrorFilter(
-						this.jwtRefreshConfiguration,
-						error
-					);
+					const isRefreshAllowed =
+						typeof error === 'string' ||
+						checkAgainstHttpErrorFilter(this.jwtRefreshConfiguration, error);
 					if (isRefreshAllowed) {
 						const refreshRequest = new HttpRequest<unknown>(
 							this.jwtRefreshConfiguration.method ?? 'POST',
