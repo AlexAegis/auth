@@ -126,7 +126,7 @@
 		"remark-lint": "~7.0.0",
 		"remark-lint-maximum-line-length": "~2.0.1",
 		"remark-preset-lint-consistent": "~3.0.0",
-		"remark-preset-lint-recommended": "~4.0.0",
+		"remark-preset-lint-recommended": "~4.0.1",
 		"rimraf": "~3.0.2",
 		"rollup": "~2.18.1",
 		"rollup-plugin-gzip": "~2.5.0",
