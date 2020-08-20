@@ -19,7 +19,7 @@ export declare interface TypedValueProvider<T> extends TypedValueSansProvider<T>
 }
 
 export declare interface TypedValueSansProvider<T> extends ValueSansProvider {
-	useValue?: T;
+	useValue: T;
 }
 
 export declare type TypedTypeProvider<T> = Type<T>;
@@ -28,7 +28,7 @@ export declare interface TypedClassProvider<T> extends TypedClassSansProvider<T>
 	multi?: boolean;
 }
 export declare interface TypedClassSansProvider<T> extends ClassSansProvider {
-	useClass?: Type<T>;
+	useClass: Type<T>;
 }
 export declare interface TypedConstructorProvider<T> extends TypedConstructorSansProvider<T> {
 	provide: Type<T | T[]>;
@@ -44,7 +44,7 @@ export declare interface TypedExistingProvider<T> extends TypedExistingSansProvi
 }
 
 export declare interface TypedExistingSansProvider<T> extends ExistingSansProvider {
-	useExisting?: InjectionToken<T | T[]>;
+	useExisting: InjectionToken<T | T[]>;
 }
 
 export declare interface TypedFactoryProvider<
@@ -135,7 +135,7 @@ export declare interface TypedFactorySansProvider<
 	Y = any,
 	Z = any
 > extends FactorySansProvider {
-	useFactory?: (
+	useFactory: (
 		a: A,
 		b: B,
 		c: C,

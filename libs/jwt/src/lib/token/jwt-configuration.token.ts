@@ -35,12 +35,13 @@ export type JwtRefreshConfigurationProvider<RefreshRequest, RefreshResponse> = T
  * {@link createRefreshableAuthTokenProvider | createRefreshableAuthTokenProvider }
  * function
  */
-export type JwtModuleConfigurationProvider = Omit<
-	TypedProvider<Partial<JwtConfiguration>>,
-	'provide' | 'multi'
+export type JwtModuleConfigurationProvider = Partial<
+	Omit<TypedProvider<Partial<JwtConfiguration>>, 'provide' | 'multi'>
 >;
 
-export type JwtModuleRefreshConfigurationProvider<RefreshRequest, RefreshResponse> = Omit<
-	TypedProvider<Partial<JwtRefreshConfiguration<RefreshRequest, RefreshResponse>>>,
-	'provide' | 'multi'
+export type JwtModuleRefreshConfigurationProvider<RefreshRequest, RefreshResponse> = Partial<
+	Omit<
+		TypedProvider<Partial<JwtRefreshConfiguration<RefreshRequest, RefreshResponse>>>,
+		'provide' | 'multi'
+	>
 >;

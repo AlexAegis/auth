@@ -23,5 +23,9 @@
 			"@aegis-auth/jwt": ["libs/jwt/src/index.ts"]
 		}
 	},
+	"angularCompilerOptions": {
+		"enableIvy": true,
+		"fullTemplateTypeCheck": true
+	},
 	"exclude": ["node_modules", "tmp"]
 }
