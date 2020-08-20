@@ -21,14 +21,14 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .github/version.txt
-          key: ${{ runner.os }}-${{ hashFiles('.github/version.txt') }}
+          key: version-${{ hashFiles('.github/version.txt') }}
       - name: Setup Node.js
         if: steps.cache-version.outputs.cache-hit != 'true'
         uses: actions/setup-node@v1
         with:
           node-version: 14
       - name: Install dependencies
-        if: steps.cache-version.outputs.cache-hit != 'true' && steps.cache-packages.outputs.cache-hit != 'true'
+        if: steps.cache-version.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
       - name: Build Library
         if: steps.cache-version.outputs.cache-hit != 'true'
@@ -39,5 +39,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          yarn config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
-          yarn publish ./dist/libs/jwt --access public
+          npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
+          npm publish ./dist/libs/jwt --access public
