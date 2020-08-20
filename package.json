@@ -63,6 +63,7 @@
 		"ncu:u": "ncu -u",
 		"docs": "typedoc libs",
 		"update": "ng update @nrwl/workspace",
+		"update:all": "nx update --all --force",
 		"workspace-schematic": "nx workspace-schematic",
 		"dep-graph": "nx dep-graph",
 		"help": "nx help",

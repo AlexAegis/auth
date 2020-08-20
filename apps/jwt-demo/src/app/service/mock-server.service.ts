@@ -1,5 +1,6 @@
 import { JwtTokenPair, JwtTokenPayload } from '@aegis-auth/jwt';
 import { Injectable } from '@angular/core';
+import Base64 from 'js-base64';
 
 @Injectable({
 	providedIn: 'root',
