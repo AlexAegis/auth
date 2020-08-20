@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/AlexAegis/auth/compare/v0.1.3...v0.1.4) (2020-08-20)
+
+
+### Features
+
+* disable test cache on ci ([990b691](https://github.com/AlexAegis/auth/commit/990b6918c0043b58dd004ac3f32faa4091f2d1c2))
+* readme updater [#69](https://github.com/AlexAegis/auth/issues/69) ([4f87b65](https://github.com/AlexAegis/auth/commit/4f87b6554c91b1921999e2ad1c210ca72f8b4850))
+
 ### [0.1.3](https://github.com/AlexAegis/auth/compare/v0.1.2...v0.1.3) (2020-06-30)
 
 
