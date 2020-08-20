@@ -315,7 +315,7 @@ describe('JwtTokenService', () => {
 
 		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
 			useValue: undefined,
-		} as JwtRefreshConfigurationProvider<unknown, unknown>);
+		});
 
 		service = TestBed.inject(JwtTokenService);
 		const accessTokenObservables = [
