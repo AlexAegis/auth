@@ -18,6 +18,10 @@ module.exports = {
 			filename: 'readme.md',
 			updater: 'tools/updaters/readme-updater.js',
 		},
+		{
+			filename: '.github/version.txt',
+			type: 'plain-text',
+		},
 		...libs,
 	],
 	skip: {

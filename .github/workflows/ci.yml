@@ -17,9 +17,9 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 1
-      - name: Cache
+      - name: Cache Packages
         id: cache-packages
-        uses: actions/cache@v1.2.0
+        uses: actions/cache@v2
         with:
           path: node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
@@ -66,7 +66,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install packages
         if: steps.cache-packages.outputs.cache-hit != 'true'
-        run: yarn install
+        run: yarn install --frozen-lockfile
       - name: Test
         run: yarn test:skip-cache
       - name: Upload coverage result to codacy
