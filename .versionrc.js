@@ -12,5 +12,17 @@ const libs = foldersToCheck
 	.filter((p) => fs.existsSync(p));
 
 module.exports = {
-	bumpFiles: ['package.json', ...libs],
+	bumpFiles: [
+		'package.json',
+		{
+			filename: 'readme.md',
+			updater: 'tools/updaters/readme-updater.js',
+		},
+		...libs,
+	],
+	skip: {
+		commit: false,
+		changelog: false,
+		tag: false,
+	},
 };
