@@ -43,3 +43,7 @@ Thumbs.db
 # generated docs
 
 typedocs
+
+# NX
+
+.cache

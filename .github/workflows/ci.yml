@@ -68,7 +68,7 @@ jobs:
         if: steps.cache-packages.outputs.cache-hit != 'true'
         run: yarn install
       - name: Test
-        run: yarn test
+        run: yarn test:skip-cache
       - name: Upload coverage result to codacy
         run: |
           export CODACY_PROJECT_TOKEN=${{ secrets.CODACY_PROJECT_TOKEN }}
