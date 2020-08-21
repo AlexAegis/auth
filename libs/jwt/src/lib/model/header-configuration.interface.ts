@@ -56,7 +56,7 @@ export interface UrlFilter {
 	 * These domains won't recieve this header even if they are listed in the
 	 * whitelist.
 	 *
-	 * If null or undefined, this category of rules won't take any effect.
+	 * If `null` or `undefined`, this category of rules won't take any effect.
 	 * If empty, it would mean "No domains are blacklisted", and it won't
 	 * take any effect.
 	 *
@@ -69,7 +69,7 @@ export interface UrlFilter {
 	/**
 	 * Only domains listed will be recieving header injections
 	 *
-	 * If null or undefined, this category of rules won't take any effect.
+	 * If `null` or `undefined`, this category of rules won't take any effect.
 	 * If empty, it would mean "No domains are whitelisted", so no paths would
 	 * recieve tokens!
 	 *
@@ -83,7 +83,7 @@ export interface UrlFilter {
 	 * These paths won't recieve this header even if they are listed in the
 	 * whitelist.
 	 *
-	 * If null or undefined, this category of rules won't take any effect.
+	 * If `null` or `undefined`, this category of rules won't take any effect.
 	 * If empty, it would mean "No paths are blacklisted", and it won't
 	 * take any effect.
 	 *
@@ -96,7 +96,7 @@ export interface UrlFilter {
 	/**
 	 * Only paths listed will be recieving this header injection.
 	 *
-	 * If null or undefined, this category of rules won't take any effect.
+	 * If `null` or `undefined`, this category of rules won't take any effect.
 	 * If empty, it would mean "No paths are whitelisted", so no paths would
 	 * recieve tokens!
 	 *
@@ -110,7 +110,7 @@ export interface UrlFilter {
 	 * These protocols won't recieve this header even if they are listed in
 	 * the whitelist.
 	 *
-	 * If null or undefined, this category of rules won't take any effect.
+	 * If `null` or `undefined`, this category of rules won't take any effect.
 	 * If empty, it would mean "No protocols are blacklisted", and it won't
 	 * take any effect.
 	 *

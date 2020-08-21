@@ -1,6 +1,6 @@
 import { Inject, Injectable, Optional } from '@angular/core';
-import { BehaviorSubject, of } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { intoObservable, isString, isUnixTimestampExpired } from '../function';
 import { JwtConfiguration, JwtRefreshConfiguration, JwtToken } from '../model';
 import {
@@ -13,42 +13,40 @@ import {
 @Injectable({
 	providedIn: 'root',
 })
-export class JwtTokenService {
-	public readonly config$ = new BehaviorSubject<JwtConfiguration>({
+export class JwtTokenService<
+	Claims = Record<string | number, unknown>,
+	RefreshClaims = Record<string | number, unknown>,
+	RefreshRequest = Record<string | number, unknown>,
+	RefreshResponse = Record<string | number, unknown>
+> {
+	private readonly config: JwtConfiguration = {
 		...this.rawDefaultConfig,
 		...this.rawConfig,
-	});
+	};
 
-	public readonly refreshConfig$ = new BehaviorSubject<
-		JwtRefreshConfiguration<unknown, unknown> | undefined
-	>(
+	private readonly refreshConfig:
+		| JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
+		| undefined =
 		this.rawDefaultRefreshConfig && this.rawRefreshConfig
 			? {
 					...this.rawDefaultRefreshConfig,
 					...this.rawRefreshConfig,
 			  }
-			: undefined
-	);
+			: undefined;
 
 	/**
 	 * Consider restricting getToken to observables only so things can be cached
 	 */
-	public readonly rawAccessToken$ = this.config$.pipe(
-		mergeMap((config) => intoObservable(config.getToken))
-	);
+	public readonly rawAccessToken$ = intoObservable(this.config.getToken);
 
-	public readonly rawRefreshToken$ = this.refreshConfig$.pipe(
-		mergeMap((refreshConfig) =>
-			refreshConfig?.getRefreshToken
-				? intoObservable(refreshConfig.getRefreshToken)
-				: of(null)
-		)
-	);
+	public readonly rawRefreshToken$ = this.refreshConfig?.getRefreshToken
+		? intoObservable(this.refreshConfig.getRefreshToken)
+		: of(null);
 
 	public readonly accessToken$ = this.rawAccessToken$.pipe(
 		map((token) => {
 			if (isString(token)) {
-				const jwtToken = JwtToken.from(token);
+				const jwtToken = JwtToken.from<Claims>(token);
 				if (!jwtToken) throw new Error('Non-valid token observed');
 				else return jwtToken;
 			} else return null;
@@ -58,7 +56,7 @@ export class JwtTokenService {
 	public readonly refreshToken$ = this.rawRefreshToken$.pipe(
 		map((refreshToken) => {
 			if (isString(refreshToken)) {
-				const jwtToken = JwtToken.from(refreshToken);
+				const jwtToken = JwtToken.from<RefreshClaims>(refreshToken);
 				if (!jwtToken) throw new Error('Non-valid token observed');
 				else return jwtToken;
 			} else return null;
@@ -94,9 +92,12 @@ export class JwtTokenService {
 		private readonly rawDefaultConfig: JwtConfiguration,
 		@Inject(DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN)
 		@Optional()
-		private readonly rawDefaultRefreshConfig?: JwtRefreshConfiguration<unknown, unknown>,
+		private readonly rawDefaultRefreshConfig?: JwtRefreshConfiguration<
+			RefreshRequest,
+			RefreshResponse
+		>,
 		@Inject(JWT_REFRESH_CONFIGURATION_TOKEN)
 		@Optional()
-		private readonly rawRefreshConfig?: JwtRefreshConfiguration<unknown, unknown>
+		private readonly rawRefreshConfig?: JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
 	) {}
 }

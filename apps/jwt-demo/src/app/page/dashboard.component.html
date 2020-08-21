@@ -1,10 +1,22 @@
 <h1>{{ title }}</h1>
-<p>Open the network tab to see the injected tokens!</p>
-
+<p>
+	Open the console! Press Login to acqure a new token-pair, then try making requests towards the
+	first endpoint, and watch the token change everytime you try to make a request when it's
+	expired!
+</p>
+<p>
+	You won't see the requests hit the Network tab as this example is served by an interceptor!
+	Custom URL however will get through!
+</p>
+<p>
+	The refresh token's lifetime is always 3 times as long as the access tokens! If you wait
+	{{ (lifespan || defaultLifespan) * 3 }} seconds, then your request will fail, and you would have
+	to log in again!
+</p>
 <div>
 	<button (click)="login()">Login (Create token)</button>
 	<span>Lifespan (seconds):</span>
-	<input #lifespan type="number" placeholder="60" />
+	<input [(ngModel)]="lifespan" type="number" [placeholder]="defaultLifespan" />
 </div>
 <button (click)="logout()">Logout (Remove token)</button>
 

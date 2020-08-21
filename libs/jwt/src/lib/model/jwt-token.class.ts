@@ -6,38 +6,56 @@ export type JwtTokenString = string;
 export type UnixTime = number;
 
 export interface JwtTokenHeader {
-	alg: string; // Algorithm used to encode the signature
-	typ: string; // Type of token
+	/**
+	 * Media type
+	 */
+	typ?: string;
+	/**
+	 * Content Type
+	 */
+	cty?: 'JWT' | string;
+	/**
+	 * Algorithm
+	 */
+	alg: string;
+	/**
+	 * Encryption
+	 */
+	enc?: string;
 }
 
+/**
+ * Registered claim names defined in RFC 7519 are predefined here.
+ */
 export interface JwtTokenPayload {
-	nonce?: string;
-	/**
-	 * Audience
-	 *
-	 * validated against a client ID
-	 */
-	aud?: string;
 	/**
 	 * Issuer
 	 */
 	iss?: string;
 	/**
-	 * Issued at
-	 */
-	iat: UnixTime;
-	/**
-	 * Expires at
-	 */
-	exp?: UnixTime;
-	/**
 	 * Subject
 	 */
 	sub?: string;
 	/**
-	 * Claims
+	 * Audience
 	 */
-	[key: string]: unknown;
+	aud?: string;
+	/**
+	 * Expiration Time
+	 */
+	exp: UnixTime;
+	/**
+	 * Not Before
+	 */
+	nbf?: UnixTime;
+	/**
+	 * Issued at
+	 */
+	iat?: UnixTime;
+	/**
+	 * JWT ID
+	 */
+	jti?: string;
 }
 
 /**
@@ -48,24 +66,26 @@ export interface JwtTokenPair {
 	refreshToken: JwtTokenString;
 }
 
-export class JwtToken {
+export class JwtToken<Claims = Record<string | number, unknown>> {
 	public constructor(
 		public header: JwtTokenHeader,
-		public payload: JwtTokenPayload,
+		public payload: JwtTokenPayload & Claims,
 		public signature: string
 	) {}
 	public static JWT_TOKEN_SEPARATOR = '.';
 
-	public static from(token: JwtTokenString): JwtToken | null {
+	public static from<Claims = Record<string | number, unknown>>(
+		token: JwtTokenString
+	): JwtToken<Claims> | null {
 		const convertedSegments = JwtToken.splitTokenString(token);
 		if (!convertedSegments) return null;
 
 		const header = decodeJsonLikeBase64<JwtTokenHeader>(convertedSegments[0]);
-		const payload = decodeJsonLikeBase64<JwtTokenPayload>(convertedSegments[1]);
+		const payload = decodeJsonLikeBase64<JwtTokenPayload & Claims>(convertedSegments[1]);
 		const signature = Base64.decode(convertedSegments[2]); // Not used, only for validation
 		if (!header || !payload || !signature) return null;
 
-		return new JwtToken(header, payload, signature);
+		return new JwtToken<Claims>(header, payload, signature);
 	}
 
 	public static splitTokenString(

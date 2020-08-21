@@ -222,6 +222,7 @@ describe('JwtRefreshInterceptor', () => {
 				},
 				refreshUrl: TEST_REFRESH_URL,
 				setRefreshedTokens: setRefreshedTokensMock,
+				errorCodeWhitelist: undefined,
 				transformRefreshResponse: (response) => {
 					return response;
 				},
@@ -260,6 +261,7 @@ describe('JwtRefreshInterceptor', () => {
 				},
 				refreshUrl: TEST_REFRESH_URL,
 				setRefreshedTokens: setRefreshedTokensMock,
+				errorCodeWhitelist: undefined,
 				transformRefreshResponse: (response) => {
 					return response;
 				},
@@ -334,9 +336,9 @@ describe('JwtRefreshInterceptor', () => {
 						refreshToken: 'token',
 					};
 				},
-				errorCodeWhitelist: [500],
 				refreshUrl: TEST_REFRESH_URL,
 				setRefreshedTokens: setRefreshedTokensMock,
+				errorCodeWhitelist: [500],
 				transformRefreshResponse: (response) => {
 					return response;
 				},
@@ -414,6 +416,7 @@ describe('JwtRefreshInterceptor', () => {
 				},
 				refreshUrl: TEST_REFRESH_URL,
 				setRefreshedTokens: setRefreshedTokensMock,
+				errorCodeWhitelist: undefined,
 				transformRefreshResponse: (response) => {
 					return response;
 				},
@@ -452,6 +455,7 @@ describe('JwtRefreshInterceptor', () => {
 				},
 				refreshUrl: TEST_REFRESH_URL,
 				setRefreshedTokens: setRefreshedTokensMock,
+				errorCodeWhitelist: undefined,
 				transformRefreshResponse: (response) => {
 					return response;
 				},
@@ -537,6 +541,7 @@ describe('JwtRefreshInterceptor', () => {
 				},
 				refreshUrl: TEST_REFRESH_URL,
 				setRefreshedTokens: setRefreshedTokensMock,
+				errorCodeWhitelist: undefined,
 				transformRefreshResponse: (response) => {
 					return response;
 				},

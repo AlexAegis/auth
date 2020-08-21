@@ -19,6 +19,7 @@ export const DEFAULT_JWT_CONFIG: Partial<JwtConfiguration> = {
 
 export const DEFAULT_JWT_REFRESH_CONFIG: Partial<JwtRefreshConfiguration<unknown, unknown>> = {
 	method: 'POST',
+	errorCodeWhitelist: [401],
 };
 
 export interface JwtRefreshResponse {
@@ -42,7 +43,7 @@ export interface HttpErrorFilter {
 	 * The error codes on which an act is allowed to happen,
 	 * an empty array means it can't act on anything
 	 *
-	 * @default undefined
+	 * @default [401]
 	 */
 	errorCodeWhitelist?: number[];
 
@@ -58,15 +59,23 @@ export interface HttpErrorFilter {
 
 /**
  * Enables the RefreshInterceptor which will automatically tries to
- * refresh the accessToken on expiration or failure on the next request.
- * If left undefined, the refresh feature for this token definition won't
- * do anything. If none of the tokendefinitions have autoRefresh enabled
- * then the RefreshInterceptor won't be loaded.
- * This configuration objects is responsible on how a token should be
- * refreshed.
+ * refresh the accessToken on expiration or failure of the next request.
  *
- * The generic type is meant to describe the shape of the refresh endpoints
- * response. So when you define the `setToken` method you'll get some help.
+ * Because handling refreshes is not standardized, instead of asking for the
+ * refresh token directly I ask you to provide the request itself, however you
+ * like to. In these callbacks you can access your refreshToken wherever you
+ * store it.
+ *
+ * You can still configure a `getRefreshToken` property but it's optional,
+ * not used in the interceptor at all, and is only used in the helper service.
+ * If you do not with to interact with the parsed refreshToken (Usually you
+ * don't need to) you can leave that out. But it's there if you might need it.
+ *
+ * The reason it's configured through multiple properties instead of a callback
+ * where I let you do the refresh request however you see fit is to make sure the
+ * refreshUrl is known to avoid potentional infinite requests when hitting the
+ * refresh endpoint. This way you don't have to remember setting this into the
+ * url filter manually.
  *
  * @example configuration.
  * AuthCoreModule.forRoot<TokenStorageService>({
@@ -112,23 +121,6 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
 	setRefreshedTokens: (response: JwtRefreshResponse) => void;
 
 	/**
-	 * A callback or observable that can be used to retrieve the refresh token
-	 * Not used in the interceptor unless you use it when defining
-	 * `createRefreshRequestBody` or `refreshRequestInitials`
-	 *
-	 * @example getValue: () => localstorage.get('foo')
-	 * @example getValue: myTokenService.foo$
-	 */
-	getRefreshToken?:
-		| Observable<string | null | undefined>
-		| (() =>
-				| string
-				| null
-				| undefined
-				| Promise<string | null | undefined>
-				| Observable<string | null | undefined>);
-
-	/**
 	 * The method for the request, usually it's a POST so that's the default
 	 *
 	 * @default 'POST'
@@ -151,6 +143,30 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
 	 * into a digestable form. It will be called after successful refreshes.
 	 */
 	transformRefreshResponse: (response: RefreshResponse) => JwtRefreshResponse;
+
+	/**
+	 * Optional!
+	 *
+	 * Not used in the refresh mechanic! See `createRefreshRequestBody` if you
+	 * need to provide the `refreshToken` in the body when making the refresh
+	 * request or `refreshRequestInitials` when it's handled in a header!
+	 *
+	 * A callback or observable that can be used to retrieve the refresh token
+	 * Not used in the interceptor! it is only used in the helper service if
+	 * you with to interact with the parsed refreshToken throught the helper
+	 * observables. If you do not, you don't have to implement this.
+	 *
+	 * @example getValue: () => localstorage.get('foo')
+	 * @example getValue: myTokenService.foo$
+	 */
+	getRefreshToken?:
+		| Observable<string | null | undefined>
+		| (() =>
+				| string
+				| null
+				| undefined
+				| Promise<string | null | undefined>
+				| Observable<string | null | undefined>);
 }
 
 /**
@@ -173,8 +189,7 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
  * })
  * ```
  */
-export interface JwtConfiguration<RefreshRequest = unknown, RefreshResponse = unknown>
-	extends Omit<HeaderConfiguration, 'getValue'> {
+export interface JwtConfiguration extends Omit<HeaderConfiguration, 'getValue'> {
 	/**
 	 * A callback or observable that will be called or subscribed to
 	 * on every http request and returns a value for the header

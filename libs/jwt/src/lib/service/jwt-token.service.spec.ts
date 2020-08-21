@@ -95,12 +95,7 @@ describe('JwtTokenService', () => {
 			service.isRefreshTokenExpired$.pipe(tap((n) => expect(n).toBe(true))),
 		];
 
-		return zip(
-			service.config$.pipe(tap((c) => expect(c).toBeTruthy())),
-			service.refreshConfig$.pipe(tap((c) => expect(c).toBeTruthy())),
-			...accessTokenObservables,
-			...refreshTokenObservables
-		)
+		return zip(...accessTokenObservables, ...refreshTokenObservables)
 			.pipe(
 				take(1),
 				tap(() => expect(mockGetToken).toBeCalledTimes(accessTokenObservables.length)),
@@ -148,12 +143,7 @@ describe('JwtTokenService', () => {
 			service.isRefreshTokenExpired$.pipe(tap((n) => expect(n).toBe(false))),
 		];
 
-		return zip(
-			service.config$.pipe(tap((c) => expect(c).toBeTruthy())),
-			service.refreshConfig$.pipe(tap((c) => expect(c).toBeTruthy())),
-			...accessTokenObservables,
-			...refreshTokenObservables
-		)
+		return zip(...accessTokenObservables, ...refreshTokenObservables)
 			.pipe(
 				take(1),
 				tap(() => expect(mockGetToken).toBeCalledTimes(accessTokenObservables.length)),
@@ -234,12 +224,7 @@ describe('JwtTokenService', () => {
 			),
 		];
 
-		return zip(
-			service.config$.pipe(tap((c) => expect(c).toBeTruthy())),
-			service.refreshConfig$.pipe(tap((c) => expect(c).toBeTruthy())),
-			...accessTokenObservables,
-			...refreshTokenObservables
-		)
+		return zip(...accessTokenObservables, ...refreshTokenObservables)
 			.pipe(
 				take(1),
 				tap(() => expect(mockGetToken).toBeCalledTimes(accessTokenObservables.length)),
@@ -288,12 +273,7 @@ describe('JwtTokenService', () => {
 			service.isRefreshTokenExpired$.pipe(tap((n) => expect(n).toBe(true))),
 		];
 
-		return zip(
-			service.config$.pipe(tap((c) => expect(c).toBeTruthy())),
-			service.refreshConfig$.pipe(tap((c) => expect(c).toBeTruthy())),
-			...accessTokenObservables,
-			...refreshTokenObservables
-		)
+		return zip(...accessTokenObservables, ...refreshTokenObservables)
 			.pipe(
 				take(1),
 				tap(() => expect(mockGetToken).toBeCalledTimes(accessTokenObservables.length)),
@@ -333,13 +313,7 @@ describe('JwtTokenService', () => {
 			service.refreshTokenPayload$.pipe(tap((n) => expect(n).toBeNull())),
 			service.isRefreshTokenExpired$.pipe(tap((n) => expect(n).toBe(true))),
 		];
-
-		return zip(
-			service.config$.pipe(tap((c) => expect(c).toBeTruthy())),
-			service.refreshConfig$.pipe(tap((c) => expect(c).toBeUndefined())),
-			...accessTokenObservables,
-			...refreshTokenObservables
-		)
+		return zip(...accessTokenObservables, ...refreshTokenObservables)
 			.pipe(
 				take(1),
 				tap(() => expect(mockGetToken).toBeCalledTimes(accessTokenObservables.length))

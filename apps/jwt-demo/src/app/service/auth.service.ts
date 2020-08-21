@@ -1,25 +1,46 @@
 import { JwtTokenPair } from '@aegis-auth/jwt';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { MockServerService } from './mock-server.service';
+
+const ACCESS_TOKEN = 'accessToken';
+const REFRESH_TOKEN = 'refreshToken';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class AuthService {
-	/**
-	 * TODO: These might have to be moved to a separate AuthStorageService
-	 * Try not to
-	 */
-	public accessTokenStorage$ = new BehaviorSubject<string | undefined | null>(undefined);
-	public refreshTokenStorage$ = new BehaviorSubject<string | undefined | null>(undefined);
+export class AuthService implements OnDestroy {
+	public accessTokenStorage$ = new BehaviorSubject<string | undefined | null>(
+		localStorage.getItem(ACCESS_TOKEN)
+	);
+	public refreshTokenStorage$ = new BehaviorSubject<string | undefined | null>(
+		localStorage.getItem(REFRESH_TOKEN)
+	);
+
+	private subscriptions = new Subscription();
 
 	public constructor(
 		private readonly http: HttpClient,
 		private readonly mockServerService: MockServerService
-	) {}
+	) {
+		this.subscriptions.add(
+			this.accessTokenStorage$.subscribe((accessToken) =>
+				accessToken
+					? localStorage.setItem(ACCESS_TOKEN, accessToken)
+					: localStorage.removeItem(ACCESS_TOKEN)
+			)
+		);
+
+		this.subscriptions.add(
+			this.refreshTokenStorage$.subscribe((refreshToken) =>
+				refreshToken
+					? localStorage.setItem(REFRESH_TOKEN, refreshToken)
+					: localStorage.removeItem(REFRESH_TOKEN)
+			)
+		);
+	}
 
 	/**
 	 * Normally, a function like this in your app would do an http request
@@ -75,8 +96,12 @@ export class AuthService {
 	}
 
 	public logout(): Observable<boolean> {
-		this.accessTokenStorage$.next(undefined);
-		this.refreshTokenStorage$.next(undefined);
+		this.accessTokenStorage$.next(null);
+		this.refreshTokenStorage$.next(null);
 		return of(true);
+	}
+
+	public ngOnDestroy(): void {
+		this.subscriptions.unsubscribe();
 	}
 }

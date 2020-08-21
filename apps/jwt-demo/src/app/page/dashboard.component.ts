@@ -1,5 +1,7 @@
 import { BaseDirective, JwtTokenService } from '@aegis-auth/jwt';
-import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { Claims } from '../model/claims.interface';
 import { ApiService } from '../service';
 import { AuthService } from '../service/auth.service';
 
@@ -14,21 +16,22 @@ export class DashboardComponent extends BaseDirective {
 	public token$ = this.jwtTokenService.accessToken$;
 	public tokenString$ = this.jwtTokenService.rawAccessToken$;
 
-	@ViewChild('lifespan')
-	public readonly lifespanInput!: ElementRef<HTMLInputElement>;
+	public usernameFromToken$ = this.token$.pipe(map((token) => token?.payload.username));
+
+	public defaultLifespan = 5;
+
+	public lifespan: number | undefined;
 
 	public constructor(
 		private readonly auth: AuthService,
 		public readonly api: ApiService,
-		private readonly jwtTokenService: JwtTokenService
+		private readonly jwtTokenService: JwtTokenService<Claims>
 	) {
 		super();
 	}
 
 	public login(): void {
-		this.teardown = this.auth
-			.login(parseInt(this.lifespanInput.nativeElement.value || '60', 10))
-			.subscribe();
+		this.teardown = this.auth.login(this.lifespan || this.defaultLifespan).subscribe();
 	}
 
 	public logout(): void {
