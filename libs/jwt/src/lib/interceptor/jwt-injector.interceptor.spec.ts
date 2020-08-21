@@ -5,7 +5,7 @@ import { DEFAULT_JWT_CONFIG, JwtConfiguration } from '../model';
 import { DEFAULT_JWT_CONFIGURATION_TOKEN, JWT_CONFIGURATION_TOKEN } from '../token';
 import { JwtInjectorInterceptor } from './jwt-injector.interceptor';
 
-describe('TokenInjectorInterceptor', () => {
+describe('JwtInjectorInterceptor', () => {
 	const TEST_AUTH_HEADER = 'TestAuthHeader';
 	const TEST_AUTH_HEADER_VALUE = 'token';
 	const TEST_AUTH_SCHEME_VALUE = 'Prefix ';

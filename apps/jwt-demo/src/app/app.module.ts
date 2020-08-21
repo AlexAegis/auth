@@ -45,6 +45,7 @@ import { AuthService } from './service';
 			},
 			{
 				useFactory: (authService: AuthService) => ({
+					getRefreshToken: authService.refreshTokenStorage$,
 					setRefreshedTokens: (refreshResponse) => {
 						authService.accessTokenStorage$.next(refreshResponse.accessToken);
 						authService.refreshTokenStorage$.next(refreshResponse.refreshToken);

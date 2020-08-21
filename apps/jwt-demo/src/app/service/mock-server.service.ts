@@ -29,7 +29,7 @@ export class MockServerService {
 	 *
 	 * @param lifetime seconds
 	 */
-	public createValidToken(lifetime = 60): string {
+	private createValidToken(lifetime = 60): string {
 		return [
 			this.toBase64(this.header),
 			this.toBase64(this.createPayload(lifetime)),
