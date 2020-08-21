@@ -1,6 +1,7 @@
 import { JwtModule } from '@aegis-auth/jwt';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { environment } from '../environments/environment';
@@ -16,6 +17,7 @@ import { AuthService } from './service';
 	imports: [
 		BrowserModule,
 		HttpClientModule,
+		FormsModule,
 		RouterModule.forRoot(
 			[
 				{
@@ -43,7 +45,6 @@ import { AuthService } from './service';
 			},
 			{
 				useFactory: (authService: AuthService) => ({
-					getRefreshToken$: authService.refreshTokenStorage$,
 					setRefreshedTokens: (refreshResponse) => {
 						authService.accessTokenStorage$.next(refreshResponse.accessToken);
 						authService.refreshTokenStorage$.next(refreshResponse.refreshToken);

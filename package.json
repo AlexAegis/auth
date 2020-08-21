@@ -30,7 +30,7 @@
 	"scripts": {
 		"ng": "ng",
 		"nx": "nx",
-		"start": "ng serve",
+		"start": "nx serve jwt-demo",
 		"start:core": "nx serve core-demo",
 		"start:jwt": "nx serve jwt-demo",
 		"start:ngrx": "nx serve ngrx-demo",
@@ -62,7 +62,7 @@
 		"format:write": "nx format:write",
 		"format:check": "nx format:check",
 		"ncu": "ncu -u",
-		"docs": "typedoc libs",
+		"typedoc": "typedoc libs",
 		"update": "ng update @nrwl/workspace",
 		"update:all": "nx update --all --force",
 		"workspace-schematic": "nx workspace-schematic",
@@ -73,7 +73,6 @@
 		"prepublishOnly": "yarn build"
 	},
 	"dependencies": {
-		"@angular/animations": "~10.0.11",
 		"@angular/common": "~10.0.11",
 		"@angular/compiler": "~10.0.11",
 		"@angular/core": "~10.0.11",
@@ -88,9 +87,9 @@
 		"zone.js": "~0.10.3"
 	},
 	"devDependencies": {
-		"@angular-devkit/build-angular": "~0.1000.6",
-		"@angular-devkit/build-ng-packagr": "~0.1000.6",
-		"@angular/cli": "~10.0.6",
+		"@angular-devkit/build-angular": "~0.1000.7",
+		"@angular-devkit/build-ng-packagr": "~0.1000.7",
+		"@angular/cli": "~10.0.7",
 		"@angular/compiler-cli": "~10.0.11",
 		"@angular/language-service": "~10.0.11",
 		"@commitlint/cli": "~9.1.2",

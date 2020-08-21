@@ -1,6 +1,7 @@
 import { JwtModule } from '@aegis-auth/jwt';
 import { HttpClientModule } from '@angular/common/http';
 import { async, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { DashboardComponent } from './dashboard.component';
 
 describe('DashboardComponent', () => {
@@ -8,6 +9,7 @@ describe('DashboardComponent', () => {
 		TestBed.configureTestingModule({
 			imports: [
 				HttpClientModule,
+				FormsModule,
 				JwtModule.forRoot(
 					{
 						useValue: {

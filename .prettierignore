@@ -2,5 +2,6 @@
 
 /dist
 /coverage
+/.cache
 .vscode/chrome
 CHANGELOG.md
