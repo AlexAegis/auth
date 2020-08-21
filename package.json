@@ -90,7 +90,7 @@
 	"devDependencies": {
 		"@angular-devkit/build-angular": "~0.1000.6",
 		"@angular-devkit/build-ng-packagr": "~0.1000.6",
-		"@angular/cli": "~10.0.6",
+		"@angular/cli": "~10.0.7",
 		"@angular/compiler-cli": "~10.0.11",
 		"@angular/language-service": "~10.0.11",
 		"@commitlint/cli": "~9.1.2",
