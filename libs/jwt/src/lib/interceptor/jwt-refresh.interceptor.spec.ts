@@ -567,4 +567,9 @@ describe('JwtRefreshInterceptor', () => {
 
 		httpTestingController.verify();
 	});
+
+	test.todo('should return a JwtCouldntRefreshError when the refresh fails');
+	test.todo(
+		'should return a JwtCannotRefreshError when the refresh token is also expired or invalid'
+	);
 });

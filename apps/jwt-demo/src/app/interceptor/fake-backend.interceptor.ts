@@ -41,10 +41,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 						this.auth.generateTokenPair(refreshRequest.lifespan ?? 60)
 					);
 				} else {
-					return throwError('Expired refresh token on refresh route');
+					return throwError('ERROR from backend: Expired refresh token on refresh route');
 				}
 			} else {
-				return throwError('No refresh token on refresh route');
+				return throwError('ERROR from backend: No refresh token on refresh route');
 			}
 		} else if (request.url.indexOf(WHITELISTED_PATH) > 0 && request.method === HttpMethod.GET) {
 			return this.checkAuthorization(request, 'this is a protected endpoint');
@@ -66,10 +66,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 			if (!isUnixTimestampExpired(JwtToken.from(rawJwtToken)?.payload.exp)) {
 				return this.makeResponse(response);
 			} else {
-				return throwError('Expired token on protected route');
+				return throwError('ERROR from backend: Expired token on protected route');
 			}
 		} else {
-			return throwError('No token on protected route');
+			return throwError('ERROR from backend: No token on protected route');
 		}
 	}
 

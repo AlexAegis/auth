@@ -88,6 +88,10 @@ export class JwtToken<Claims = Record<string | number, unknown>> {
 		return new JwtToken<Claims>(header, payload, signature);
 	}
 
+	public static stripScheme(jwtHeaderValue: string, scheme?: string): JwtTokenString {
+		return jwtHeaderValue.substring((scheme ?? '').length);
+	}
+
 	public static splitTokenString(
 		token: JwtTokenString,
 		separator: string = JwtToken.JWT_TOKEN_SEPARATOR

@@ -1,7 +1,8 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, switchMap, take } from 'rxjs/operators';
+import { JwtError } from '../errors';
 import { checkAgainstUrlFilter, intoObservable, separateUrl } from '../function';
 import { JwtConfiguration } from '../model';
 import { DEFAULT_JWT_CONFIGURATION_TOKEN, JWT_CONFIGURATION_TOKEN } from '../token';
@@ -44,7 +45,16 @@ export class JwtInjectorInterceptor implements HttpInterceptor {
 							withCredentials: true,
 						});
 					}
-					return next.handle(cloned);
+					return next.handle(cloned).pipe(
+						catchError((error) => {
+							// Only rethrow as is if already a JwtError
+							if (error instanceof JwtError) {
+								return throwError(error);
+							} else {
+								return throwError(new JwtError(cloned, error));
+							}
+						})
+					);
 				} else return next.handle(request);
 			})
 		);

@@ -12,5 +12,8 @@
 	"dependencies": {
 		"js-base64": "^3.4.5",
 		"tslib": "^2.0.1"
+	},
+	"optionalDependencies": {
+		"@angular/router": "^9.1.9"
 	}
 }

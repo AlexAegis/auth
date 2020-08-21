@@ -9,11 +9,13 @@ import {
 } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, take } from 'rxjs/operators';
+import { JwtCannotRefreshError, JwtCouldntRefreshError } from '../errors';
 import {
 	callWhenFunction,
 	checkAgainstHttpErrorFilter,
 	checkAgainstUrlFilter,
+	intoObservable,
 	matchAgainst,
 	separateUrl,
 } from '../function';
@@ -29,6 +31,7 @@ import {
 export class JwtRefreshInterceptor implements HttpInterceptor {
 	private readonly jwtConfiguration!: JwtConfiguration;
 	private readonly jwtRefreshConfiguration!: JwtRefreshConfiguration<unknown, unknown>;
+	private readonly rawRefreshToken$: Observable<string | null | undefined>;
 	public constructor(
 		@Inject(JWT_CONFIGURATION_TOKEN)
 		jwtConfig: JwtConfiguration,
@@ -48,6 +51,9 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 			...defaultJwtRefreshConfig,
 			...refreshConfig,
 		};
+		this.rawRefreshToken$ = intoObservable(
+			this.jwtRefreshConfiguration.getRefreshToken ?? (() => null)
+		);
 	}
 
 	public intercept(
@@ -55,7 +61,7 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 		next: HttpHandler
 	): Observable<HttpEvent<unknown>> {
 		const separatedUrl = separateUrl(request.url);
-		const jwtHeader = request.headers.get(this.jwtConfiguration.header);
+		const jwtHeaderValue = request.headers.get(this.jwtConfiguration.header);
 
 		// Only do something if the request is headed towards a protected endpoint.
 		// The forRoot method of the module ensures that this interceptor is injected
@@ -64,53 +70,88 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 		// And if the url is not the refresh url itself, and any of the other explicitly
 		// filtered urls where refresh is prohibited by config.
 		if (
-			jwtHeader &&
+			jwtHeaderValue &&
 			!matchAgainst(request.url)(this.jwtRefreshConfiguration.refreshUrl) &&
 			checkAgainstUrlFilter(this.jwtRefreshConfiguration, separatedUrl)
 		) {
-			// todo make a function out of this
-			const rawToken = jwtHeader.substring((this.jwtConfiguration.scheme ?? '').length);
-			const token = JwtToken.from(rawToken);
-			// If the conversion would fail, that would handle the same as an expired token
-			return (!token || token.isExpired()
-				? // If the token is used and is expired, don't even try the request.
-				  throwError('Expired token, refresh first')
-				: // If it seems okay, try the request
-				  next.handle(request)
-			).pipe(
-				catchError((error: HttpErrorResponse | string) => {
-					// If the request failed, or we failed at the precheck
-					// Acquire a new token, but only if the error is allowing it
-					const isRefreshAllowed =
-						typeof error === 'string' ||
-						checkAgainstHttpErrorFilter(this.jwtRefreshConfiguration, error);
-					if (isRefreshAllowed) {
-						const refreshRequest = new HttpRequest<unknown>(
-							this.jwtRefreshConfiguration.method ?? 'POST',
-							this.jwtRefreshConfiguration.refreshUrl,
-							this.jwtRefreshConfiguration.createRefreshRequestBody(),
-							callWhenFunction(this.jwtRefreshConfiguration.refreshRequestInitials)
+			return this.rawRefreshToken$.pipe(
+				take(1),
+				switchMap((rawRefreshToken) => {
+					const rawToken = JwtToken.stripScheme(
+						jwtHeaderValue,
+						this.jwtConfiguration.scheme
+					);
+					const token = JwtToken.from(rawToken);
+					const refreshToken = rawRefreshToken ? JwtToken.from(rawRefreshToken) : null;
+					const isAccessTokenExpiredOrInvalid = !token || token.isExpired();
+					const isRefreshTokenExpired =
+						(rawRefreshToken && !refreshToken) || refreshToken?.isExpired();
+
+					// If we know beforehand that nothing can be done, bail out.
+					if (isAccessTokenExpiredOrInvalid && isRefreshTokenExpired) {
+						return throwError(
+							new JwtCannotRefreshError(
+								request,
+								'Both access and refresh tokens are expired'
+							)
 						);
-						return next.handle(refreshRequest).pipe(
-							filter(
-								(r): r is HttpResponse<unknown> => r.type === HttpEventType.Response
-							),
-							map((response) =>
-								this.jwtRefreshConfiguration.transformRefreshResponse(response.body)
-							),
-							switchMap((refreshResponse) => {
-								this.jwtRefreshConfiguration.setRefreshedTokens(refreshResponse);
-								// inject the new tokens
-								const requestWithUpdatedTokens = request.clone({
-									headers: request.headers.set(
-										this.jwtConfiguration.header,
-										this.jwtConfiguration.scheme + refreshResponse.accessToken
+					}
+					// If the conversion would fail, that would handle the same as an expired token
+					return (isAccessTokenExpiredOrInvalid
+						? // If the token is used and is expired, don't even try the request.
+						  throwError('Expired token, refresh first')
+						: // If it seems okay, try the request
+						  next.handle(request)
+					).pipe(
+						catchError((error: HttpErrorResponse | string) => {
+							// If the request failed, or we failed at the precheck
+							// Acquire a new token, but only if the error is allowing it
+
+							const isRefreshAllowed =
+								typeof error === 'string' ||
+								checkAgainstHttpErrorFilter(this.jwtRefreshConfiguration, error);
+							if (isRefreshAllowed) {
+								const refreshRequest = new HttpRequest<unknown>(
+									this.jwtRefreshConfiguration.method ?? 'POST',
+									this.jwtRefreshConfiguration.refreshUrl,
+									this.jwtRefreshConfiguration.createRefreshRequestBody(),
+									callWhenFunction(
+										this.jwtRefreshConfiguration.refreshRequestInitials
+									)
+								);
+								return next.handle(refreshRequest).pipe(
+									filter(
+										(r): r is HttpResponse<unknown> =>
+											r.type === HttpEventType.Response
 									),
-								});
-								return next.handle(requestWithUpdatedTokens);
-							})
-						);
-					} else return throwError(error);
+									catchError((refreshError) =>
+										throwError(
+											new JwtCouldntRefreshError(request, refreshError)
+										)
+									),
+									map((response) =>
+										this.jwtRefreshConfiguration.transformRefreshResponse(
+											response.body
+										)
+									),
+									switchMap((refreshResponse) => {
+										this.jwtRefreshConfiguration.setRefreshedTokens(
+											refreshResponse
+										);
+										// inject the new tokens
+										const requestWithUpdatedTokens = request.clone({
+											headers: request.headers.set(
+												this.jwtConfiguration.header,
+												this.jwtConfiguration.scheme +
+													refreshResponse.accessToken
+											),
+										});
+										return next.handle(requestWithUpdatedTokens);
+									})
+								);
+							} else return throwError(error);
+						})
+					);
 				})
 			);
 		} else return next.handle(request);
