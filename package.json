@@ -78,7 +78,7 @@
 		"@angular/core": "~10.0.11",
 		"@angular/forms": "~10.0.11",
 		"@angular/platform-browser": "~10.0.11",
-		"@angular/platform-browser-dynamic": "~10.0.11",
+		"@angular/platform-browser-dynamic": "~10.0.12",
 		"@angular/router": "~10.0.11",
 		"@nrwl/angular": "10.0.13",
 		"core-js": "~3.6.5",
