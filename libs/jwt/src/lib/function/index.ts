@@ -4,6 +4,7 @@ export * from './check-against-http-error-filter.function';
 export * from './check-against-url-filter.function';
 export * from './count-in-string.function';
 export * from './function.predicate';
+export * from './http-response.predicate';
 export * from './into-observable.function';
 export * from './is-not-nullish.predicate';
 export * from './is-unix-timestamp-expired.function';

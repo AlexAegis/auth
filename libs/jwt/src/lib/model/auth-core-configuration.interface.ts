@@ -132,9 +132,15 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
 	 */
 	refreshUrl: string;
 	/**
-	 * A callback that should return the body of the request
+	 * A callback or observable that can be used to retrieve the body of the
+	 * request.
+	 *
+	 * @example getValue: () => localstorage.get('foo')
+	 * @example getValue: myTokenService.foo$
 	 */
-	createRefreshRequestBody: () => RefreshRequest;
+	createRefreshRequestBody:
+		| Observable<RefreshRequest>
+		| (() => RefreshRequest | Promise<RefreshRequest> | Observable<RefreshRequest>);
 	/**
 	 * A callback that should return the defaults on the request
 	 */
