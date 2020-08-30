@@ -1,7 +1,14 @@
-import { HttpClient, HttpClientModule, HttpHeaders, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {
+	HttpClient,
+	HttpClientModule,
+	HttpErrorResponse,
+	HttpHeaders,
+	HTTP_INTERCEPTORS,
+} from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Observer } from 'rxjs';
+import { JwtCannotRefreshError, JwtCouldntRefreshError } from '../errors';
 import {
 	DEFAULT_JWT_CONFIG,
 	DEFAULT_JWT_REFRESH_CONFIG,
@@ -121,7 +128,7 @@ describe('JwtRefreshInterceptor', () => {
 				{
 					provide: JWT_CONFIGURATION_TOKEN,
 					useValue: {
-						getToken: () => '',
+						getToken: () => TEST_EXPIRED_TOKEN,
 						header: TEST_AUTH_HEADER,
 						scheme: '',
 					} as JwtConfiguration,
@@ -167,7 +174,7 @@ describe('JwtRefreshInterceptor', () => {
 		const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 
 		mockRequest.flush({ result: 'okay' });
-		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor acticated
+		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor activated
 		expect(nextMock).toBeCalledTimes(1); // Has the request returned something
 		expect(errorMock).toBeCalledTimes(0); // Has the request returned errored
 		expect(completeMock).toBeCalledTimes(1); // Has the request returned completed
@@ -203,7 +210,7 @@ describe('JwtRefreshInterceptor', () => {
 		const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockRequest.flush({ result: 'okay' });
 
-		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor acticated
+		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor activated
 		expect(nextMock).toBeCalledTimes(1); // Has the request returned something
 		expect(errorMock).toBeCalledTimes(0); // Has the request returned errored
 		expect(completeMock).toBeCalledTimes(1); // Has the request returned completed
@@ -212,7 +219,7 @@ describe('JwtRefreshInterceptor', () => {
 		httpTestingController.verify();
 	});
 
-	it('should refresh with an non-expired but invalid token, with first trying', () => {
+	it('should refresh with a non-expired but invalid token, with first trying', () => {
 		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
 			useValue: {
 				createRefreshRequestBody: () => {
@@ -242,7 +249,7 @@ describe('JwtRefreshInterceptor', () => {
 		const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockRequest.flush({ result: 'okay' });
 
-		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor acticated
+		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor activated
 		expect(nextMock).toBeCalledTimes(1); // Has the request returned something
 		expect(errorMock).toBeCalledTimes(0); // Has the request returned errored
 		expect(completeMock).toBeCalledTimes(1); // Has the request returned completed
@@ -251,12 +258,13 @@ describe('JwtRefreshInterceptor', () => {
 		httpTestingController.verify();
 	});
 
-	it('should try to refresh with an expired token pair, and fail', () => {
+	it('should try to refresh with an invalid token, and fail, throwing a JwtCouldntRefreshError', () => {
 		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
 			useValue: {
+				getRefreshToken: () => TEST_INVALID_TOKEN,
 				createRefreshRequestBody: () => {
 					return {
-						refreshToken: 'invalidtoken',
+						refreshToken: TEST_INVALID_TOKEN,
 					};
 				},
 				refreshUrl: TEST_REFRESH_URL,
@@ -270,20 +278,70 @@ describe('JwtRefreshInterceptor', () => {
 
 		const { httpClient, httpTestingController, refreshInterceptSpy } = injectCommon();
 
+		const instanceCheckingErrorMock = jest.fn<void, [HttpErrorResponse]>((error) => {
+			expect(error).toBeInstanceOf(JwtCouldntRefreshError);
+		});
+
 		httpClient
 			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body', headers: invalidHeaders })
-			.subscribe(requestObserverMock);
+			.subscribe({
+				next: nextMock,
+				error: instanceCheckingErrorMock,
+				complete: completeMock,
+			});
 
 		const mockErrorRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockErrorRequest.error(new ErrorEvent('Invalid token'));
 		const mockRefreshRequest = httpTestingController.expectOne(TEST_REFRESH_URL);
 		mockRefreshRequest.error(new ErrorEvent('Invalid refresh token'));
-		// const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
-		// mockRequest.flush({ result: 'okay' });
 
-		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor acticated
+		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor activated
 		expect(nextMock).toBeCalledTimes(0); // Has the request returned something
-		expect(errorMock).toBeCalledTimes(1); // Has the request returned errored
+		expect(instanceCheckingErrorMock).toBeCalledTimes(1); // Has the request returned errored
+		expect(completeMock).toBeCalledTimes(0); // Has the request returned completed
+		expect(setRefreshedTokensMock).toBeCalledTimes(0); // Has actual refresh happened
+
+		httpTestingController.verify();
+	});
+
+	it('should not try to refresh with an expired refresh token, and fail, throwing a JwtCannotRefreshError', () => {
+		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
+			useValue: {
+				getRefreshToken: () => TEST_EXPIRED_TOKEN,
+				createRefreshRequestBody: () => {
+					return {
+						refreshToken: TEST_EXPIRED_TOKEN,
+					};
+				},
+				refreshUrl: TEST_REFRESH_URL,
+				setRefreshedTokens: setRefreshedTokensMock,
+				errorCodeWhitelist: undefined,
+				transformRefreshResponse: (response) => {
+					return response;
+				},
+			} as JwtRefreshConfiguration<TestRefreshRequest, TestRefreshResponse>,
+		});
+
+		const { httpClient, httpTestingController, refreshInterceptSpy } = injectCommon();
+
+		const instanceCheckingErrorMock = jest.fn<void, [HttpErrorResponse]>((error) => {
+			expect(error).toBeInstanceOf(JwtCannotRefreshError);
+		});
+
+		httpClient
+			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body', headers: expiredHeaders })
+			.subscribe({
+				next: nextMock,
+				error: instanceCheckingErrorMock,
+				complete: completeMock,
+			});
+
+		httpTestingController.expectNone(TEST_REQUEST_DOMAIN);
+		httpTestingController.expectNone(TEST_REFRESH_URL);
+
+		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor activated
+		expect(nextMock).toBeCalledTimes(0); // Has the request returned something
+		expect(instanceCheckingErrorMock).toBeCalledTimes(1); // Has the request returned errored
 		expect(completeMock).toBeCalledTimes(0); // Has the request returned completed
 		expect(setRefreshedTokensMock).toBeCalledTimes(0); // Has actual refresh happened
 
@@ -316,10 +374,8 @@ describe('JwtRefreshInterceptor', () => {
 		const mockErrorRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockErrorRequest.error(new ErrorEvent('Invalid token'), { status: 403 });
 		httpTestingController.expectNone(TEST_REFRESH_URL);
-		// const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
-		// mockRequest.flush({ result: 'okay' });
 
-		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor acticated
+		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor activated
 		expect(nextMock).toBeCalledTimes(0); // Has the request returned something
 		expect(errorMock).toBeCalledTimes(1); // Has the request returned errored
 		expect(completeMock).toBeCalledTimes(0); // Has the request returned completed
@@ -358,7 +414,7 @@ describe('JwtRefreshInterceptor', () => {
 		const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockRequest.flush({ result: 'okay' });
 
-		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor acticated
+		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor activated
 		expect(nextMock).toBeCalledTimes(1); // Has the request returned something
 		expect(errorMock).toBeCalledTimes(0); // Has the request returned errored
 		expect(completeMock).toBeCalledTimes(1); // Has the request returned completed
@@ -394,10 +450,8 @@ describe('JwtRefreshInterceptor', () => {
 		const mockErrorRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockErrorRequest.error(new ErrorEvent('Invalid token'), { status: 403 });
 		httpTestingController.expectNone(TEST_REFRESH_URL);
-		// const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
-		// mockRequest.flush({ result: 'okay' });
 
-		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor acticated
+		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor activated
 		expect(nextMock).toBeCalledTimes(0); // Has the request returned something
 		expect(errorMock).toBeCalledTimes(1); // Has the request returned errored
 		expect(completeMock).toBeCalledTimes(0); // Has the request returned completed
@@ -436,7 +490,7 @@ describe('JwtRefreshInterceptor', () => {
 		const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockRequest.error(new ErrorEvent('Invalid request'));
 
-		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor acticated
+		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor activated
 		expect(nextMock).toBeCalledTimes(0); // Has the request returned something
 		expect(errorMock).toBeCalledTimes(1); // Has the request returned errored
 		expect(completeMock).toBeCalledTimes(0); // Has the request returned completed
@@ -472,7 +526,7 @@ describe('JwtRefreshInterceptor', () => {
 		mockErrorRequest.error(new ErrorEvent('Invalid token'));
 		httpTestingController.expectNone(TEST_REFRESH_URL);
 
-		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor acticated
+		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor activated
 		expect(nextMock).toBeCalledTimes(0); // Has the request returned something
 		expect(errorMock).toBeCalledTimes(1); // Has the request returned errored
 		expect(completeMock).toBeCalledTimes(0); // Has the request returned completed
@@ -522,7 +576,7 @@ describe('JwtRefreshInterceptor', () => {
 		const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockRequest.flush({ result: 'okay' });
 
-		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor acticated
+		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor activated
 		expect(nextMock).toBeCalledTimes(1); // Has the request returned something
 		expect(errorMock).toBeCalledTimes(0); // Has the request returned errored
 		expect(completeMock).toBeCalledTimes(1); // Has the request returned completed
@@ -559,7 +613,7 @@ describe('JwtRefreshInterceptor', () => {
 		const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockRequest.flush({ result: 'okay' });
 
-		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor acticated
+		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor activated
 		expect(nextMock).toBeCalledTimes(1); // Has the request returned something
 		expect(errorMock).toBeCalledTimes(0); // Has the request returned errored
 		expect(completeMock).toBeCalledTimes(1); // Has the request returned completed
@@ -567,9 +621,4 @@ describe('JwtRefreshInterceptor', () => {
 
 		httpTestingController.verify();
 	});
-
-	test.todo('should return a JwtCouldntRefreshError when the refresh fails');
-	test.todo(
-		'should return a JwtCannotRefreshError when the refresh token is also expired or invalid'
-	);
 });

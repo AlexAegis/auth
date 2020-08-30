@@ -32,6 +32,8 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 	private readonly jwtConfiguration!: JwtConfiguration;
 	private readonly jwtRefreshConfiguration!: JwtRefreshConfiguration<unknown, unknown>;
 	private readonly rawRefreshToken$: Observable<string | null | undefined>;
+	private readonly isRawRefreshTokenGetterAvailable: boolean;
+
 	public constructor(
 		@Inject(JWT_CONFIGURATION_TOKEN)
 		jwtConfig: JwtConfiguration,
@@ -54,6 +56,8 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 		this.rawRefreshToken$ = intoObservable(
 			this.jwtRefreshConfiguration.getRefreshToken ?? (() => null)
 		);
+
+		this.isRawRefreshTokenGetterAvailable = !!this.jwtRefreshConfiguration.getRefreshToken;
 	}
 
 	public intercept(
@@ -84,11 +88,14 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 					const token = JwtToken.from(rawToken);
 					const refreshToken = rawRefreshToken ? JwtToken.from(rawRefreshToken) : null;
 					const isAccessTokenExpiredOrInvalid = !token || token.isExpired();
-					const isRefreshTokenExpired =
-						(rawRefreshToken && !refreshToken) || refreshToken?.isExpired();
-
-					// If we know beforehand that nothing can be done, bail out.
-					if (isAccessTokenExpiredOrInvalid && isRefreshTokenExpired) {
+					const isRefreshTokenExpiredOrInvalid =
+						!refreshToken || refreshToken?.isExpired();
+					// If we know beforehand that nothing can be done, panic.
+					if (
+						isAccessTokenExpiredOrInvalid &&
+						this.isRawRefreshTokenGetterAvailable &&
+						isRefreshTokenExpiredOrInvalid
+					) {
 						return throwError(
 							new JwtCannotRefreshError(
 								request,
@@ -96,6 +103,7 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 							)
 						);
 					}
+
 					// If the conversion would fail, that would handle the same as an expired token
 					return (isAccessTokenExpiredOrInvalid
 						? // If the token is used and is expired, don't even try the request.
