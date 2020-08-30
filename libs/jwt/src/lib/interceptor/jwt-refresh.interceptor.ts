@@ -89,7 +89,7 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 					const refreshToken = rawRefreshToken ? JwtToken.from(rawRefreshToken) : null;
 					const isAccessTokenExpiredOrInvalid = !token || token.isExpired();
 					const isRefreshTokenExpiredOrInvalid =
-						!refreshToken || refreshToken?.isExpired();
+						!refreshToken || refreshToken.isExpired();
 					// If we know beforehand that nothing can be done, panic.
 					if (
 						isAccessTokenExpiredOrInvalid &&
