@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { map } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { BLACKLISTED_DOMAIN, JWT_HEADER, JWT_SCHEME, WHITELISTED_DOMAIN } from './constants';
@@ -59,10 +60,12 @@ import { AuthService } from './service';
 					// The default is POST, but you can override
 					method: 'POST',
 					// The result of this will be passed to the initials object of HttpRequest
-					createRefreshRequestBody: () => ({
-						refreshToken: authService.refreshTokenStorage$.value,
-						lifespan: 4,
-					}), // Already has the correct shape, so it's just an identity function
+					createRefreshRequestBody: authService.refreshTokenStorage$.pipe(
+						map((refreshToken) => ({
+							refreshToken: refreshToken,
+							lifespan: 4,
+						}))
+					),
 					transformRefreshResponse: (response) => {
 						console.log('transformRefreshResponse', response);
 						return response;

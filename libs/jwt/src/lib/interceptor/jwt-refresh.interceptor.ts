@@ -1,11 +1,9 @@
 import {
 	HttpErrorResponse,
 	HttpEvent,
-	HttpEventType,
 	HttpHandler,
 	HttpInterceptor,
 	HttpRequest,
-	HttpResponse,
 } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
@@ -16,6 +14,7 @@ import {
 	checkAgainstHttpErrorFilter,
 	checkAgainstUrlFilter,
 	intoObservable,
+	isHttpResponse,
 	matchAgainst,
 	separateUrl,
 } from '../function';
@@ -119,45 +118,49 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 								typeof error === 'string' ||
 								checkAgainstHttpErrorFilter(this.jwtRefreshConfiguration, error);
 							if (isRefreshAllowed) {
-								const refreshRequest = new HttpRequest<unknown>(
-									this.jwtRefreshConfiguration.method ?? 'POST',
-									this.jwtRefreshConfiguration.refreshUrl,
-									this.jwtRefreshConfiguration.createRefreshRequestBody(),
-									callWhenFunction(
-										this.jwtRefreshConfiguration.refreshRequestInitials
-									)
-								);
-								return next.handle(refreshRequest).pipe(
-									filter(
-										(r): r is HttpResponse<unknown> =>
-											r.type === HttpEventType.Response
-									),
-									catchError((refreshError) =>
-										throwError(
-											JwtCouldntRefreshError.createErrorResponse(
-												request,
-												refreshError
+								return intoObservable(
+									this.jwtRefreshConfiguration.createRefreshRequestBody
+								).pipe(
+									take(1),
+									switchMap((requestBody) => {
+										const refreshRequest = new HttpRequest<unknown>(
+											this.jwtRefreshConfiguration.method ?? 'POST',
+											this.jwtRefreshConfiguration.refreshUrl,
+											requestBody,
+											callWhenFunction(
+												this.jwtRefreshConfiguration.refreshRequestInitials
 											)
-										)
-									),
-									map((response) =>
-										this.jwtRefreshConfiguration.transformRefreshResponse(
-											response.body
-										)
-									),
-									switchMap((refreshResponse) => {
-										this.jwtRefreshConfiguration.setRefreshedTokens(
-											refreshResponse
 										);
-										// inject the new tokens
-										const requestWithUpdatedTokens = request.clone({
-											headers: request.headers.set(
-												this.jwtConfiguration.header,
-												this.jwtConfiguration.scheme +
-													refreshResponse.accessToken
+										return next.handle(refreshRequest).pipe(
+											filter(isHttpResponse),
+											catchError((refreshError) =>
+												throwError(
+													JwtCouldntRefreshError.createErrorResponse(
+														request,
+														refreshError
+													)
+												)
 											),
-										});
-										return next.handle(requestWithUpdatedTokens);
+											map((response) =>
+												this.jwtRefreshConfiguration.transformRefreshResponse(
+													response.body
+												)
+											),
+											switchMap((refreshResponse) => {
+												this.jwtRefreshConfiguration.setRefreshedTokens(
+													refreshResponse
+												);
+												// inject the new tokens
+												const requestWithUpdatedTokens = request.clone({
+													headers: request.headers.set(
+														this.jwtConfiguration.header,
+														this.jwtConfiguration.scheme +
+															refreshResponse.accessToken
+													),
+												});
+												return next.handle(requestWithUpdatedTokens);
+											})
+										);
 									})
 								);
 							} else return throwError(error);
