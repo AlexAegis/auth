@@ -1,5 +1,6 @@
-import { HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { JwtCannotRefreshError, JwtCouldntRefreshError, JwtError } from '../errors/jwt-error.class';
 import {
 	DEFAULT_HEADER_CONFIG,
 	HeaderConfiguration,
@@ -150,15 +151,13 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
 	 * regular callback, a string can also be supplied which will act as the
 	 * target of navigation.
 	 */
-	onCannotRefresh?:
-		| string
-		| ((originalRequest: HttpRequest<RefreshRequest>, error: unknown) => void);
+	onFailure?: string | ((error: JwtCouldntRefreshError | JwtCannotRefreshError) => void);
 	/**
 	 * When we know that both access and refresh tokens are either invalid
 	 * or expired, there should be no chance on successfully doing the
 	 * originally intended request. This option is disabled by default so
 	 * when this happens, no request will be made at all, and you trust the
-	 * `onCannotRefresh` callback, or redirect to sort everything out.
+	 * `onFailure` callback, or redirect to sort everything out.
 	 *
 	 * If you want to implement logic on how to retry a failed request which
 	 * can only happen after the next login, I recommend incorporating
@@ -169,11 +168,13 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
 	 */
 	tryEvenWithoutAnyChance?: boolean;
 	/**
-	 * This option is only used when the `onCannotRefresh` option is a string
+	 * This option is only used when the `onFailure` option is a string
 	 * so it's handled as a redirect. When this happens, you can define
 	 * HttpParams to be used with this redirect.
 	 */
-	onCannotRefreshRedirectParameters?: (() => HttpParams) | HttpParams;
+	onFailureRedirectParameters?:
+		| ((error: JwtCouldntRefreshError | JwtCannotRefreshError) => HttpParams)
+		| HttpParams;
 	/**
 	 * Optional!
 	 *
@@ -260,13 +261,13 @@ export interface JwtConfiguration extends Omit<HeaderConfiguration, 'getValue'> 
 
 	/**
 	 * This callback is called when the request fails and there is no
-	 * RefreshConfiguration or `onCannotRefresh` is not implemented.
+	 * RefreshConfiguration or `onFailure` is not implemented.
 	 * If you do have, don't implement this.
 	 *
 	 * If it's a string, instead of calling it, a redirection will happen,
 	 * with `onFailureRedirectParameters` as it's queryParams
 	 */
-	onFailure?: string | ((originalRequest: HttpRequest<unknown>, error: unknown) => void);
+	onFailure?: string | ((jwtError: JwtError) => void);
 	/**
 	 * When we know that the access token is expired or invalid, and there is
 	 * no refresh configuration, there should be no chance on successfully
@@ -289,5 +290,5 @@ export interface JwtConfiguration extends Omit<HeaderConfiguration, 'getValue'> 
 	 * so it's handled as a redirect. When this happens, you can define
 	 * HttpParams to be used with this redirect.
 	 */
-	onFailureRedirectParameters?: (() => HttpParams) | HttpParams;
+	onFailureRedirectParameters?: ((error: JwtError) => HttpParams) | HttpParams;
 }

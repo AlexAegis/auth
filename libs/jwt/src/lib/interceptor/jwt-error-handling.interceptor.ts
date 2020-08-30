@@ -1,9 +1,16 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+	HttpErrorResponse,
+	HttpEvent,
+	HttpHandler,
+	HttpInterceptor,
+	HttpParams,
+	HttpRequest,
+} from '@angular/common/http';
 import { Inject, Injectable, Optional } from '@angular/core';
 import { Router } from '@angular/router';
-import { EMPTY, Observable, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { JwtError } from '../errors';
+import { JwtCannotRefreshError, JwtCouldntRefreshError, JwtError } from '../errors';
 import { isString } from '../function';
 import { JwtConfiguration, JwtRefreshConfiguration } from '../model';
 import {
@@ -51,41 +58,72 @@ export class JwtErrorHandlingInterceptor implements HttpInterceptor {
 		request: HttpRequest<unknown>,
 		next: HttpHandler
 	): Observable<HttpEvent<unknown>> {
-		console.log('Error handling interceptor');
 		return next.handle(request).pipe(
-			catchError((error) => {
-				console.log('Catched an error', JSON.stringify(error));
-				console.error(error);
-				if (error instanceof JwtError) {
-					console.log('handling error', error.originalError, error.originalRequest);
-					return EMPTY;
-				} else {
+			catchError((errorResponse: HttpErrorResponse) => {
+				const error:
+					| JwtError
+					| JwtCannotRefreshError
+					| JwtCouldntRefreshError = (errorResponse.error as ErrorEvent)?.error;
+
+				if (
+					error instanceof JwtCannotRefreshError ||
+					error instanceof JwtCouldntRefreshError
+				) {
+					console.log('REFRESH ERROR IN INTERCEPTOR');
+					if (this.jwtRefreshConfiguration?.onFailure) {
+						this.handleFailure(
+							this.jwtRefreshConfiguration.onFailure,
+							error,
+							this.jwtRefreshConfiguration.onFailureRedirectParameters
+						);
+					}
+					// Rethrow the inner error, so observers of the user can see it
 					return throwError(error);
+				} else if (error instanceof JwtError) {
+					console.log('NORMAL ERROR IN INTERCEPTOR');
+					if (this.jwtConfiguration.onFailure) {
+						this.handleFailure(
+							this.jwtConfiguration.onFailure,
+							error,
+							this.jwtConfiguration.onFailureRedirectParameters
+						);
+					}
+					return throwError(error);
+				} else {
+					// Other errors are left untreated
+					return throwError(errorResponse);
 				}
 			})
 		);
 	}
 
-	/**
-	 * Cannot refresh can happen when
-	 */
-	private handleFailure(originalRequest: HttpRequest<unknown>, error: unknown): void {
-		if (this.jwtRefreshConfiguration?.onCannotRefresh) {
-			if (isString(this.jwtRefreshConfiguration.onCannotRefresh)) {
-				if (this.router) {
-					this.router.navigate([this.jwtRefreshConfiguration.onCannotRefresh]);
-				} else {
-					// This error is intended to surface as it's a configuration problem
-					throw new Error(
-						'JWT Refresh configuration error!' +
-							' `onCannotRefresh` is defined as a string, but' +
-							'Router is not available! Is @angular/router ' +
-							'installed and the RouterModule imported?'
-					);
+	private handleFailure<E>(
+		errorCallbackOrRedirect: string | ((error: E) => void),
+		error: E,
+		redirectParameters?: ((error: E) => HttpParams) | HttpParams
+	): void {
+		console.log('errorCallbackOrRedirect', errorCallbackOrRedirect);
+		if (isString(errorCallbackOrRedirect)) {
+			if (this.router) {
+				let queryParams = redirectParameters;
+				if (typeof redirectParameters === 'function') {
+					queryParams = redirectParameters(error);
 				}
+
+				this.router.navigate([errorCallbackOrRedirect], {
+					queryParams,
+				});
 			} else {
-				this.jwtRefreshConfiguration.onCannotRefresh(originalRequest, error);
+				// This error is intended to surface as it's a configuration problem
+				throw new Error(
+					'JWT Refresh configuration error!' +
+						' `onFailure` is defined as a string, but' +
+						'Router is not available! Is @angular/router ' +
+						'installed and the RouterModule imported?'
+				);
 			}
+		} else {
+			errorCallbackOrRedirect(error);
 		}
 	}
 }

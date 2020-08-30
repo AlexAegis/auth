@@ -1,4 +1,10 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+	HttpErrorResponse,
+	HttpEvent,
+	HttpHandler,
+	HttpInterceptor,
+	HttpRequest,
+} from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, switchMap, take } from 'rxjs/operators';
@@ -46,12 +52,15 @@ export class JwtInjectorInterceptor implements HttpInterceptor {
 						});
 					}
 					return next.handle(cloned).pipe(
-						catchError((error) => {
+						catchError((errorResponse: ErrorEvent | HttpErrorResponse) => {
+							const error = errorResponse.error;
 							// Only rethrow as is if already a JwtError
 							if (error instanceof JwtError) {
-								return throwError(error);
+								return throwError(errorResponse);
 							} else {
-								return throwError(new JwtError(cloned, error));
+								return throwError(
+									JwtError.createErrorResponse(cloned, errorResponse)
+								);
 							}
 						})
 					);
