@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { JwtCannotRefreshError, JwtCouldntRefreshError, JwtError } from '../errors';
-import { isString } from '../function';
+import { isNotNullish, isString } from '../function';
 import { JwtConfiguration, JwtRefreshConfiguration } from '../model';
 import {
 	DEFAULT_JWT_CONFIGURATION_TOKEN,
@@ -63,14 +63,16 @@ export class JwtErrorHandlingInterceptor implements HttpInterceptor {
 				const error:
 					| JwtError
 					| JwtCannotRefreshError
-					| JwtCouldntRefreshError = (errorResponse.error as ErrorEvent)?.error;
-
+					| JwtCouldntRefreshError = (errorResponse.error as ErrorEvent | undefined)
+					?.error;
 				if (
 					error instanceof JwtCannotRefreshError ||
 					error instanceof JwtCouldntRefreshError
 				) {
-					console.log('REFRESH ERROR IN INTERCEPTOR');
-					if (this.jwtRefreshConfiguration?.onFailure) {
+					if (
+						this.jwtRefreshConfiguration &&
+						isNotNullish(this.jwtRefreshConfiguration.onFailure)
+					) {
 						this.handleFailure(
 							this.jwtRefreshConfiguration.onFailure,
 							error,
@@ -80,8 +82,7 @@ export class JwtErrorHandlingInterceptor implements HttpInterceptor {
 					// Rethrow the inner error, so observers of the user can see it
 					return throwError(error);
 				} else if (error instanceof JwtError) {
-					console.log('NORMAL ERROR IN INTERCEPTOR');
-					if (this.jwtConfiguration.onFailure) {
+					if (isNotNullish(this.jwtConfiguration.onFailure)) {
 						this.handleFailure(
 							this.jwtConfiguration.onFailure,
 							error,
@@ -102,7 +103,6 @@ export class JwtErrorHandlingInterceptor implements HttpInterceptor {
 		error: E,
 		redirectParameters?: ((error: E) => HttpParams) | HttpParams
 	): void {
-		console.log('errorCallbackOrRedirect', errorCallbackOrRedirect);
 		if (isString(errorCallbackOrRedirect)) {
 			if (this.router) {
 				let queryParams = redirectParameters;
@@ -116,8 +116,8 @@ export class JwtErrorHandlingInterceptor implements HttpInterceptor {
 			} else {
 				// This error is intended to surface as it's a configuration problem
 				throw new Error(
-					'JWT Refresh configuration error!' +
-						' `onFailure` is defined as a string, but' +
+					'JWT Refresh configuration error! ' +
+						'`onFailure` is defined as a string, but the ' +
 						'Router is not available! Is @angular/router ' +
 						'installed and the RouterModule imported?'
 				);
