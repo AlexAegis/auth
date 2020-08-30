@@ -74,8 +74,7 @@ export declare interface TypedFactoryProvider<
 	X = any,
 	Y = any,
 	Z = any
->
-	extends TypedFactorySansProvider<
+> extends TypedFactorySansProvider<
 		T,
 		A,
 		B,

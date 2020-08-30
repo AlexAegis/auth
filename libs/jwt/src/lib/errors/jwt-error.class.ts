@@ -11,13 +11,16 @@ export class JwtError extends Error {
 		super(message);
 	}
 
-	static createErrorResponse(request: HttpRequest<unknown>, refreshError: unknown) {
+	static createErrorResponse(
+		request: HttpRequest<unknown>,
+		refreshError: unknown
+	): HttpErrorResponse {
 		return new HttpErrorResponse({
 			error: JwtError.createErrorEvent(request, refreshError),
 		});
 	}
 
-	static createErrorEvent(request: HttpRequest<unknown>, refreshError: unknown) {
+	static createErrorEvent(request: HttpRequest<unknown>, refreshError: unknown): ErrorEvent {
 		return new ErrorEvent(JwtError.type, {
 			error: new JwtError(request, refreshError),
 		});
@@ -37,13 +40,16 @@ export class JwtCannotRefreshError extends JwtError {
 		super(originalRequest, originalError, JwtCannotRefreshError.type);
 	}
 
-	static createErrorResponse(request: HttpRequest<unknown>, refreshError: unknown) {
+	static createErrorResponse(
+		request: HttpRequest<unknown>,
+		refreshError: unknown
+	): HttpErrorResponse {
 		return new HttpErrorResponse({
 			error: JwtCannotRefreshError.createErrorEvent(request, refreshError),
 		});
 	}
 
-	static createErrorEvent(request: HttpRequest<unknown>, refreshError: unknown) {
+	static createErrorEvent(request: HttpRequest<unknown>, refreshError: unknown): ErrorEvent {
 		return new ErrorEvent(JwtCannotRefreshError.type, {
 			error: new JwtCannotRefreshError(request, refreshError),
 		});
@@ -63,13 +69,16 @@ export class JwtCouldntRefreshError extends JwtError {
 		super(originalRequest, originalError, JwtCouldntRefreshError.type);
 	}
 
-	static createErrorResponse(request: HttpRequest<unknown>, refreshError: unknown) {
+	static createErrorResponse(
+		request: HttpRequest<unknown>,
+		refreshError: unknown
+	): HttpErrorResponse {
 		return new HttpErrorResponse({
 			error: JwtCouldntRefreshError.createErrorEvent(request, refreshError),
 		});
 	}
 
-	static createErrorEvent(request: HttpRequest<unknown>, refreshError: unknown) {
+	static createErrorEvent(request: HttpRequest<unknown>, refreshError: unknown): ErrorEvent {
 		return new ErrorEvent(JwtCouldntRefreshError.type, {
 			error: new JwtCouldntRefreshError(request, refreshError),
 		});
