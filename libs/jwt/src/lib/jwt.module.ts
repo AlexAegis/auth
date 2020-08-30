@@ -55,7 +55,6 @@ export function createJwtRefreshConfigurationProvider<RefreshRequest, RefreshRes
  * This module needs to be configured to use. See the
  * {@link JwtModule#forRoot | forRoot} method for more information.
  *
- * TODO: The main configuration will probably have to be split up into multiple
  * tokens. So that other, plug in configration modules can provide them.
  * Like Ngrx and Local. They then transform their configs into this common one.
  */
