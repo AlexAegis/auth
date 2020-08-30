@@ -97,7 +97,7 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 						isRefreshTokenExpiredOrInvalid
 					) {
 						return throwError(
-							new JwtCannotRefreshError(
+							JwtCannotRefreshError.createErrorResponse(
 								request,
 								'Both access and refresh tokens are expired'
 							)
@@ -134,7 +134,10 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 									),
 									catchError((refreshError) =>
 										throwError(
-											new JwtCouldntRefreshError(request, refreshError)
+											JwtCouldntRefreshError.createErrorResponse(
+												request,
+												refreshError
+											)
 										)
 									),
 									map((response) =>
