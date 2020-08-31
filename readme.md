@@ -18,8 +18,13 @@ See the individual packages for more information
 }
 ```
 
-Handles jwt tokens and thei injection into requests.
-**Automatically refreshes them.**
+> gzipped cost ~9.39kb
+
+Handles common JWT use-cases, like adding the access token to
+requests **and automatically refreshing it when needed**.
+
+It consists of a `JwtModule` with two configurable Interceptors, and a helper
+service to access your parsed and typed tokens.
 
 It also provides a way to handle cases where a refresh cannot happen
 (For example: both token expired) with a redirection (As thats the most

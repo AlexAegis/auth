@@ -16,13 +16,13 @@ import {
 	DEFAULT_JWT_REFRESH_CONFIG,
 	JwtConfiguration,
 	JwtRefreshConfiguration,
-} from '../model';
+} from '../model/auth-core-configuration.interface';
 import {
 	DEFAULT_JWT_CONFIGURATION_TOKEN,
 	DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,
 	JWT_CONFIGURATION_TOKEN,
 	JWT_REFRESH_CONFIGURATION_TOKEN,
-} from '../token';
+} from '../token/jwt-configuration.token';
 import { JwtErrorHandlingInterceptor } from './jwt-error-handling.interceptor';
 
 describe('JwtErrorHandlingInterceptor', () => {

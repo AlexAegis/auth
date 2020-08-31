@@ -1,6 +1,6 @@
 import { Base64 } from 'js-base64';
-import { isUnixTimestampExpired } from '../function';
 import { Base64String, decodeJsonLikeBase64 } from '../function/base64-decoder.function';
+import { isUnixTimestampExpired } from '../function/is-unix-timestamp-expired.function';
 
 export type JwtTokenString = string;
 export type UnixTime = number;

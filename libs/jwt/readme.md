@@ -1,10 +1,17 @@
 # JWT
 
-This package handles common JWT handling, like adding the access token to
+> gzipped cost ~9.39kb
+
+Handles common JWT use-cases, like adding the access token to
 requests **and automatically refreshing it when needed**.
 
-It consists of a Module with two configurable Interceptors, and a helper
+It consists of a `JwtModule` with two configurable Interceptors, and a helper
 service to access your parsed and typed tokens.
+
+It also provides a way to handle cases where a refresh cannot happen
+(For example: both token expired) with a redirection (As thats the most
+common recovery method) or a completely custom function for more advanced
+use-cases.
 
 ## Usage
 
@@ -443,5 +450,5 @@ I recommend making that original dependency into a simple storage with
 In the example application, the `AuthService` acts both as the storage of the
 tokens, and some methods on doing `login`, `refresh` and `logout`.
 
-This demo `AuthService` only have to manage the token storage, the library
+This demo `AuthService` only has to manage the token storage, the library
 will always use the latest values.

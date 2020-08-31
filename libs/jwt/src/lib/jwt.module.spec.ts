@@ -1,8 +1,12 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { JwtInjectorInterceptor, JwtRefreshInterceptor } from './interceptor';
+import { JwtInjectorInterceptor } from './interceptor/jwt-injector.interceptor';
+import { JwtRefreshInterceptor } from './interceptor/jwt-refresh.interceptor';
 import { JwtModule } from './jwt.module';
-import { JWT_CONFIGURATION_TOKEN, JWT_REFRESH_CONFIGURATION_TOKEN } from './token';
+import {
+	JWT_CONFIGURATION_TOKEN,
+	JWT_REFRESH_CONFIGURATION_TOKEN,
+} from './token/jwt-configuration.token';
 
 describe('JwtModule', () => {
 	it('should create without refresh config', () => {

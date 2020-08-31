@@ -8,20 +8,20 @@ import {
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 import { Observer } from 'rxjs';
-import { JwtCannotRefreshError, JwtCouldntRefreshError } from '../errors';
+import { JwtCannotRefreshError, JwtCouldntRefreshError } from '../errors/jwt-error.class';
 import {
 	DEFAULT_JWT_CONFIG,
 	DEFAULT_JWT_REFRESH_CONFIG,
 	JwtConfiguration,
 	JwtRefreshConfiguration,
-	JwtToken,
-} from '../model';
+} from '../model/auth-core-configuration.interface';
+import { JwtToken } from '../model/jwt-token.class';
 import {
 	DEFAULT_JWT_CONFIGURATION_TOKEN,
 	DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,
 	JWT_CONFIGURATION_TOKEN,
 	JWT_REFRESH_CONFIGURATION_TOKEN,
-} from '../token';
+} from '../token/jwt-configuration.token';
 import { JwtRefreshInterceptor } from './jwt-refresh.interceptor';
 
 export const TEST_VALID_TOKEN = 'token';

@@ -2,15 +2,21 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Inject, Injectable, Optional } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
-import { JwtError } from '../errors';
-import { checkAgainstUrlFilter, intoObservable, separateUrl } from '../function';
-import { JwtConfiguration, JwtRefreshConfiguration, JwtToken } from '../model';
+import { JwtError } from '../errors/jwt-error.class';
+import { checkAgainstUrlFilter } from '../function/check-against-url-filter.function';
+import { intoObservable } from '../function/into-observable.function';
+import { separateUrl } from '../function/separate-url.function';
+import {
+	JwtConfiguration,
+	JwtRefreshConfiguration,
+} from '../model/auth-core-configuration.interface';
+import { JwtToken } from '../model/jwt-token.class';
 import {
 	DEFAULT_JWT_CONFIGURATION_TOKEN,
 	DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,
 	JWT_CONFIGURATION_TOKEN,
 	JWT_REFRESH_CONFIGURATION_TOKEN,
-} from '../token';
+} from '../token/jwt-configuration.token';
 
 @Injectable()
 export class JwtInjectorInterceptor implements HttpInterceptor {

@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
+import { JwtErrorHandlingInterceptor } from './interceptor/jwt-error-handling.interceptor';
+import { JwtInjectorInterceptor } from './interceptor/jwt-injector.interceptor';
+import { JwtRefreshInterceptor } from './interceptor/jwt-refresh.interceptor';
 import {
-	JwtErrorHandlingInterceptor,
-	JwtInjectorInterceptor,
-	JwtRefreshInterceptor,
-} from './interceptor';
-import { DEFAULT_JWT_CONFIG, DEFAULT_JWT_REFRESH_CONFIG } from './model';
+	DEFAULT_JWT_CONFIG,
+	DEFAULT_JWT_REFRESH_CONFIG,
+} from './model/auth-core-configuration.interface';
 import {
 	DEFAULT_JWT_CONFIGURATION_TOKEN,
 	DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,
@@ -16,7 +17,7 @@ import {
 	JwtRefreshConfigurationProvider,
 	JWT_CONFIGURATION_TOKEN,
 	JWT_REFRESH_CONFIGURATION_TOKEN,
-} from './token';
+} from './token/jwt-configuration.token';
 
 /**
  * Helps you define a JwtConfigurationProvider
