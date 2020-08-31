@@ -32,7 +32,7 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Build Library
         if: steps.cache-version.outputs.cache-hit != 'true'
-        run: yarn build:prod
+        run: yarn build
       - name: Release jwt
         if: steps.cache-version.outputs.cache-hit != 'true'
         env:

@@ -34,8 +34,8 @@
 		"start:core": "nx serve core-demo",
 		"start:jwt": "nx serve jwt-demo",
 		"start:ngrx": "nx serve ngrx-demo",
-		"build": "nx build",
-		"build:prod": "nx affected:build --all --prod",
+		"build": "nx affected:build --all --prod",
+		"build:jwt": "nx build jwt-demo --prod --stats-json",
 		"clean": "rimraf ./dist ./coverage ./.codacy-coverage ./typedocs ./cache",
 		"self-destruct": "rimraf ./dist ./coverage ./.codacy-coverage ./typedocs ./cache ./node-modules ./package-lock.json ./yarn.lock ./pnpm-lock.yaml",
 		"test": "nx run-many --all --target test",
@@ -49,10 +49,10 @@
 		"lint:rmd": "remark .",
 		"lint:format": "prettier --check .",
 		"e2e": "nx e2e",
+		"analyze:jwt": "webpack-bundle-analyzer dist/apps/jwt-demo/stats.json",
 		"affected:apps": "nx affected:apps",
 		"affected:libs": "nx affected:libs",
-		"affected:build": "nx affected:build",
-		"affected:build:prod": "nx affected:build --prod",
+		"affected:build": "nx affected:build --prod",
 		"affected:e2e": "nx affected:e2e",
 		"affected:test": "nx affected:test",
 		"affected:lint": "nx affected:lint",
@@ -144,6 +144,7 @@
 		"typedoc": "~0.19.0",
 		"typedoc-plugin-external-module-name": "~4.0.3",
 		"typescript": "~3.9.7",
+		"webpack-bundle-analyzer": "~3.8.0",
 		"yaml-lint": "~1.2.4"
 	}
 }

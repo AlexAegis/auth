@@ -102,4 +102,4 @@ jobs:
         if: steps.cache-packages.outputs.cache-hit != 'true'
         run: yarn install
       - name: Build production
-        run: yarn build:prod
+        run: yarn build
