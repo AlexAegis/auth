@@ -8,23 +8,25 @@ import {
 import { Inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, filter, map, switchMap, take } from 'rxjs/operators';
-import { JwtCannotRefreshError, JwtCouldntRefreshError } from '../errors';
+import { JwtCannotRefreshError, JwtCouldntRefreshError } from '../errors/jwt-error.class';
+import { callWhenFunction } from '../function/call-when-function.function';
+import { checkAgainstHttpErrorFilter } from '../function/check-against-http-error-filter.function';
+import { checkAgainstUrlFilter } from '../function/check-against-url-filter.function';
+import { isHttpResponse } from '../function/http-response.predicate';
+import { intoObservable } from '../function/into-observable.function';
+import { matchAgainst } from '../function/match-against.function';
+import { separateUrl } from '../function/separate-url.function';
 import {
-	callWhenFunction,
-	checkAgainstHttpErrorFilter,
-	checkAgainstUrlFilter,
-	intoObservable,
-	isHttpResponse,
-	matchAgainst,
-	separateUrl,
-} from '../function';
-import { JwtConfiguration, JwtRefreshConfiguration, JwtToken } from '../model';
+	JwtConfiguration,
+	JwtRefreshConfiguration,
+} from '../model/auth-core-configuration.interface';
+import { JwtToken } from '../model/jwt-token.class';
 import {
 	DEFAULT_JWT_CONFIGURATION_TOKEN,
 	DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,
 	JWT_CONFIGURATION_TOKEN,
 	JWT_REFRESH_CONFIGURATION_TOKEN,
-} from '../token';
+} from '../token/jwt-configuration.token';
 
 @Injectable()
 export class JwtRefreshInterceptor implements HttpInterceptor {

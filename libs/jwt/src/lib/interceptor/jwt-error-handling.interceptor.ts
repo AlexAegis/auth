@@ -10,15 +10,19 @@ import { Inject, Injectable, Optional } from '@angular/core';
 import { Params, Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { JwtCannotRefreshError, JwtCouldntRefreshError, JwtError } from '../errors';
-import { isNotNullish, isString } from '../function';
-import { JwtConfiguration, JwtRefreshConfiguration } from '../model';
+import { JwtCannotRefreshError, JwtCouldntRefreshError, JwtError } from '../errors/jwt-error.class';
+import { isNotNullish } from '../function/is-not-nullish.predicate';
+import { isString } from '../function/string.predicate';
+import {
+	JwtConfiguration,
+	JwtRefreshConfiguration,
+} from '../model/auth-core-configuration.interface';
 import {
 	DEFAULT_JWT_CONFIGURATION_TOKEN,
 	DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,
 	JWT_CONFIGURATION_TOKEN,
 	JWT_REFRESH_CONFIGURATION_TOKEN,
-} from '../token';
+} from '../token/jwt-configuration.token';
 
 /**
  * If configured, handles authentication errors with custom callbacks

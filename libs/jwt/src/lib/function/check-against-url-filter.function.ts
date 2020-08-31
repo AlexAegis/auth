@@ -1,4 +1,4 @@
-import { UrlFilter } from '../model';
+import { UrlFilter } from '../model/header-configuration.interface';
 import { matchAgainst } from './match-against.function';
 import { SeparatedUrl } from './separate-url.function';
 
