@@ -6,7 +6,7 @@ import {
 	HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { Observer } from 'rxjs';
 import { JwtCannotRefreshError, JwtCouldntRefreshError } from '../errors';
 import {
@@ -142,6 +142,7 @@ describe('JwtRefreshInterceptor', () => {
 	});
 
 	afterEach(() => jest.clearAllMocks());
+	afterEach(inject([HttpTestingController], (htc: HttpTestingController) => htc.verify()));
 
 	it('should be created', () => {
 		const interceptors = TestBed.inject(HTTP_INTERCEPTORS);

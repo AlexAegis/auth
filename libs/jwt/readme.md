@@ -93,6 +93,35 @@ interface JwtConfiguration extends UrlFilter {
    * @default 'Authorization'
    */
   header: string;
+
+  /**
+   * This callback is called when the request fails and there is no
+   * RefreshConfiguration, or when the access token is simply missing.
+   * `getToken` returned a nullish value. If the RefreshConfiguration is
+   * available, then the error handling continues in the same fashion on
+   * the other configuration.
+   *
+   * Both have the same names and signature for
+   * both the error handling configuration options `onFailure` and
+   * `onFailureRedirectParameters`, so if you wish to use the same for both
+   * implement them outside, and spread them back. You can use the
+   * `JwtErrorHandling` interface to help you with the typing. Although
+   * thats a bit wider when it comes to the error types.
+   *
+   * If it's a string, instead of calling it, a redirection will happen,
+   * with `onFailureRedirectParameters` as it's queryParams.
+   */
+  onFailure?: string | ((jwtError: JwtError) => void);
+
+  /**
+   * This option is only used when the `onFailure` option is a string
+   * so it's handled as a redirect. When this happens, you can define
+   * the queryparams to be used with this redirect.
+   */
+  onFailureRedirectParameters?:
+    | ((error: JwtError) => HttpParams | Params)
+    | HttpParams
+    | Params;
 }
 ```
 
@@ -265,6 +294,27 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
    * into a digestable form. It will be called after successful refreshes.
    */
   transformRefreshResponse: (response: RefreshResponse) => JwtRefreshResponse;
+
+  /**
+   * This callback is called when a refresh either failed or cannot be done.
+   * This marks the point where both tokens are invalid and the user needs to
+   * relog. Because this is usually done through a login page, aside from a
+   * regular callback, a string can also be supplied which will act as the
+   * target of navigation. Check `onFailureRedirectParameters` if you wish
+   * to supply query parameters. For more advanced usage, consider
+   * implementing it as a custom function, the error object is available
+   * there too!
+   */
+  onFailure?:
+    | string
+    | ((error: JwtCouldntRefreshError | JwtCannotRefreshError) => void);
+
+  onFailureRedirectParameters?:
+    | ((
+        error: JwtCouldntRefreshError | JwtCannotRefreshError
+      ) => HttpParams | Params)
+    | HttpParams
+    | Params;
 
   /**
    * Optional!

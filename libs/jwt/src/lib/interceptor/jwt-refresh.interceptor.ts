@@ -52,6 +52,7 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 			...defaultJwtRefreshConfig,
 			...refreshConfig,
 		};
+
 		this.rawRefreshToken$ = intoObservable(
 			this.jwtRefreshConfiguration.getRefreshToken ?? (() => null)
 		);

@@ -1,4 +1,5 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { Params } from '@angular/router';
 import { Observable } from 'rxjs';
 import { JwtCannotRefreshError, JwtCouldntRefreshError, JwtError } from '../errors/jwt-error.class';
 import {
@@ -127,10 +128,12 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
 	 * @default 'POST'
 	 */
 	method?: HttpMethodType;
+
 	/**
 	 * The endpoint that will be requested for a new token
 	 */
 	refreshUrl: string;
+
 	/**
 	 * A callback or observable that can be used to retrieve the body of the
 	 * request.
@@ -141,46 +144,35 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
 	createRefreshRequestBody:
 		| Observable<RefreshRequest>
 		| (() => RefreshRequest | Promise<RefreshRequest> | Observable<RefreshRequest>);
+
 	/**
 	 * A callback that should return the defaults on the request
 	 */
 	refreshRequestInitials?: (() => HttpRequestInit | undefined) | HttpRequestInit;
+
 	/**
 	 * This function have to transform the result of your refresh endpoint
 	 * into a digestable form. It will be called after successful refreshes.
 	 */
 	transformRefreshResponse: (response: RefreshResponse) => JwtRefreshResponse;
+
 	/**
 	 * This callback is called when a refresh either failed or cannot be done.
 	 * This marks the point where both tokens are invalid and the user needs to
 	 * relog. Because this is usually done through a login page, aside from a
 	 * regular callback, a string can also be supplied which will act as the
-	 * target of navigation.
+	 * target of navigation. Check `onFailureRedirectParameters` if you wish
+	 * to supply query parameters. For more advanced usage, consider
+	 * implementing it as a custom function, the error object is available
+	 * there too!
 	 */
 	onFailure?: string | ((error: JwtCouldntRefreshError | JwtCannotRefreshError) => void);
-	/**
-	 * When we know that both access and refresh tokens are either invalid
-	 * or expired, there should be no chance on successfully doing the
-	 * originally intended request. This option is disabled by default so
-	 * when this happens, no request will be made at all, and you trust the
-	 * `onFailure` callback, or redirect to sort everything out.
-	 *
-	 * If you want to implement logic on how to retry a failed request which
-	 * can only happen after the next login, I recommend incorporating
-	 * this information into a queryParameter and implementing it into
-	 * your login mechanic, similarly to a 'redirectUrl'
-	 *
-	 * @default false
-	 */
-	tryEvenWithoutAnyChance?: boolean;
-	/**
-	 * This option is only used when the `onFailure` option is a string
-	 * so it's handled as a redirect. When this happens, you can define
-	 * HttpParams to be used with this redirect.
-	 */
+
 	onFailureRedirectParameters?:
-		| ((error: JwtCouldntRefreshError | JwtCannotRefreshError) => HttpParams)
-		| HttpParams;
+		| ((error: JwtCouldntRefreshError | JwtCannotRefreshError) => HttpParams | Params)
+		| HttpParams
+		| Params;
+
 	/**
 	 * Optional!
 	 *
@@ -207,6 +199,41 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
 }
 
 /**
+ * This is a helper interface because they look the same on both
+ * `JwtConfiguration` and `JwtRefreshConfiguration`. They are re-defined
+ * on them to provide better documentation.
+ *
+ * In the case where you wish to implement them both in a separate object
+ * then spread it back to both to reduce code-duplication, this type can
+ * be utilized.
+ */
+export interface JwtErrorHandling {
+	/**
+	 * If it's a string, instead of calling it, a redirection will happen,
+	 * with `onFailureRedirectParameters` as it's queryParams.
+	 */
+	onFailure?:
+		| string
+		| ((jwtError: JwtError | JwtCouldntRefreshError | JwtCannotRefreshError) => void);
+
+	/**
+	 * This option is only used when the `onFailure` option is a string
+	 * so it's handled as a redirect. When this happens, you can define
+	 * the queryparams to be used with this redirect.
+	 *
+	 * When implemented as a function, the JwtError will be forwarded to it.
+	 * All JwtErrors have the `originalRequest` available in them, so it's
+	 * trivial to acquire the failed url.
+	 */
+	onFailureRedirectParameters?:
+		| ((
+				error: JwtError | JwtCouldntRefreshError | JwtCannotRefreshError
+		  ) => HttpParams | Params)
+		| HttpParams
+		| Params;
+}
+
+/**
  * Token injection configuration
  *
  * The optional generic defined the refresh endpoints Response type. If you
@@ -226,7 +253,7 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
  * })
  * ```
  */
-export interface JwtConfiguration extends Omit<HeaderConfiguration, 'getValue'> {
+export interface JwtConfiguration extends Omit<HeaderConfiguration, 'getValue'>, JwtErrorHandling {
 	/**
 	 * A callback or observable that will be called or subscribed to
 	 * on every http request and returns a value for the header
@@ -267,34 +294,22 @@ export interface JwtConfiguration extends Omit<HeaderConfiguration, 'getValue'> 
 
 	/**
 	 * This callback is called when the request fails and there is no
-	 * RefreshConfiguration or `onFailure` is not implemented.
-	 * If you do have, don't implement this.
+	 * RefreshConfiguration, or when the access token is simply missing.
+	 * `getToken` returned a nullish value. If the RefreshConfiguration is
+	 * available, then the error handling continues in the same fashion on
+	 * the other configuration.
+	 *
+	 * Both have the same names and signature for
+	 * both the error handling configuration options `onFailure` and
+	 * `onFailureRedirectParameters`, so if you wish to use the same for both
+	 * implement them outside, and spread them back. You can use the
+	 * `JwtErrorHandling` interface to help you with the typing. Although
+	 * thats a bit wider when it comes to the error types.
 	 *
 	 * If it's a string, instead of calling it, a redirection will happen,
-	 * with `onFailureRedirectParameters` as it's queryParams
+	 * with `onFailureRedirectParameters` as it's queryParams.
 	 */
 	onFailure?: string | ((jwtError: JwtError) => void);
-	/**
-	 * When we know that the access token is expired or invalid, and there is
-	 * no refresh configuration, there should be no chance on successfully
-	 * doing the originally intended request.
-	 *
-	 * This option is disabled by default so when this happens, no request
-	 * will be made at all, and you trust the `onFailure` callback, or
-	 * redirect to sort everything out.
-	 *
-	 * If you want to implement logic on how to retry a failed request which
-	 * can only happen after the next login, I recommend incorporating
-	 * this information into a queryParameter and implementing it into
-	 * your login mechanic, similarly to a 'redirectUrl'
-	 *
-	 * @default false
-	 */
-	tryEvenWithoutAnyChance?: boolean;
-	/**
-	 * This option is only used when the `onFailure` option is a string
-	 * so it's handled as a redirect. When this happens, you can define
-	 * HttpParams to be used with this redirect.
-	 */
-	onFailureRedirectParameters?: ((error: JwtError) => HttpParams) | HttpParams;
+
+	onFailureRedirectParameters?: ((error: JwtError) => HttpParams | Params) | HttpParams | Params;
 }
