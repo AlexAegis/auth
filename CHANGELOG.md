@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/AlexAegis/auth/compare/v0.1.4...v1.0.0) (2020-08-31)
+
+
+### Features
+
+* **jwt:** error handling ([3a439df](https://github.com/AlexAegis/auth/commit/3a439df4e6baf44b9595c4b3a975124b252cf5f9))
+* **jwt:** error handling [#151](https://github.com/AlexAegis/auth/issues/151) ([a4e3f36](https://github.com/AlexAegis/auth/commit/a4e3f36921110050cbc4c2430b0ffba9403abef5))
+* **jwt:** implemented jwt error ([054344a](https://github.com/AlexAegis/auth/commit/054344a21721154fd6511cd062b1866033220480))
+* **jwt:** observable-like getRefreshRequest ([605f2ca](https://github.com/AlexAegis/auth/commit/605f2ca1c39db747e5614344d92707172e38b206))
+* **jwt:** typesafe claims [#145](https://github.com/AlexAegis/auth/issues/145) ([2b26a21](https://github.com/AlexAegis/auth/commit/2b26a21ae76c19d5ada7d18a9d89b14e91f62a95))
+
 ### [0.1.4](https://github.com/AlexAegis/auth/compare/v0.1.3...v0.1.4) (2020-08-20)
 
 
