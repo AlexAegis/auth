@@ -10,30 +10,18 @@ See the individual packages for more information
 
 ## [JWT Package](./libs/jwt)
 
+> For information on how to use it, visit the link above!
+
 ```json
 {
   "@aegis-auth/jwt": "^0.1.4"
 }
 ```
 
-Handles jwt tokens and interceptors. Automatically refreshes them.
+Handles jwt tokens and thei injection into requests.
+**Automatically refreshes them.**
 
-## [CSRF Package](./libs/csrf)
-
-> Planned
-
-Handles csrf tokens and interceptors.
-
-## [NgRX Package](./libs/ngrx)
-
-> Planned
-
-NgRX plug-and-play store to handle tokens through it.
-
-## Development
-
-Fork the repository, then clone it.
-
-```sh
-git clone https://www.github.com/AlexAegis/auth
-```
+It also provides a way to handle cases where a refresh cannot happen
+(For example: both token expired) with a redirection (As thats the most
+common recovery method) or a completely custom function for more advanced
+use-cases.

@@ -7,7 +7,7 @@ import {
 	HttpRequest,
 } from '@angular/common/http';
 import { Inject, Injectable, Optional } from '@angular/core';
-import { Router } from '@angular/router';
+import { Params, Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { JwtCannotRefreshError, JwtCouldntRefreshError, JwtError } from '../errors';
@@ -101,7 +101,7 @@ export class JwtErrorHandlingInterceptor implements HttpInterceptor {
 	private handleFailure<E>(
 		errorCallbackOrRedirect: string | ((error: E) => void),
 		error: E,
-		redirectParameters?: ((error: E) => HttpParams) | HttpParams
+		redirectParameters?: ((error: E) => HttpParams | Params) | HttpParams | Params
 	): void {
 		if (isString(errorCallbackOrRedirect)) {
 			if (this.router) {

@@ -1,25 +1,44 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Inject, Injectable, Optional } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
+import { JwtError } from '../errors';
 import { checkAgainstUrlFilter, intoObservable, separateUrl } from '../function';
-import { JwtConfiguration } from '../model';
-import { DEFAULT_JWT_CONFIGURATION_TOKEN, JWT_CONFIGURATION_TOKEN } from '../token';
+import { JwtConfiguration, JwtRefreshConfiguration, JwtToken } from '../model';
+import {
+	DEFAULT_JWT_CONFIGURATION_TOKEN,
+	DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,
+	JWT_CONFIGURATION_TOKEN,
+	JWT_REFRESH_CONFIGURATION_TOKEN,
+} from '../token';
 
 @Injectable()
 export class JwtInjectorInterceptor implements HttpInterceptor {
 	private readonly jwtConfiguration!: JwtConfiguration;
+	private readonly jwtRefreshConfiguration?: JwtRefreshConfiguration<unknown, unknown>;
 
 	public constructor(
 		@Inject(JWT_CONFIGURATION_TOKEN)
 		jwtConfig: JwtConfiguration,
 		@Inject(DEFAULT_JWT_CONFIGURATION_TOKEN)
-		defaultJwtConfig: JwtConfiguration
+		defaultJwtConfig: JwtConfiguration,
+		@Optional()
+		@Inject(JWT_REFRESH_CONFIGURATION_TOKEN)
+		refreshConfig?: JwtRefreshConfiguration<unknown, unknown>,
+		@Optional()
+		@Inject(DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN)
+		defaultJwtRefreshConfig?: JwtRefreshConfiguration<unknown, unknown>
 	) {
 		this.jwtConfiguration = {
 			...defaultJwtConfig,
 			...jwtConfig,
 		};
+
+		this.jwtRefreshConfiguration = refreshConfig &&
+			defaultJwtRefreshConfig && {
+				...defaultJwtRefreshConfig,
+				...refreshConfig,
+			};
 	}
 
 	public intercept(
@@ -29,22 +48,37 @@ export class JwtInjectorInterceptor implements HttpInterceptor {
 		const separatedUrl = separateUrl(request.url);
 		return intoObservable(this.jwtConfiguration.getToken).pipe(
 			take(1),
-			switchMap((token) => {
-				if (token && checkAgainstUrlFilter(this.jwtConfiguration, separatedUrl)) {
-					let cloned = request.clone({
-						headers: request.headers.set(
-							this.jwtConfiguration.header,
-							this.jwtConfiguration.scheme
-								? this.jwtConfiguration.scheme + token
-								: token
-						),
-					});
-					if (this.jwtConfiguration.handleWithCredentials) {
-						cloned = cloned.clone({
-							withCredentials: true,
+			switchMap((rawToken) => {
+				if (checkAgainstUrlFilter(this.jwtConfiguration, separatedUrl)) {
+					const token = rawToken && JwtToken.from(rawToken);
+					const isAccessTokenExpiredOrInvalid = !token || token.isExpired();
+					// If there is a token to inject
+					if (
+						rawToken &&
+						(!isAccessTokenExpiredOrInvalid || this.jwtRefreshConfiguration)
+					) {
+						let cloned = request.clone({
+							headers: request.headers.set(
+								this.jwtConfiguration.header,
+								this.jwtConfiguration.scheme
+									? this.jwtConfiguration.scheme + rawToken
+									: rawToken
+							),
 						});
+						if (this.jwtConfiguration.handleWithCredentials) {
+							cloned = cloned.clone({
+								withCredentials: true,
+							});
+						}
+						return next.handle(cloned);
+					} else {
+						return throwError(
+							JwtError.createErrorResponse(
+								request,
+								'Token is expired or invalid, and refresh is not configured.'
+							)
+						);
 					}
-					return next.handle(cloned);
 				} else return next.handle(request);
 			})
 		);
