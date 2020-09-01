@@ -11,7 +11,7 @@ describe('FakeBackendInterceptor', () => {
 	);
 
 	it('should be created', () => {
-		const interceptor: FakeBackendInterceptor = TestBed.inject(FakeBackendInterceptor);
+		const interceptor = TestBed.inject(FakeBackendInterceptor);
 		expect(interceptor).toBeTruthy();
 	});
 });

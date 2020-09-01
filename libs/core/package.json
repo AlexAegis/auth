@@ -1,7 +1,7 @@
 {
 	"name": "@aegis-auth/core",
 	"description": "Angular authentication libary core module",
-	"version": "1.0.1",
+	"version": "9.0.0",
 	"license": "MIT",
 	"author": {
 		"email": "alexaegis@gmail.com",
@@ -26,10 +26,10 @@
 		"yarn": ">=1.0.0"
 	},
 	"dependencies": {
-		"tslib": "^2.0.1"
+		"tslib": "1.10.*"
 	},
 	"peerDependencies": {
-		"@angular/common": "^9.1.0",
-		"@angular/core": "^9.1.0"
+		"@angular/common": "9.*.*",
+		"@angular/core": "9.*.*"
 	}
 }

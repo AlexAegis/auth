@@ -1,17 +1,17 @@
 {
 	"name": "@aegis-auth/jwt",
-	"version": "1.0.1",
+	"version": "9.0.0",
 	"scripts": {
 		"release": "semantic-release"
 	},
 	"peerDependencies": {
-		"@angular/common": "^10.0.0",
-		"@angular/core": "^10.0.0",
-		"@angular/router": "^10.0.0",
-		"rxjs": "~6.6.0"
+		"@angular/common": "9.*.*",
+		"@angular/core": "9.*.*",
+		"@angular/router": "9.*.*",
+		"rxjs": "6.5.*"
 	},
 	"dependencies": {
 		"js-base64": "^3.4.5",
-		"tslib": "^2.0.1"
+		"tslib": "1.10.*"
 	}
 }

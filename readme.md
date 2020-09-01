@@ -6,6 +6,12 @@
 
 <!-- markdownlint-enable MD013 -->
 
+## Backport Branch for Angular 9
+
+This branch is responsible for the `9.x.x` versions and Angular 9 support.
+
+Angular 9 will be in LTS until Aug 06, 2021. And so will this package.
+
 See the individual packages for more information
 
 ## [JWT Package](./libs/jwt)
@@ -14,7 +20,7 @@ See the individual packages for more information
 
 ```json
 {
-  "@aegis-auth/jwt": "^1.0.1"
+  "@aegis-auth/jwt": "^9.0.0"
 }
 ```
 

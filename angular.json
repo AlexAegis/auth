@@ -255,8 +255,7 @@
 						"aot": true,
 						"assets": ["apps/jwt-demo/src/favicon.ico", "apps/jwt-demo/src/assets"],
 						"styles": ["apps/jwt-demo/src/styles.css"],
-						"scripts": [],
-						"allowedCommonJsDependencies": ["js-base64"]
+						"scripts": []
 					},
 					"configurations": {
 						"production": {
