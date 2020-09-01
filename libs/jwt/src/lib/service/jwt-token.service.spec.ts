@@ -57,7 +57,7 @@ describe('JwtTokenService', () => {
 	afterEach(() => jest.clearAllMocks());
 
 	it('should be created', () => {
-		service = TestBed.inject(JwtTokenService);
+		service = TestBed.get(JwtTokenService);
 		expect(service).toBeTruthy();
 	});
 
@@ -81,7 +81,7 @@ describe('JwtTokenService', () => {
 			useValue: {},
 		} as JwtConfigurationProvider);
 
-		service = TestBed.inject(JwtTokenService);
+		service = TestBed.get(JwtTokenService);
 		const accessTokenObservables = [
 			service.rawAccessToken$.pipe(tap((n) => expect(n).toBeNull())),
 			service.accessToken$.pipe(tap((n) => expect(n).toBeNull())),
@@ -129,7 +129,7 @@ describe('JwtTokenService', () => {
 			useValue: {},
 		} as JwtConfigurationProvider);
 
-		service = TestBed.inject(JwtTokenService);
+		service = TestBed.get(JwtTokenService);
 		const accessTokenObservables = [
 			service.rawAccessToken$.pipe(tap((n) => expect(n).toBe(TEST_VALID_TOKEN))),
 			service.accessToken$.pipe(tap((n) => expect(n).toBeTruthy())),
@@ -178,7 +178,7 @@ describe('JwtTokenService', () => {
 			useValue: {},
 		} as JwtConfigurationProvider);
 
-		service = TestBed.inject(JwtTokenService);
+		service = TestBed.get(JwtTokenService);
 		const accessTokenObservables = [
 			service.rawAccessToken$.pipe(tap((n) => expect(n).toBe(TEST_MALFORMED_TOKEN))),
 			service.accessToken$.pipe(
@@ -259,7 +259,7 @@ describe('JwtTokenService', () => {
 			useValue: {},
 		} as JwtConfigurationProvider);
 
-		service = TestBed.inject(JwtTokenService);
+		service = TestBed.get(JwtTokenService);
 		const accessTokenObservables = [
 			service.rawAccessToken$.pipe(tap((n) => expect(n).toBe(TEST_EXPIRED_TOKEN))),
 			service.accessToken$.pipe(tap((n) => expect(n).toBeTruthy())),
@@ -300,7 +300,7 @@ describe('JwtTokenService', () => {
 			useValue: undefined,
 		});
 
-		service = TestBed.inject(JwtTokenService);
+		service = TestBed.get(JwtTokenService);
 		const accessTokenObservables = [
 			service.rawAccessToken$.pipe(tap((n) => expect(n).toBe(TEST_EXPIRED_TOKEN))),
 			service.accessToken$.pipe(tap((n) => expect(n).toBeTruthy())),

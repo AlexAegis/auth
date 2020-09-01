@@ -9,7 +9,7 @@ describe('ApiService', () => {
 		TestBed.configureTestingModule({
 			imports: [HttpClientModule],
 		});
-		service = TestBed.inject(ApiService);
+		service = TestBed.get(ApiService);
 	});
 
 	it('should be created', () => {

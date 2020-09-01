@@ -16,7 +16,7 @@ export class DashboardComponent extends BaseDirective {
 	public token$ = this.jwtTokenService.accessToken$;
 	public tokenString$ = this.jwtTokenService.rawAccessToken$;
 
-	public usernameFromToken$ = this.token$.pipe(map((token) => token?.payload.username));
+	public usernameFromToken$ = this.token$.pipe(map((token) => token && token.payload.username));
 
 	public defaultLifespan = 5;
 

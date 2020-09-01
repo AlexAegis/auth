@@ -2,6 +2,7 @@ import {
 	HttpClient,
 	HttpClientModule,
 	HttpErrorResponse,
+	HttpInterceptor,
 	HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
@@ -51,9 +52,9 @@ describe('JwtInjectorInterceptor', () => {
 	 * to be executed before injecting
 	 */
 	const injectCommon = () => {
-		const httpClient = TestBed.inject(HttpClient);
-		const httpTestingController = TestBed.inject(HttpTestingController);
-		const interceptors = TestBed.inject(HTTP_INTERCEPTORS);
+		const httpClient: HttpClient = TestBed.get(HttpClient);
+		const httpTestingController: HttpTestingController = TestBed.get(HttpTestingController);
+		const interceptors: HttpInterceptor[] = TestBed.get(HTTP_INTERCEPTORS);
 		const jwtInjectorInterceptor = interceptors.find(
 			(i) => i instanceof JwtInjectorInterceptor
 		);
@@ -96,7 +97,7 @@ describe('JwtInjectorInterceptor', () => {
 	afterEach(inject([HttpTestingController], (htc: HttpTestingController) => htc.verify()));
 
 	it('should be created', () => {
-		const interceptors = TestBed.inject(HTTP_INTERCEPTORS);
+		const interceptors: HttpInterceptor[] = TestBed.get(HTTP_INTERCEPTORS);
 		const jwtInterceptor = interceptors.find((i) => i instanceof JwtInjectorInterceptor);
 		expect(jwtInterceptor).toBeTruthy();
 	});
@@ -113,7 +114,7 @@ describe('JwtInjectorInterceptor', () => {
 
 		const { httpClient, httpTestingController, jwtInjectorInterceptSpy } = injectCommon();
 
-		httpClient.get<unknown>('test').subscribe(requestObserverMock);
+		httpClient.get('test').subscribe(requestObserverMock);
 
 		const mockResult = httpTestingController.expectOne(
 			(request) =>
@@ -141,7 +142,7 @@ describe('JwtInjectorInterceptor', () => {
 
 		const { httpClient, httpTestingController, jwtInjectorInterceptSpy } = injectCommon();
 
-		httpClient.get<unknown>('test').subscribe(requestObserverMock);
+		httpClient.get('test').subscribe(requestObserverMock);
 
 		const mockResult = httpTestingController.expectOne(
 			(request) =>
@@ -171,7 +172,7 @@ describe('JwtInjectorInterceptor', () => {
 
 		const { httpClient, httpTestingController, jwtInjectorInterceptSpy } = injectCommon();
 
-		httpClient.get<unknown>(TEST_REQUEST_DOMAIN).subscribe(requestObserverMock);
+		httpClient.get(TEST_REQUEST_DOMAIN).subscribe(requestObserverMock);
 
 		const mockResult = httpTestingController.expectOne(
 			(request) =>
@@ -201,7 +202,7 @@ describe('JwtInjectorInterceptor', () => {
 
 		const path = `${TEST_REQUEST_DOMAIN}/${TEST_REQUEST_PATH}`;
 
-		httpClient.get<unknown>(path).subscribe(requestObserverMock);
+		httpClient.get(path).subscribe(requestObserverMock);
 
 		const mockResult = httpTestingController.expectOne(
 			(request) => request.url === path && !request.headers.has(TEST_AUTH_HEADER)
@@ -231,7 +232,7 @@ describe('JwtInjectorInterceptor', () => {
 
 		const path = `${TEST_REQUEST_DOMAIN}/${TEST_REQUEST_PATH}`;
 
-		httpClient.get<unknown>(path).subscribe(requestObserverMock);
+		httpClient.get(path).subscribe(requestObserverMock);
 
 		const mockResult = httpTestingController.expectOne(
 			(request) => request.url === path && !request.headers.has(TEST_AUTH_HEADER)
@@ -265,7 +266,7 @@ describe('JwtInjectorInterceptor', () => {
 			expect((error.error as ErrorEvent).error).toBeInstanceOf(JwtError);
 		});
 
-		httpClient.get<unknown>(path).subscribe({
+		httpClient.get(path).subscribe({
 			next: nextMock,
 			error: specificErrorMock,
 			complete: completeMock,
@@ -297,7 +298,7 @@ describe('JwtInjectorInterceptor', () => {
 
 		const path = `${TEST_REQUEST_DOMAIN}/${TEST_REQUEST_PATH}`;
 
-		httpClient.get<unknown>(path).subscribe(requestObserverMock);
+		httpClient.get(path).subscribe(requestObserverMock);
 
 		const mockRequest = httpTestingController.expectOne(path);
 

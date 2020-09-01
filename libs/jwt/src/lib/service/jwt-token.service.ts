@@ -45,9 +45,10 @@ export class JwtTokenService<
 	 */
 	public readonly rawAccessToken$ = intoObservable(this.config.getToken);
 
-	public readonly rawRefreshToken$ = this.refreshConfig?.getRefreshToken
-		? intoObservable(this.refreshConfig.getRefreshToken)
-		: of(null);
+	public readonly rawRefreshToken$ =
+		this.refreshConfig && this.refreshConfig.getRefreshToken
+			? intoObservable(this.refreshConfig.getRefreshToken)
+			: of(null);
 
 	public readonly accessToken$ = this.rawAccessToken$.pipe(
 		map((token) => {
@@ -70,25 +71,25 @@ export class JwtTokenService<
 	);
 
 	public readonly accessTokenHeader$ = this.accessToken$.pipe(
-		map((token) => token?.header ?? null)
+		map((token) => (token && token.header) || null)
 	);
 	public readonly accessTokenPayload$ = this.accessToken$.pipe(
-		map((token) => token?.payload ?? null)
+		map((token) => (token && token.payload) || null)
 	);
 
 	public readonly refreshTokenHeader$ = this.refreshToken$.pipe(
-		map((token) => token?.header ?? null)
+		map((token) => (token && token.header) || null)
 	);
 	public readonly refreshTokenPayload$ = this.refreshToken$.pipe(
-		map((token) => token?.payload ?? null)
+		map((token) => (token && token.payload) || null)
 	);
 
 	public readonly isAccessTokenExpired$ = this.accessTokenPayload$.pipe(
-		map((payload) => isUnixTimestampExpired(payload?.exp))
+		map((payload) => isUnixTimestampExpired(payload && payload.exp))
 	);
 
 	public readonly isRefreshTokenExpired$ = this.refreshTokenPayload$.pipe(
-		map((payload) => isUnixTimestampExpired(payload?.exp))
+		map((payload) => isUnixTimestampExpired(payload && payload.exp))
 	);
 
 	public constructor(

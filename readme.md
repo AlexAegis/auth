@@ -6,6 +6,13 @@
 
 <!-- markdownlint-enable MD013 -->
 
+## Backport Branch for Angular 8
+
+This branch is responsible for the `8.x.x` versions and Angular 8 support.
+
+Angular 8 will be in LTS until Nov 28, 2020. After that this series wont get
+any new releases, please upgrade to a newer Angular version.
+
 See the individual packages for more information
 
 ## [JWT Package](./libs/jwt)
@@ -14,7 +21,7 @@ See the individual packages for more information
 
 ```json
 {
-  "@aegis-auth/jwt": "^1.0.1"
+  "@aegis-auth/jwt": "^8.0.0"
 }
 ```
 

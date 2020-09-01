@@ -1,4 +1,4 @@
-import { Directive, OnDestroy } from '@angular/core';
+import { OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 /**
@@ -9,7 +9,6 @@ import { Subscription } from 'rxjs';
  * super.ngOnDestroy();
  * ```
  */
-@Directive()
 export class BaseDirective implements OnDestroy {
 	protected subscriptions = new Subscription();
 

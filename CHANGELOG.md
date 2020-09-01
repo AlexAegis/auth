@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.0.0](https://github.com/AlexAegis/auth/compare/v1.0.1...v8.0.0) (2020-09-03)
+
+### Features
+
+* ng8 compatibility ([7bf0959](https://github.com/AlexAegis/auth/commit/7bf09599437a5aded9eec8cb940c6363683e95b3))
+
 ### [1.0.1](https://github.com/AlexAegis/auth/compare/v1.0.0...v1.0.1) (2020-09-01)
 
 ### Features

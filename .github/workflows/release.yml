@@ -2,7 +2,7 @@ name: Release
 on:
   push:
     branches:
-      - master
+      - ng8
 jobs:
   release:
     name: Release
@@ -40,4 +40,4 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
-          npm publish ./dist/libs/jwt --access public
+          npm publish ./dist/libs/jwt --access public --tag ng8

@@ -16,7 +16,7 @@
 <div>
 	<button (click)="login()">Login (Create token)</button>
 	<span>Lifespan (seconds):</span>
-	<input [(ngModel)]="lifespan" type="number" [placeholder]="defaultLifespan" />
+	<input [(ngModel)]="lifespan" type="number" [placeholder]="defaultLifespan.toString()" />
 </div>
 <button (click)="logout()">Logout (Remove token)</button>
 

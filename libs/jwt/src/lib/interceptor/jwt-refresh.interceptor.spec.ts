@@ -3,6 +3,7 @@ import {
 	HttpClientModule,
 	HttpErrorResponse,
 	HttpHeaders,
+	HttpInterceptor,
 	HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
@@ -98,9 +99,9 @@ describe('JwtRefreshInterceptor', () => {
 	 * to be executed before injecting
 	 */
 	const injectCommon = () => {
-		const httpClient = TestBed.inject(HttpClient);
-		const httpTestingController = TestBed.inject(HttpTestingController);
-		const interceptors = TestBed.inject(HTTP_INTERCEPTORS);
+		const httpClient = TestBed.get(HttpClient);
+		const httpTestingController = TestBed.get(HttpTestingController);
+		const interceptors: HttpInterceptor[] = TestBed.get(HTTP_INTERCEPTORS);
 		const jwtRefreshInterceptor = interceptors.find((i) => i instanceof JwtRefreshInterceptor);
 		expect(jwtRefreshInterceptor).toBeTruthy();
 		if (!jwtRefreshInterceptor) {
@@ -145,7 +146,7 @@ describe('JwtRefreshInterceptor', () => {
 	afterEach(inject([HttpTestingController], (htc: HttpTestingController) => htc.verify()));
 
 	it('should be created', () => {
-		const interceptors = TestBed.inject(HTTP_INTERCEPTORS);
+		const interceptors: HttpInterceptor[] = TestBed.get(HTTP_INTERCEPTORS);
 		const jwtRefreshInterceptor = interceptors.find((i) => i instanceof JwtRefreshInterceptor);
 		expect(jwtRefreshInterceptor).toBeTruthy();
 	});
@@ -169,7 +170,7 @@ describe('JwtRefreshInterceptor', () => {
 		const { httpClient, httpTestingController, refreshInterceptSpy } = injectCommon();
 
 		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body', headers: validHeaders })
+			.get(TEST_REQUEST_DOMAIN, { observe: 'body', headers: validHeaders })
 			.subscribe(requestObserverMock);
 
 		const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
@@ -203,7 +204,7 @@ describe('JwtRefreshInterceptor', () => {
 		const { httpClient, httpTestingController, refreshInterceptSpy } = injectCommon();
 
 		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body', headers: expiredHeaders })
+			.get(TEST_REQUEST_DOMAIN, { observe: 'body', headers: expiredHeaders })
 			.subscribe(requestObserverMock);
 
 		const mockRefreshRequest = httpTestingController.expectOne(TEST_REFRESH_URL);
@@ -240,7 +241,7 @@ describe('JwtRefreshInterceptor', () => {
 		const { httpClient, httpTestingController, refreshInterceptSpy } = injectCommon();
 
 		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body', headers: invalidHeaders })
+			.get(TEST_REQUEST_DOMAIN, { observe: 'body', headers: invalidHeaders })
 			.subscribe(requestObserverMock);
 
 		const mockErrorRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
@@ -284,7 +285,7 @@ describe('JwtRefreshInterceptor', () => {
 		});
 
 		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body', headers: invalidHeaders })
+			.get(TEST_REQUEST_DOMAIN, { observe: 'body', headers: invalidHeaders })
 			.subscribe({
 				next: nextMock,
 				error: instanceCheckingErrorMock,
@@ -330,7 +331,7 @@ describe('JwtRefreshInterceptor', () => {
 		});
 
 		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body', headers: expiredHeaders })
+			.get(TEST_REQUEST_DOMAIN, { observe: 'body', headers: expiredHeaders })
 			.subscribe({
 				next: nextMock,
 				error: instanceCheckingErrorMock,
@@ -369,7 +370,7 @@ describe('JwtRefreshInterceptor', () => {
 		const { httpClient, httpTestingController, refreshInterceptSpy } = injectCommon();
 
 		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body', headers: invalidHeaders })
+			.get(TEST_REQUEST_DOMAIN, { observe: 'body', headers: invalidHeaders })
 			.subscribe(requestObserverMock);
 
 		const mockErrorRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
@@ -405,7 +406,7 @@ describe('JwtRefreshInterceptor', () => {
 		const { httpClient, httpTestingController, refreshInterceptSpy } = injectCommon();
 
 		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body', headers: invalidHeaders })
+			.get(TEST_REQUEST_DOMAIN, { observe: 'body', headers: invalidHeaders })
 			.subscribe(requestObserverMock);
 
 		const mockErrorRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
@@ -445,7 +446,7 @@ describe('JwtRefreshInterceptor', () => {
 		const { httpClient, httpTestingController, refreshInterceptSpy } = injectCommon();
 
 		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body', headers: invalidHeaders })
+			.get(TEST_REQUEST_DOMAIN, { observe: 'body', headers: invalidHeaders })
 			.subscribe(requestObserverMock);
 
 		const mockErrorRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
@@ -481,7 +482,7 @@ describe('JwtRefreshInterceptor', () => {
 		const { httpClient, httpTestingController, refreshInterceptSpy } = injectCommon();
 
 		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body', headers: validHeaders })
+			.get(TEST_REQUEST_DOMAIN, { observe: 'body', headers: validHeaders })
 			.subscribe(requestObserverMock);
 
 		const mockErrorRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
@@ -519,9 +520,7 @@ describe('JwtRefreshInterceptor', () => {
 
 		const { httpClient, httpTestingController, refreshInterceptSpy } = injectCommon();
 
-		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body' })
-			.subscribe(requestObserverMock);
+		httpClient.get(TEST_REQUEST_DOMAIN, { observe: 'body' }).subscribe(requestObserverMock);
 
 		const mockErrorRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockErrorRequest.error(new ErrorEvent('Invalid token'));
@@ -569,7 +568,7 @@ describe('JwtRefreshInterceptor', () => {
 		const { httpClient, httpTestingController, refreshInterceptSpy } = injectCommon();
 
 		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body', headers: expiredHeaders })
+			.get(TEST_REQUEST_DOMAIN, { observe: 'body', headers: expiredHeaders })
 			.subscribe(requestObserverMock);
 
 		const mockRefreshRequest = httpTestingController.expectOne(TEST_REFRESH_URL);
@@ -606,7 +605,7 @@ describe('JwtRefreshInterceptor', () => {
 		const { httpClient, httpTestingController, refreshInterceptSpy } = injectCommon();
 
 		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body', headers: malformedHeaders })
+			.get(TEST_REQUEST_DOMAIN, { observe: 'body', headers: malformedHeaders })
 			.subscribe(requestObserverMock);
 
 		const mockRefreshRequest = httpTestingController.expectOne(TEST_REFRESH_URL);

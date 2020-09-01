@@ -30,10 +30,20 @@ export interface SeparatedUrl {
  * and path is `/`.
  */
 export function separateUrl(url?: string): SeparatedUrl {
-	const urlMatch = url?.match(/^((.*):\/\/)?([^/].*?)?(\/(.*))?$/);
+	let urlMatch;
+	if (url !== undefined) {
+		urlMatch = url.match(/^((.*):\/\/)?([^/].*?)?(\/(.*))?$/);
+	}
+	if (!urlMatch) {
+		return {
+			protocol: undefined,
+			domain: undefined,
+			path: undefined,
+		};
+	}
 	return {
-		protocol: urlMatch?.[2] as UrlProtocol,
-		domain: urlMatch?.[3] as UrlDomain,
-		path: urlMatch?.[5] as UrlPath,
+		protocol: urlMatch[2] as UrlProtocol,
+		domain: urlMatch[3] as UrlDomain,
+		path: urlMatch[5] as UrlPath,
 	};
 }

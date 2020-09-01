@@ -6,7 +6,7 @@ describe('MockServerService', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({});
-		service = TestBed.inject(MockServerService);
+		service = TestBed.get(MockServerService);
 	});
 
 	it('should be created', () => {

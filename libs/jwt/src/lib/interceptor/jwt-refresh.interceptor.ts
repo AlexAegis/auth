@@ -56,7 +56,7 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 		};
 
 		this.rawRefreshToken$ = intoObservable(
-			this.jwtRefreshConfiguration.getRefreshToken ?? (() => null)
+			this.jwtRefreshConfiguration.getRefreshToken || (() => null)
 		);
 
 		this.isRawRefreshTokenGetterAvailable = !!this.jwtRefreshConfiguration.getRefreshToken;
@@ -127,7 +127,7 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 									take(1),
 									switchMap((requestBody) => {
 										const refreshRequest = new HttpRequest<unknown>(
-											this.jwtRefreshConfiguration.method ?? 'POST',
+											this.jwtRefreshConfiguration.method || 'POST',
 											this.jwtRefreshConfiguration.refreshUrl,
 											requestBody,
 											callWhenFunction(

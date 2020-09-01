@@ -64,11 +64,8 @@ export class JwtErrorHandlingInterceptor implements HttpInterceptor {
 	): Observable<HttpEvent<unknown>> {
 		return next.handle(request).pipe(
 			catchError((errorResponse: HttpErrorResponse) => {
-				const error:
-					| JwtError
-					| JwtCannotRefreshError
-					| JwtCouldntRefreshError = (errorResponse.error as ErrorEvent | undefined)
-					?.error;
+				const error: JwtError | JwtCannotRefreshError | JwtCouldntRefreshError =
+					errorResponse.error && (errorResponse.error as ErrorEvent).error;
 				if (
 					error instanceof JwtCannotRefreshError ||
 					error instanceof JwtCouldntRefreshError

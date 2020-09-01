@@ -15,17 +15,35 @@ export function checkAgainstUrlFilter(
 	const domainMatcher = matchAgainst(domain);
 	const pathMatcher = matchAgainst(path);
 
-	const protocolWhitelistRulesPass = urlFilter.protocolWhitelist?.some(protocolMatcher) ?? true;
+	let protocolWhitelistRulesPass = true;
+	if (urlFilter.protocolWhitelist) {
+		protocolWhitelistRulesPass = urlFilter.protocolWhitelist.some(protocolMatcher);
+	}
 
-	const protocolBlacklistRulesPass = !urlFilter.protocolBlacklist?.some(protocolMatcher);
+	let protocolBlacklistRulesPass = true;
+	if (urlFilter.protocolBlacklist) {
+		protocolBlacklistRulesPass = !urlFilter.protocolBlacklist.some(protocolMatcher);
+	}
 
-	const domainWhitelistRulesPass = urlFilter.domainWhitelist?.some(domainMatcher) ?? true;
+	let domainWhitelistRulesPass = true;
+	if (urlFilter.domainWhitelist) {
+		domainWhitelistRulesPass = urlFilter.domainWhitelist.some(domainMatcher);
+	}
 
-	const domainBlacklistRulesPass = !urlFilter.domainBlacklist?.some(domainMatcher);
+	let domainBlacklistRulesPass = true;
+	if (urlFilter.domainBlacklist) {
+		domainBlacklistRulesPass = !urlFilter.domainBlacklist.some(domainMatcher);
+	}
 
-	const pathWhitelistRulesPass = urlFilter.pathWhitelist?.some(pathMatcher) ?? true;
+	let pathWhitelistRulesPass = true;
+	if (urlFilter.pathWhitelist) {
+		pathWhitelistRulesPass = urlFilter.pathWhitelist.some(pathMatcher);
+	}
 
-	const pathBlacklistRulesPass = !urlFilter.pathBlacklist?.some(pathMatcher);
+	let pathBlacklistRulesPass = true;
+	if (urlFilter.pathBlacklist) {
+		pathBlacklistRulesPass = !urlFilter.pathBlacklist.some(pathMatcher);
+	}
 
 	return (
 		protocolWhitelistRulesPass &&

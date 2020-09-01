@@ -2,6 +2,7 @@ import {
 	HttpClient,
 	HttpClientModule,
 	HttpErrorResponse,
+	HttpInterceptor,
 	HttpParams,
 	HttpRequest,
 	HTTP_INTERCEPTORS,
@@ -56,9 +57,9 @@ describe('JwtErrorHandlingInterceptor', () => {
 	 * to be executed before injecting
 	 */
 	const injectCommon = () => {
-		const httpClient = TestBed.inject(HttpClient);
-		const httpTestingController = TestBed.inject(HttpTestingController);
-		const interceptors = TestBed.inject(HTTP_INTERCEPTORS);
+		const httpClient: HttpClient = TestBed.get(HttpClient);
+		const httpTestingController: HttpTestingController = TestBed.get(HttpTestingController);
+		const interceptors: HttpInterceptor[] = TestBed.get(HTTP_INTERCEPTORS);
 		const jwtErrorHandlingInterceptor = interceptors.find(
 			(i) => i instanceof JwtErrorHandlingInterceptor
 		);
@@ -110,7 +111,7 @@ describe('JwtErrorHandlingInterceptor', () => {
 	afterEach(inject([HttpTestingController], (htc: HttpTestingController) => htc.verify()));
 
 	it('should be created', () => {
-		const interceptors = TestBed.inject(HTTP_INTERCEPTORS);
+		const interceptors: HttpInterceptor[] = TestBed.get(HTTP_INTERCEPTORS);
 		const jwtErrorHandlingInterceptor = interceptors.find(
 			(i) => i instanceof JwtErrorHandlingInterceptor
 		);
@@ -120,9 +121,7 @@ describe('JwtErrorHandlingInterceptor', () => {
 	it('should call the normal onFailure when its a function and a normal error happened', () => {
 		const { httpClient, httpTestingController, errorHandlingInterceptSpy } = injectCommon();
 
-		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body' })
-			.subscribe(requestObserverMock);
+		httpClient.get(TEST_REQUEST_DOMAIN, { observe: 'body' }).subscribe(requestObserverMock);
 
 		const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockRequest.error(JwtError.createErrorEvent(TEST_REQUEST, ''));
@@ -146,9 +145,7 @@ describe('JwtErrorHandlingInterceptor', () => {
 
 		const { httpClient, httpTestingController, errorHandlingInterceptSpy } = injectCommon();
 
-		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body' })
-			.subscribe(requestObserverMock);
+		httpClient.get(TEST_REQUEST_DOMAIN, { observe: 'body' }).subscribe(requestObserverMock);
 
 		const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockRequest.error(JwtError.createErrorEvent(TEST_REQUEST, ''));
@@ -173,9 +170,7 @@ describe('JwtErrorHandlingInterceptor', () => {
 
 		const { httpClient, httpTestingController, errorHandlingInterceptSpy } = injectCommon();
 
-		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body' })
-			.subscribe(requestObserverMock);
+		httpClient.get(TEST_REQUEST_DOMAIN, { observe: 'body' }).subscribe(requestObserverMock);
 		const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockRequest.error(JwtError.createErrorEvent(TEST_REQUEST, ''));
 
@@ -193,9 +188,7 @@ describe('JwtErrorHandlingInterceptor', () => {
 	it('should call the refresh onFailure when its a function and a refresh error happened', () => {
 		const { httpClient, httpTestingController, errorHandlingInterceptSpy } = injectCommon();
 
-		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body' })
-			.subscribe(requestObserverMock);
+		httpClient.get(TEST_REQUEST_DOMAIN, { observe: 'body' }).subscribe(requestObserverMock);
 
 		const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockRequest.error(JwtCouldntRefreshError.createErrorEvent(TEST_REQUEST, ''));
@@ -233,9 +226,7 @@ describe('JwtErrorHandlingInterceptor', () => {
 
 		const { httpClient, httpTestingController, errorHandlingInterceptSpy } = injectCommon();
 
-		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body' })
-			.subscribe(requestObserverMock);
+		httpClient.get(TEST_REQUEST_DOMAIN, { observe: 'body' }).subscribe(requestObserverMock);
 		const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockRequest.error(JwtCannotRefreshError.createErrorEvent(TEST_REQUEST, ''));
 
@@ -262,13 +253,11 @@ describe('JwtErrorHandlingInterceptor', () => {
 			expect((error.error as ErrorEvent).type).toEqual(FOO);
 		});
 
-		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body' })
-			.subscribe({
-				next: nextMock,
-				error: specificErrorMock,
-				complete: completeMock,
-			});
+		httpClient.get(TEST_REQUEST_DOMAIN, { observe: 'body' }).subscribe({
+			next: nextMock,
+			error: specificErrorMock,
+			complete: completeMock,
+		});
 		const errorEvent = new ErrorEvent(FOO);
 		const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockRequest.error(errorEvent);
@@ -301,13 +290,11 @@ describe('JwtErrorHandlingInterceptor', () => {
 
 		const { httpClient, httpTestingController, errorHandlingInterceptSpy } = injectCommon();
 
-		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body' })
-			.subscribe({
-				next: nextMock,
-				error: specificErrorMock,
-				complete: completeMock,
-			});
+		httpClient.get(TEST_REQUEST_DOMAIN, { observe: 'body' }).subscribe({
+			next: nextMock,
+			error: specificErrorMock,
+			complete: completeMock,
+		});
 		const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockRequest.error(JwtError.createErrorEvent(TEST_REQUEST, ''));
 
@@ -329,13 +316,11 @@ describe('JwtErrorHandlingInterceptor', () => {
 			expect(error.error).toBeUndefined();
 		});
 
-		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body' })
-			.subscribe({
-				next: nextMock,
-				error: specificErrorMock,
-				complete: completeMock,
-			});
+		httpClient.get(TEST_REQUEST_DOMAIN, { observe: 'body' }).subscribe({
+			next: nextMock,
+			error: specificErrorMock,
+			complete: completeMock,
+		});
 
 		const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockRequest.error((undefined as unknown) as ErrorEvent);
@@ -365,13 +350,11 @@ describe('JwtErrorHandlingInterceptor', () => {
 			expect((error.error as ErrorEvent).error).toBeInstanceOf(JwtError);
 		});
 
-		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body' })
-			.subscribe({
-				next: nextMock,
-				error: specificErrorMock,
-				complete: completeMock,
-			});
+		httpClient.get(TEST_REQUEST_DOMAIN, { observe: 'body' }).subscribe({
+			next: nextMock,
+			error: specificErrorMock,
+			complete: completeMock,
+		});
 
 		const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockRequest.error(JwtError.createErrorEvent(TEST_REQUEST, ''));
@@ -401,13 +384,11 @@ describe('JwtErrorHandlingInterceptor', () => {
 			expect((error.error as ErrorEvent).error).toBeInstanceOf(JwtCannotRefreshError);
 		});
 
-		httpClient
-			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body' })
-			.subscribe({
-				next: nextMock,
-				error: specificErrorMock,
-				complete: completeMock,
-			});
+		httpClient.get(TEST_REQUEST_DOMAIN, { observe: 'body' }).subscribe({
+			next: nextMock,
+			error: specificErrorMock,
+			complete: completeMock,
+		});
 
 		const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
 		mockRequest.error(JwtCannotRefreshError.createErrorEvent(TEST_REQUEST, ''));

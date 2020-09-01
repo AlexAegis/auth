@@ -34,11 +34,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 			const refreshRequest = request.body as RefreshRequest;
 			console.log('Refreshing', refreshRequest);
 			if (refreshRequest.refreshToken) {
-				if (
-					!isUnixTimestampExpired(JwtToken.from(refreshRequest.refreshToken)?.payload.exp)
-				) {
+				const asd = JwtToken.from(refreshRequest.refreshToken);
+				if (asd && !isUnixTimestampExpired(asd.payload.exp)) {
 					return this.makeResponse(
-						this.auth.generateTokenPair(refreshRequest.lifespan ?? 60)
+						this.auth.generateTokenPair(refreshRequest.lifespan || 60)
 					);
 				} else {
 					return throwError('ERROR from backend: Expired refresh token on refresh route');
@@ -63,7 +62,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 		const jwtHeader = request.headers.get(JWT_HEADER);
 		if (jwtHeader) {
 			const rawJwtToken = jwtHeader.split(JWT_SCHEME)[1];
-			if (!isUnixTimestampExpired(JwtToken.from(rawJwtToken)?.payload.exp)) {
+			const asd = JwtToken.from(rawJwtToken);
+			if (!(asd && asd.payload && isUnixTimestampExpired(asd.payload.exp))) {
 				return this.makeResponse(response);
 			} else {
 				return throwError('ERROR from backend: Expired token on protected route');

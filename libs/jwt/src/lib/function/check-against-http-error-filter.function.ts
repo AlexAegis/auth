@@ -11,10 +11,16 @@ export function checkAgainstHttpErrorFilter(
 	error: HttpErrorResponse
 ): boolean {
 	const statusMatcher = (code: number) => code === error.status;
-	const errorCodeWhitelistRulesPass =
-		httpErrorFilter.errorCodeWhitelist?.some(statusMatcher) ?? true;
 
-	const errorCodeBlacklistRulesPass = !httpErrorFilter.errorCodeBlacklist?.some(statusMatcher);
+	let errorCodeWhitelistRulesPass = true;
+	if (httpErrorFilter.errorCodeWhitelist) {
+		errorCodeWhitelistRulesPass = httpErrorFilter.errorCodeWhitelist.some(statusMatcher);
+	}
+
+	let errorCodeBlacklistRulesPass = true;
+	if (httpErrorFilter.errorCodeBlacklist) {
+		errorCodeBlacklistRulesPass = !httpErrorFilter.errorCodeBlacklist.some(statusMatcher);
+	}
 
 	return errorCodeWhitelistRulesPass && errorCodeBlacklistRulesPass;
 }

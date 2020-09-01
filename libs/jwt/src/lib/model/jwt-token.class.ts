@@ -89,7 +89,7 @@ export class JwtToken<Claims = Record<string | number, unknown>> {
 	}
 
 	public static stripScheme(jwtHeaderValue: string, scheme?: string): JwtTokenString {
-		return jwtHeaderValue.substring((scheme ?? '').length);
+		return jwtHeaderValue.substring((scheme || '').length);
 	}
 
 	public static splitTokenString(

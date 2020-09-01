@@ -20,23 +20,23 @@ export class ApiService extends BaseDirective {
 
 	public requestWhitelistedPathOnWhitelistedDomain(): void {
 		this.teardown = this.http
-			.get<unknown>(`${WHITELISTED_PROTOCOL}://${WHITELISTED_DOMAIN}/${WHITELISTED_PATH}`)
+			.get(`${WHITELISTED_PROTOCOL}://${WHITELISTED_DOMAIN}/${WHITELISTED_PATH}`)
 			.subscribe();
 	}
 
 	public requestBlacklistedPathOnWhitelistedDomain(): void {
 		this.teardown = this.http
-			.get<unknown>(`${WHITELISTED_PROTOCOL}://${WHITELISTED_DOMAIN}/${BLACKLISTED_PATH}`)
+			.get(`${WHITELISTED_PROTOCOL}://${WHITELISTED_DOMAIN}/${BLACKLISTED_PATH}`)
 			.subscribe();
 	}
 
 	public requestOnBlacklistedDomain(): void {
 		this.teardown = this.http
-			.get<unknown>(`${BLACKLISTED_PROTOCOL}://${BLACKLISTED_DOMAIN}/api/v1/employees`)
+			.get(`${BLACKLISTED_PROTOCOL}://${BLACKLISTED_DOMAIN}/api/v1/employees`)
 			.subscribe();
 	}
 
 	public customGet(url: string): void {
-		this.teardown = this.http.get<unknown>(url).subscribe();
+		this.teardown = this.http.get(url).subscribe();
 	}
 }
