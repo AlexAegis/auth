@@ -2,8 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [1.0.0](https://github.com/AlexAegis/auth/compare/v0.1.4...v1.0.0) (2020-08-31)
+### [1.0.1](https://github.com/AlexAegis/auth/compare/v1.0.0...v1.0.1) (2020-09-01)
 
+### Features
+
+* Smaller bundle size ([06f8200c](https://github.com/AlexAegis/auth/commit/06f8200c230ede5247d852214b5e85ec91d5f370))
+
+## [1.0.0](https://github.com/AlexAegis/auth/compare/v0.1.4...v1.0.0) (2020-08-31)
 
 ### Features
 
@@ -15,14 +20,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [0.1.4](https://github.com/AlexAegis/auth/compare/v0.1.3...v0.1.4) (2020-08-20)
 
-
 ### Features
 
 * disable test cache on ci ([990b691](https://github.com/AlexAegis/auth/commit/990b6918c0043b58dd004ac3f32faa4091f2d1c2))
 * readme updater [#69](https://github.com/AlexAegis/auth/issues/69) ([4f87b65](https://github.com/AlexAegis/auth/commit/4f87b6554c91b1921999e2ad1c210ca72f8b4850))
 
 ### [0.1.3](https://github.com/AlexAegis/auth/compare/v0.1.2...v0.1.3) (2020-06-30)
-
 
 ### Features
 

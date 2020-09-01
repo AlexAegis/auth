@@ -1,6 +1,6 @@
 {
 	"name": "@aegis-auth/ngrx",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"peerDependencies": {
 		"@angular/common": "^9.1.9",
 		"@angular/core": "^9.1.9",
