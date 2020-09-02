@@ -5,15 +5,13 @@
 		"release": "semantic-release"
 	},
 	"peerDependencies": {
-		"@angular/common": "^9.1.9",
-		"@angular/core": "^9.1.9",
-		"rxjs": "~6.5.5"
+		"@angular/common": "^10.0.0",
+		"@angular/core": "^10.0.0",
+		"@angular/router": "^10.0.0",
+		"rxjs": "~6.6.0"
 	},
 	"dependencies": {
 		"js-base64": "^3.4.5",
 		"tslib": "^2.0.1"
-	},
-	"optionalDependencies": {
-		"@angular/router": "^9.1.9"
 	}
 }

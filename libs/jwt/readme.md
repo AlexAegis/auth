@@ -1,7 +1,5 @@
 # JWT
 
-> gzipped cost ~9.39kb
-
 Handles common JWT use-cases, like adding the access token to
 requests **and automatically refreshing it when needed**.
 
