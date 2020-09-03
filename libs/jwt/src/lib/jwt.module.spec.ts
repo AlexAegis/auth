@@ -9,8 +9,8 @@ import {
 } from './token/jwt-configuration.token';
 
 describe('JwtModule', () => {
-	it('should create without refresh config', () => {
-		TestBed.configureTestingModule({
+	it('should create without refresh config', async () => {
+		await TestBed.configureTestingModule({
 			imports: [JwtModule.forRoot({ useValue: {} })],
 		}).compileComponents();
 		expect(JwtModule).toBeDefined();
@@ -24,8 +24,8 @@ describe('JwtModule', () => {
 		expect(() => TestBed.inject(JWT_REFRESH_CONFIGURATION_TOKEN)).toThrow();
 	});
 
-	it('should create with refresh config', () => {
-		TestBed.configureTestingModule({
+	it('should create with refresh config', async () => {
+		await TestBed.configureTestingModule({
 			imports: [JwtModule.forRoot({ useValue: {} }, { useValue: {} })],
 		}).compileComponents();
 		expect(JwtModule).toBeDefined();
@@ -40,7 +40,5 @@ describe('JwtModule', () => {
 		expect(refreshConfig).toBeTruthy();
 	});
 
-	afterEach(() => {
-		TestBed.resetTestingModule();
-	});
+	afterEach(() => TestBed.resetTestingModule());
 });

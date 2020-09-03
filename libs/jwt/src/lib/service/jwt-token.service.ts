@@ -2,7 +2,6 @@ import { Inject, Injectable, Optional } from '@angular/core';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { intoObservable } from '../function/into-observable.function';
-import { isUnixTimestampExpired } from '../function/is-unix-timestamp-expired.function';
 import { isString } from '../function/string.predicate';
 import {
 	JwtConfiguration,
@@ -72,6 +71,7 @@ export class JwtTokenService<
 	public readonly accessTokenHeader$ = this.accessToken$.pipe(
 		map((token) => token?.header ?? null)
 	);
+
 	public readonly accessTokenPayload$ = this.accessToken$.pipe(
 		map((token) => token?.payload ?? null)
 	);
@@ -79,16 +79,31 @@ export class JwtTokenService<
 	public readonly refreshTokenHeader$ = this.refreshToken$.pipe(
 		map((token) => token?.header ?? null)
 	);
+
 	public readonly refreshTokenPayload$ = this.refreshToken$.pipe(
 		map((token) => token?.payload ?? null)
 	);
 
-	public readonly isAccessTokenExpired$ = this.accessTokenPayload$.pipe(
-		map((payload) => isUnixTimestampExpired(payload?.exp))
+	/**
+	 * TODO: Emit when expires
+	 */
+	public readonly isAccessTokenExpired$ = this.accessToken$.pipe(
+		map((token) => token?.isExpired())
 	);
 
-	public readonly isRefreshTokenExpired$ = this.refreshTokenPayload$.pipe(
-		map((payload) => isUnixTimestampExpired(payload?.exp))
+	/**
+	 * TODO: Emit when expires
+	 */
+	public readonly isRefreshTokenExpired$ = this.refreshToken$.pipe(
+		map((token) => token?.isExpired())
+	);
+
+	public readonly isAccessTokenValid$ = this.isAccessTokenExpired$.pipe(
+		map((isExpired) => isExpired !== undefined && !isExpired)
+	);
+
+	public readonly isRefreshTokenValid$ = this.isRefreshTokenExpired$.pipe(
+		map((isExpired) => isExpired !== undefined && !isExpired)
 	);
 
 	public constructor(

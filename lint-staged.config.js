@@ -1,6 +1,6 @@
 // For the glob features check out https://github.com/micromatch/micromatch
 module.exports = {
-	'*.ts': ['tslint --project tsconfig.base.json', 'prettier --check'],
+	'*.ts': ['eslint', 'tslint --project tsconfig.base.json', 'prettier --check'],
 	'*.js': ['eslint', 'prettier --check'],
 	'*.css': ['stylelint', 'prettier --list-different'],
 	'*.scss': ['stylelint --syntax=scss', 'prettier --check'],
