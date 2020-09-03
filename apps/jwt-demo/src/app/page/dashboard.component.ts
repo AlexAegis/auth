@@ -1,6 +1,7 @@
 import { BaseDirective, JwtTokenService } from '@aegis-auth/jwt';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { interval } from 'rxjs';
+import { map, mergeMapTo } from 'rxjs/operators';
 import { Claims } from '../model/claims.interface';
 import { ApiService } from '../service';
 import { AuthService } from '../service/auth.service';
@@ -13,19 +14,27 @@ import { AuthService } from '../service/auth.service';
 export class DashboardComponent extends BaseDirective {
 	public title = 'jwt-demo';
 
-	public token$ = this.jwtTokenService.accessToken$;
 	public tokenString$ = this.jwtTokenService.rawAccessToken$;
 
-	public usernameFromToken$ = this.token$.pipe(map((token) => token?.payload.username));
+	public usernameFromToken$ = this.jwtTokenService.accessToken$.pipe(
+		map((token) => token?.payload.username)
+	);
 
 	public defaultLifespan = 5;
 
 	public lifespan: number | undefined;
 
+	public isAccessTokenExpired$ = interval(1000).pipe(
+		mergeMapTo(this.jwtTokenService.isAccessTokenExpired$)
+	);
+	public isRefreshTokenExpired$ = interval(1000).pipe(
+		mergeMapTo(this.jwtTokenService.isRefreshTokenExpired$)
+	);
+
 	public constructor(
 		private readonly auth: AuthService,
 		public readonly api: ApiService,
-		private readonly jwtTokenService: JwtTokenService<Claims>
+		public readonly jwtTokenService: JwtTokenService<Claims>
 	) {
 		super();
 	}
