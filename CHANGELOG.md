@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.0.0](https://github.com/AlexAegis/auth/compare/v1.0.1...v10.0.0) (2020-09-03)
+
+* Backports added for ng8 and 9 with the current version bumped to 10
+
 ### [1.0.1](https://github.com/AlexAegis/auth/compare/v1.0.0...v1.0.1) (2020-09-01)
 
 ### Features
