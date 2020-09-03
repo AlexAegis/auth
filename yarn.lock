@@ -278,11 +278,6 @@
   dependencies:
     tslib "^2.0.0"
 
-"@angular/router@^9.1.9":
-  version "9.1.12"
-  resolved "https://registry.yarnpkg.com/@angular/router/-/router-9.1.12.tgz#4f7fc170e1e7ef72ca1714dbc7a3888aedc33f2d"
-  integrity sha512-+qCaXa9y0nsRhzjAYBqmGoQ2YkrdXgftZwuFDf6t4qEi30EXa0oS97KrlFq0M5GKdLIDGrbUm9PcdHSTOI+ZhA==
-
 "@angular/router@~10.1.0":
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/@angular/router/-/router-10.1.0.tgz#02bbbcf0b20aad8a6679bfab82efe6a19f738805"
@@ -6026,9 +6021,9 @@ ejs@^2.6.1:
   integrity sha512-7vmuyh5+kuUyJKePhQfRQBhXV5Ce+RnaeeQArKu1EAMpL3WbgMt5WG6uQZpEVvYSSsxMXRKOewtDk9RaTKXRlA==
 
 electron-to-chromium@^1.3.349, electron-to-chromium@^1.3.523:
-  version "1.3.560"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.560.tgz#6c3f61fe50324770b75705300e9f98f29312ea8d"
-  integrity sha512-0cEFfOA3sNXfSxo0FIClBhrLVSe/QO9LBiqmmYPm3N/IYyt41NRTa2EhvOMWAOKpjd91t/rq062yhnJzfVMKkQ==
+  version "1.3.561"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.561.tgz#90411a8f45a227ee3cf9219297b2515b5a5359e5"
+  integrity sha512-f9ESwg7KGKqNzfhJ8QRXBEZA/FpiWohHC/xob/Jk7BwUoKdI2xEhp36Y31AJwc5GygPwoMo/4W3ne7IWncW9Zg==
 
 elegant-spinner@^1.0.1:
   version "1.0.1"
@@ -15559,12 +15554,11 @@ table@^5.2.3:
     string-width "^3.0.0"
 
 table@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/table/-/table-6.0.1.tgz#334fd5d74590251f6893f1296c29d533bbac1b32"
-  integrity sha512-fmr6168splcy/3XIvhSm5w6hYYOqyr3plAsd7OqoerzyoMnIpoxYuwrpdO2Cm22dh6KCnvirvigPrFZp+tdWFA==
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/table/-/table-6.0.2.tgz#86baa9dde3883e964c63b59f1be78789aea4c91d"
+  integrity sha512-1Dlr1wC8+NimBPoyGLKHps7gvQjyV9H0kfsdXCmvxl7vo4ODkq0sY7ueAMjMm9YZb7dsbhRLLeK6fIxFKojxMg==
   dependencies:
     ajv "^6.12.4"
-    lodash "^4.17.20"
     slice-ansi "^4.0.0"
     string-width "^4.2.0"
 
@@ -16001,15 +15995,15 @@ tsconfig-paths@^3.4.0:
     minimist "^1.2.0"
     strip-bom "^3.0.0"
 
+tslib@2.*.*, tslib@2.0.1, tslib@^2.0.0, tslib@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.0.1.tgz#410eb0d113e5b6356490eec749603725b021b43e"
+  integrity sha512-SgIkNheinmEBgx1IUNirK0TUD4X9yjjBRTqqjggWCU3pUEqIk3/Uwl3yRixYKT6WjQuGiwDv4NomL3wqRCj+CQ==
+
 tslib@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.0.0.tgz#18d13fc2dce04051e20f074cc8387fd8089ce4f3"
   integrity sha512-lTqkx847PI7xEDYJntxZH89L2/aXInsyF2luSafe/+0fHOMjlBNXdH6th7f70qxLDhul7KZK0zC8V5ZIyHl0/g==
-
-tslib@2.0.1, tslib@^2.0.0, tslib@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.0.1.tgz#410eb0d113e5b6356490eec749603725b021b43e"
-  integrity sha512-SgIkNheinmEBgx1IUNirK0TUD4X9yjjBRTqqjggWCU3pUEqIk3/Uwl3yRixYKT6WjQuGiwDv4NomL3wqRCj+CQ==
 
 tslib@^1.10.0, tslib@^1.13.0, tslib@^1.7.1, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
   version "1.13.0"
