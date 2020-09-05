@@ -27,6 +27,10 @@ import { AuthService } from './service';
 					component: DashboardComponent,
 				},
 				{
+					path: 'login',
+					component: DashboardComponent,
+				},
+				{
 					path: 'protected',
 					component: ProtectedComponent,
 					canActivate: [LoginGuard],
@@ -76,6 +80,8 @@ import { AuthService } from './service';
 						console.log('transformRefreshResponse', response);
 						return response;
 					},
+					// Redirect to /login when the refresh fails
+					onFailure: '/login',
 				}),
 				deps: [AuthService],
 			}

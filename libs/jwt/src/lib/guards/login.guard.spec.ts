@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import {
 	ActivatedRoute,
@@ -11,7 +12,7 @@ import { Observer, of, zip } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { intoObservable } from '../function/into-observable.function';
 import { JwtTokenService } from '../service/jwt-token.service';
-import { LoginGuard } from './login.guard';
+import { LoginGuard, LoginGuardData } from './login.guard';
 
 describe('LoginGuard', () => {
 	let guard: LoginGuard;
@@ -31,14 +32,13 @@ describe('LoginGuard', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
+			imports: [HttpClientModule],
 			providers: [
 				{
-					provide: JwtTokenService,
-					useValue: {} as Partial<JwtTokenService>,
-				},
-				{
 					provide: ActivatedRoute,
-					useValue: { snapshot: { paramMap: convertToParamMap({ id: 'one-id' }) } },
+					useValue: {
+						snapshot: { paramMap: convertToParamMap({ id: 'one-id' }) },
+					},
 				},
 				{ provide: RouterStateSnapshot, useValue: { url: route.path } },
 			],
@@ -95,12 +95,16 @@ describe('LoginGuard', () => {
 		expect(mockComplete).toBeCalledTimes(1);
 	});
 
-	it('should be false on all guards when the access token is invalid', () => {
+	it('should be false on all guards when the access token is invalid and manual refresh is disabled', () => {
 		TestBed.overrideProvider(JwtTokenService, {
 			useValue: {
 				isAccessTokenValid$: of(false),
+				refreshConfig: {
+					isAutoRefreshAllowedInLoginGuardByDefault: false,
+				},
 			} as Partial<JwtTokenService>,
 		});
+
 		guard = TestBed.inject(LoginGuard);
 		activatedRoute = TestBed.inject(ActivatedRoute);
 		routerStateSnapshot = TestBed.inject(RouterStateSnapshot);
@@ -110,6 +114,98 @@ describe('LoginGuard', () => {
 			routerStateSnapshot
 		);
 		const canLoadResult = guard.canLoad(route, urlSegments);
+
+		const mockNext = jest.fn<void, [[boolean | UrlTree, boolean | UrlTree, boolean | UrlTree]]>(
+			([a, b, c]) => {
+				expect(a).toBeFalsy();
+				expect(b).toBeFalsy();
+				expect(c).toBeFalsy();
+			}
+		);
+
+		zip(
+			intoObservable(canActivateResult),
+			intoObservable(canActivateChildResult),
+			intoObservable(canLoadResult)
+		)
+			.pipe(take(1))
+			.subscribe(getMockObserver(mockNext));
+
+		expect(mockNext).toBeCalledTimes(1);
+		expect(mockError).toBeCalledTimes(0);
+		expect(mockComplete).toBeCalledTimes(1);
+	});
+
+	it('should be true on all guards when the access token is expired but it is refreshed', () => {
+		TestBed.overrideProvider(JwtTokenService, {
+			useValue: {
+				isAccessTokenValid$: of(false),
+				manualRefresh: () => of(true),
+				refreshConfig: {
+					isAutoRefreshAllowedInLoginGuardByDefault: true,
+				},
+			} as Partial<JwtTokenService>,
+		});
+
+		guard = TestBed.inject(LoginGuard);
+		activatedRoute = TestBed.inject(ActivatedRoute);
+		routerStateSnapshot = TestBed.inject(RouterStateSnapshot);
+		const canActivateResult = guard.canActivate(activatedRoute.snapshot, routerStateSnapshot);
+		const canActivateChildResult = guard.canActivateChild(
+			activatedRoute.snapshot,
+			routerStateSnapshot
+		);
+		const canLoadResult = guard.canLoad(route, urlSegments);
+
+		const mockNext = jest.fn<void, [[boolean | UrlTree, boolean | UrlTree, boolean | UrlTree]]>(
+			([a, b, c]) => {
+				expect(a).toBeTruthy();
+				expect(b).toBeTruthy();
+				expect(c).toBeTruthy();
+			}
+		);
+
+		zip(
+			intoObservable(canActivateResult),
+			intoObservable(canActivateChildResult),
+			intoObservable(canLoadResult)
+		)
+			.pipe(take(1))
+			.subscribe(getMockObserver(mockNext));
+
+		expect(mockNext).toBeCalledTimes(1);
+		expect(mockError).toBeCalledTimes(0);
+		expect(mockComplete).toBeCalledTimes(1);
+	});
+
+	it('should be false on all guards when the access token is invalid and manual refresh is enabled globally but not on the route', () => {
+		TestBed.overrideProvider(JwtTokenService, {
+			useValue: {
+				isAccessTokenValid$: of(false),
+				refreshConfig: {
+					isAutoRefreshAllowedInLoginGuardByDefault: true,
+				},
+			} as Partial<JwtTokenService>,
+		});
+		const data = { isRefreshAllowed: false } as LoginGuardData;
+		guard = TestBed.inject(LoginGuard);
+
+		activatedRoute = TestBed.inject(ActivatedRoute);
+		activatedRoute = ({
+			...activatedRoute,
+			snapshot: { ...activatedRoute.snapshot, data },
+		} as unknown) as ActivatedRoute;
+
+		routerStateSnapshot = TestBed.inject(RouterStateSnapshot);
+
+		const routeWithData: Route = { ...route, data };
+
+		const canActivateResult = guard.canActivate(activatedRoute.snapshot, routerStateSnapshot);
+		const canActivateChildResult = guard.canActivateChild(
+			activatedRoute.snapshot,
+			routerStateSnapshot
+		);
+		const canLoadResult = guard.canLoad(routeWithData, urlSegments);
 
 		const mockNext = jest.fn<void, [[boolean | UrlTree, boolean | UrlTree, boolean | UrlTree]]>(
 			([a, b, c]) => {
