@@ -1,7 +1,6 @@
 import { JwtTokenService } from '@aegis-auth/jwt';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { interval } from 'rxjs';
-import { map, mergeMapTo } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Claims } from '../model/claims.interface';
 import { ApiService } from '../service';
 import { AuthService } from '../service/auth.service';
@@ -24,12 +23,9 @@ export class DashboardComponent {
 
 	public lifespan: number | undefined;
 
-	public isAccessTokenExpired$ = interval(1000).pipe(
-		mergeMapTo(this.jwtTokenService.isAccessTokenExpired$)
-	);
-	public isRefreshTokenExpired$ = interval(1000).pipe(
-		mergeMapTo(this.jwtTokenService.isRefreshTokenExpired$)
-	);
+	public isAccessTokenExpired$ = this.jwtTokenService.isAccessTokenExpired$;
+
+	public isRefreshTokenExpired$ = this.jwtTokenService.isRefreshTokenExpired$;
 
 	public constructor(
 		private readonly auth: AuthService,
