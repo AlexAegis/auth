@@ -30,15 +30,15 @@
 	<span>isExpired? {{ isRefreshTokenExpired$ | async }}</span>
 </div>
 
-<button (click)="api.requestWhitelistedPathOnWhitelistedDomain()">
+<button (click)="requestWhitelistedPathOnWhitelistedDomain()">
 	Request whitelisted path on whitelisted domain
 </button>
-<button (click)="api.requestBlacklistedPathOnWhitelistedDomain()">
+<button (click)="requestBlacklistedPathOnWhitelistedDomain()">
 	Request blacklisted path on whitelisted domain
 </button>
-<button (click)="api.requestOnBlacklistedDomain()">Request on blacklisted domain</button>
+<button (click)="requestOnBlacklistedDomain()">Request on blacklisted domain</button>
 <div>
-	<button (click)="api.customGet(url.value)">Get from here:</button>
+	<button (click)="customGet(url.value)">Get from here:</button>
 	<span>URL</span><input #url type="text" placeholder="url" />
 </div>
 

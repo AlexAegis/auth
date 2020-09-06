@@ -1,4 +1,4 @@
-import { BaseDirective, JwtTokenService } from '@aegis-auth/jwt';
+import { JwtTokenService } from '@aegis-auth/jwt';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { interval } from 'rxjs';
 import { map, mergeMapTo } from 'rxjs/operators';
@@ -11,7 +11,7 @@ import { AuthService } from '../service/auth.service';
 	styleUrls: ['./dashboard.component.css'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardComponent extends BaseDirective {
+export class DashboardComponent {
 	public title = 'jwt-demo';
 
 	public tokenString$ = this.jwtTokenService.rawAccessToken$;
@@ -35,15 +35,29 @@ export class DashboardComponent extends BaseDirective {
 		private readonly auth: AuthService,
 		public readonly api: ApiService,
 		public readonly jwtTokenService: JwtTokenService<Claims>
-	) {
-		super();
-	}
+	) {}
 
 	public login(): void {
-		this.teardown = this.auth.login(this.lifespan || this.defaultLifespan).subscribe();
+		this.auth.login(this.lifespan || this.defaultLifespan).subscribe();
 	}
 
 	public logout(): void {
-		this.teardown = this.auth.logout().subscribe();
+		this.auth.logout().subscribe();
+	}
+
+	public requestWhitelistedPathOnWhitelistedDomain(): void {
+		this.api.requestWhitelistedPathOnWhitelistedDomain().subscribe();
+	}
+
+	public requestBlacklistedPathOnWhitelistedDomain(): void {
+		this.api.requestBlacklistedPathOnWhitelistedDomain().subscribe();
+	}
+
+	public requestOnBlacklistedDomain(): void {
+		this.api.requestOnBlacklistedDomain().subscribe();
+	}
+
+	public customGet(url: string): void {
+		this.api.customGet(url).subscribe();
 	}
 }
