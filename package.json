@@ -1,7 +1,7 @@
 {
 	"name": "aegis-auth",
 	"description": "Angular authentication libaries",
-	"version": "8.0.0",
+	"version": "8.1.0",
 	"license": "MIT",
 	"author": {
 		"email": "alexaegis@gmail.com",
