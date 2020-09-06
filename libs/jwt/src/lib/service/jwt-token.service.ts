@@ -1,8 +1,13 @@
+import { HttpHandler } from '@angular/common/http';
 import { Inject, Injectable, Optional } from '@angular/core';
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { JwtCouldntRefreshError } from '../errors/jwt-error.class';
 import { intoObservable } from '../function/into-observable.function';
-import { isUnixTimestampExpired } from '../function/is-unix-timestamp-expired.function';
+import { isNotNullish } from '../function/is-not-nullish.predicate';
+import { handleJwtError } from '../function/jwt-error-handler.function';
+import { tryRefresh } from '../function/refresh-token.function';
 import { isString } from '../function/string.predicate';
 import {
 	JwtConfiguration,
@@ -25,14 +30,12 @@ export class JwtTokenService<
 	RefreshRequest = Record<string | number, unknown>,
 	RefreshResponse = Record<string | number, unknown>
 > {
-	private readonly config: JwtConfiguration = {
+	public readonly config: JwtConfiguration = {
 		...this.rawDefaultConfig,
 		...this.rawConfig,
 	};
 
-	private readonly refreshConfig:
-		| JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
-		| undefined =
+	public readonly refreshConfig?: JwtRefreshConfiguration<RefreshRequest, RefreshResponse> =
 		this.rawDefaultRefreshConfig && this.rawRefreshConfig
 			? {
 					...this.rawDefaultRefreshConfig,
@@ -72,6 +75,7 @@ export class JwtTokenService<
 	public readonly accessTokenHeader$ = this.accessToken$.pipe(
 		map((token) => token?.header ?? null)
 	);
+
 	public readonly accessTokenPayload$ = this.accessToken$.pipe(
 		map((token) => token?.payload ?? null)
 	);
@@ -79,19 +83,35 @@ export class JwtTokenService<
 	public readonly refreshTokenHeader$ = this.refreshToken$.pipe(
 		map((token) => token?.header ?? null)
 	);
+
 	public readonly refreshTokenPayload$ = this.refreshToken$.pipe(
 		map((token) => token?.payload ?? null)
 	);
 
-	public readonly isAccessTokenExpired$ = this.accessTokenPayload$.pipe(
-		map((payload) => isUnixTimestampExpired(payload?.exp))
+	/**
+	 * TODO: Emit when expires
+	 */
+	public readonly isAccessTokenExpired$ = this.accessToken$.pipe(
+		map((token) => token?.isExpired() ?? null)
 	);
 
-	public readonly isRefreshTokenExpired$ = this.refreshTokenPayload$.pipe(
-		map((payload) => isUnixTimestampExpired(payload?.exp))
+	/**
+	 * TODO: Emit when expires
+	 */
+	public readonly isRefreshTokenExpired$ = this.refreshToken$.pipe(
+		map((token) => token?.isExpired() ?? null)
+	);
+
+	public readonly isAccessTokenValid$ = this.isAccessTokenExpired$.pipe(
+		map((isExpired) => isNotNullish(isExpired) && !isExpired)
+	);
+
+	public readonly isRefreshTokenValid$ = this.isRefreshTokenExpired$.pipe(
+		map((isExpired) => isNotNullish(isExpired) && !isExpired)
 	);
 
 	public constructor(
+		private readonly httpHandler: HttpHandler,
 		@Inject(JWT_CONFIGURATION_TOKEN)
 		private readonly rawConfig: JwtConfiguration,
 		@Inject(DEFAULT_JWT_CONFIGURATION_TOKEN)
@@ -104,6 +124,33 @@ export class JwtTokenService<
 		>,
 		@Inject(JWT_REFRESH_CONFIGURATION_TOKEN)
 		@Optional()
-		private readonly rawRefreshConfig?: JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
+		private readonly rawRefreshConfig?: JwtRefreshConfiguration<
+			RefreshRequest,
+			RefreshResponse
+		>,
+		@Optional() private readonly router?: Router
 	) {}
+
+	/**
+	 * Does a token refresh. Emits false if it failed, or true if succeeded.
+	 */
+	public manualRefresh(): Observable<boolean> {
+		if (this.refreshConfig) {
+			return tryRefresh(
+				this.httpHandler,
+				'Access token not valid on guard activation',
+				this.refreshConfig,
+				(refreshError) =>
+					handleJwtError<RefreshRequest, RefreshResponse>(
+						JwtCouldntRefreshError.createErrorResponse(undefined, refreshError),
+						this.config,
+						this.refreshConfig,
+						this.router
+					).pipe(catchError(() => of(false))),
+				() => of(true)
+			);
+		} else {
+			return of(false);
+		}
+	}
 }

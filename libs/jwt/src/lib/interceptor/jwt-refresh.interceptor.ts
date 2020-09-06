@@ -7,14 +7,12 @@ import {
 } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError, filter, map, switchMap, take } from 'rxjs/operators';
+import { catchError, switchMap, take } from 'rxjs/operators';
 import { JwtCannotRefreshError, JwtCouldntRefreshError } from '../errors/jwt-error.class';
-import { callWhenFunction } from '../function/call-when-function.function';
-import { checkAgainstHttpErrorFilter } from '../function/check-against-http-error-filter.function';
 import { checkAgainstUrlFilter } from '../function/check-against-url-filter.function';
-import { isHttpResponse } from '../function/http-response.predicate';
 import { intoObservable } from '../function/into-observable.function';
 import { matchAgainst } from '../function/match-against.function';
+import { tryRefresh } from '../function/refresh-token.function';
 import { separateUrl } from '../function/separate-url.function';
 import {
 	JwtConfiguration,
@@ -117,56 +115,28 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 							// If the request failed, or we failed at the precheck
 							// Acquire a new token, but only if the error is allowing it
 
-							const isRefreshAllowed =
-								typeof error === 'string' ||
-								checkAgainstHttpErrorFilter(this.jwtRefreshConfiguration, error);
-							if (isRefreshAllowed) {
-								return intoObservable(
-									this.jwtRefreshConfiguration.createRefreshRequestBody
-								).pipe(
-									take(1),
-									switchMap((requestBody) => {
-										const refreshRequest = new HttpRequest<unknown>(
-											this.jwtRefreshConfiguration.method ?? 'POST',
-											this.jwtRefreshConfiguration.refreshUrl,
-											requestBody,
-											callWhenFunction(
-												this.jwtRefreshConfiguration.refreshRequestInitials
-											)
-										);
-										return next.handle(refreshRequest).pipe(
-											filter(isHttpResponse),
-											catchError((refreshError) =>
-												throwError(
-													JwtCouldntRefreshError.createErrorResponse(
-														request,
-														refreshError
-													)
-												)
-											),
-											map((response) =>
-												this.jwtRefreshConfiguration.transformRefreshResponse(
-													response.body
-												)
-											),
-											switchMap((refreshResponse) => {
-												this.jwtRefreshConfiguration.setRefreshedTokens(
-													refreshResponse
-												);
-												// inject the new tokens
-												const requestWithUpdatedTokens = request.clone({
-													headers: request.headers.set(
-														this.jwtConfiguration.header,
-														this.jwtConfiguration.scheme +
-															refreshResponse.accessToken
-													),
-												});
-												return next.handle(requestWithUpdatedTokens);
-											})
-										);
-									})
-								);
-							} else return throwError(error);
+							return tryRefresh(
+								next,
+								error,
+								this.jwtRefreshConfiguration,
+								(refreshError) =>
+									throwError(
+										JwtCouldntRefreshError.createErrorResponse(
+											request,
+											refreshError
+										)
+									),
+								(refreshResponse) => {
+									const requestWithUpdatedTokens = request.clone({
+										headers: request.headers.set(
+											this.jwtConfiguration.header,
+											this.jwtConfiguration.scheme +
+												refreshResponse.accessToken
+										),
+									});
+									return next.handle(requestWithUpdatedTokens);
+								}
+							);
 						})
 					);
 				})

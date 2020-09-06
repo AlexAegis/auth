@@ -1,5 +1,6 @@
 export { BaseDirective } from './lib/component/base-directive.class';
 export { isUnixTimestampExpired } from './lib/function/is-unix-timestamp-expired.function';
+export * from './lib/guards/login.guard';
 export * from './lib/jwt.module';
 export * from './lib/model/auth-core-configuration.interface';
 export * from './lib/model/header-configuration.interface';

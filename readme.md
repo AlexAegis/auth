@@ -27,10 +27,12 @@ See the individual packages for more information
 Handles common JWT use-cases, like adding the access token to
 requests **and automatically refreshing it when needed**.
 
-It consists of a `JwtModule` with two configurable Interceptors, and a helper
+It consists of a `JwtModule` with two configurable Interceptors, a
+LoginGuard which can also refresh on navigation, and a helper
 service to access your parsed and typed tokens.
 
 It also provides a way to handle cases where a refresh cannot happen
 (For example: both token expired) with a redirection (As thats the most
 common recovery method) or a completely custom function for more advanced
-use-cases.
+use-cases. It does so both on http requests and on navigation where the
+LoginGuard is utilized (And is enabled)

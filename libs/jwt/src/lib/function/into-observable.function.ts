@@ -1,5 +1,6 @@
 import { from, isObservable, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { isFunction } from './function.predicate';
 import { isPromise } from './promise.predicate';
 
 /**
@@ -7,11 +8,11 @@ import { isPromise } from './promise.predicate';
  * one is directly passed to it
  */
 export function intoObservable<T>(
-	getValue: Observable<T> | (() => T | Promise<T> | Observable<T>)
+	getValue: T | Observable<T> | Promise<T> | (() => T | Promise<T> | Observable<T>)
 ): Observable<T> {
 	if (isObservable(getValue)) {
 		return getValue;
-	} else {
+	} else if (isFunction(getValue)) {
 		return of(null).pipe(
 			switchMap(() => {
 				const result = getValue();
@@ -20,5 +21,9 @@ export function intoObservable<T>(
 				else return of(result);
 			})
 		);
+	} else if (isPromise(getValue)) {
+		return from(getValue);
+	} else {
+		return of(getValue);
 	}
 }

@@ -1,12 +1,12 @@
 {
 	"name": "@aegis-auth/ngrx",
-	"version": "8.0.0",
+	"version": "9.0.0",
 	"peerDependencies": {
-		"@angular/common": "8.*.*",
-		"@angular/core": "8.*.*",
-		"@ngrx/store": "8.*.*"
+		"@angular/common": "9.*.*",
+		"@angular/core": "9.*.*",
+		"@ngrx/store": "9.*.*"
 	},
 	"dependencies": {
-		"tslib": "1.9.*"
+		"tslib": "1.10.*"
 	}
 }

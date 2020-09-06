@@ -1,9 +1,13 @@
-import { TestBed } from '@angular/core/testing';
+import { HttpClientModule, HttpRequest } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { of, zip } from 'rxjs';
 import { catchError, take, tap } from 'rxjs/operators';
+import { JwtCouldntRefreshError } from '../errors/jwt-error.class';
 import {
 	mockJwtTokenCreation,
 	TEST_EXPIRED_TOKEN,
+	TEST_INVALID_TOKEN,
 	TEST_MALFORMED_TOKEN,
 	TEST_VALID_TOKEN,
 } from '../interceptor/jwt-refresh.interceptor.spec';
@@ -11,6 +15,7 @@ import { JwtModule } from '../jwt.module';
 import {
 	DEFAULT_JWT_CONFIG,
 	DEFAULT_JWT_REFRESH_CONFIG,
+	JwtRefreshResponse,
 } from '../model/auth-core-configuration.interface';
 import {
 	DEFAULT_JWT_CONFIGURATION_TOKEN,
@@ -28,7 +33,7 @@ describe('JwtTokenService', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			imports: [JwtModule],
+			imports: [JwtModule, HttpClientModule, HttpClientTestingModule],
 			providers: [
 				{
 					provide: DEFAULT_JWT_CONFIGURATION_TOKEN,
@@ -55,6 +60,7 @@ describe('JwtTokenService', () => {
 	});
 
 	afterEach(() => jest.clearAllMocks());
+	afterEach(inject([HttpTestingController], (htc: HttpTestingController) => htc.verify()));
 
 	it('should be created', () => {
 		service = TestBed.inject(JwtTokenService);
@@ -87,7 +93,8 @@ describe('JwtTokenService', () => {
 			service.accessToken$.pipe(tap((n) => expect(n).toBeNull())),
 			service.accessTokenHeader$.pipe(tap((n) => expect(n).toBeNull())),
 			service.accessTokenPayload$.pipe(tap((n) => expect(n).toBeNull())),
-			service.isAccessTokenExpired$.pipe(tap((n) => expect(n).toBe(true))),
+			service.isAccessTokenExpired$.pipe(tap((n) => expect(n).toBeNull())),
+			service.isAccessTokenValid$.pipe(tap((n) => expect(n).toBe(false))),
 		];
 
 		const refreshTokenObservables = [
@@ -95,7 +102,8 @@ describe('JwtTokenService', () => {
 			service.refreshToken$.pipe(tap((n) => expect(n).toBeNull())),
 			service.refreshTokenHeader$.pipe(tap((n) => expect(n).toBeNull())),
 			service.refreshTokenPayload$.pipe(tap((n) => expect(n).toBeNull())),
-			service.isRefreshTokenExpired$.pipe(tap((n) => expect(n).toBe(true))),
+			service.isRefreshTokenExpired$.pipe(tap((n) => expect(n).toBeNull())),
+			service.isRefreshTokenValid$.pipe(tap((n) => expect(n).toBe(false))),
 		];
 
 		return zip(...accessTokenObservables, ...refreshTokenObservables)
@@ -136,6 +144,7 @@ describe('JwtTokenService', () => {
 			service.accessTokenHeader$.pipe(tap((n) => expect(n).toBeTruthy())),
 			service.accessTokenPayload$.pipe(tap((n) => expect(n).toBeTruthy())),
 			service.isAccessTokenExpired$.pipe(tap((n) => expect(n).toBe(false))),
+			service.isAccessTokenValid$.pipe(tap((n) => expect(n).toBe(true))),
 		];
 
 		const refreshTokenObservables = [
@@ -144,6 +153,7 @@ describe('JwtTokenService', () => {
 			service.refreshTokenHeader$.pipe(tap((n) => expect(n).toBeTruthy())),
 			service.refreshTokenPayload$.pipe(tap((n) => expect(n).toBeTruthy())),
 			service.isRefreshTokenExpired$.pipe(tap((n) => expect(n).toBe(false))),
+			service.isRefreshTokenValid$.pipe(tap((n) => expect(n).toBe(true))),
 		];
 
 		return zip(...accessTokenObservables, ...refreshTokenObservables)
@@ -201,6 +211,11 @@ describe('JwtTokenService', () => {
 				catchError((_e) => of('ERROR')),
 				tap((n) => expect(n).toBe('ERROR'))
 			),
+			service.isAccessTokenValid$.pipe(
+				tap(mockNoCall),
+				catchError((_e) => of('ERROR')),
+				tap((n) => expect(n).toBe('ERROR'))
+			),
 		];
 
 		const refreshTokenObservables = [
@@ -221,6 +236,11 @@ describe('JwtTokenService', () => {
 				tap((n) => expect(n).toBe('ERROR'))
 			),
 			service.isRefreshTokenExpired$.pipe(
+				tap(mockNoCall),
+				catchError((_e) => of('ERROR')),
+				tap((n) => expect(n).toBe('ERROR'))
+			),
+			service.isRefreshTokenValid$.pipe(
 				tap(mockNoCall),
 				catchError((_e) => of('ERROR')),
 				tap((n) => expect(n).toBe('ERROR'))
@@ -266,6 +286,7 @@ describe('JwtTokenService', () => {
 			service.accessTokenHeader$.pipe(tap((n) => expect(n).toBeTruthy())),
 			service.accessTokenPayload$.pipe(tap((n) => expect(n).toBeTruthy())),
 			service.isAccessTokenExpired$.pipe(tap((n) => expect(n).toBe(true))),
+			service.isAccessTokenValid$.pipe(tap((n) => expect(n).toBe(false))),
 		];
 
 		const refreshTokenObservables = [
@@ -274,6 +295,7 @@ describe('JwtTokenService', () => {
 			service.refreshTokenHeader$.pipe(tap((n) => expect(n).toBeTruthy())),
 			service.refreshTokenPayload$.pipe(tap((n) => expect(n).toBeTruthy())),
 			service.isRefreshTokenExpired$.pipe(tap((n) => expect(n).toBe(true))),
+			service.isRefreshTokenValid$.pipe(tap((n) => expect(n).toBe(false))),
 		];
 
 		return zip(...accessTokenObservables, ...refreshTokenObservables)
@@ -307,6 +329,7 @@ describe('JwtTokenService', () => {
 			service.accessTokenHeader$.pipe(tap((n) => expect(n).toBeTruthy())),
 			service.accessTokenPayload$.pipe(tap((n) => expect(n).toBeTruthy())),
 			service.isAccessTokenExpired$.pipe(tap((n) => expect(n).toBe(true))),
+			service.isAccessTokenValid$.pipe(tap((n) => expect(n).toBe(false))),
 		];
 
 		const refreshTokenObservables = [
@@ -314,7 +337,8 @@ describe('JwtTokenService', () => {
 			service.refreshToken$.pipe(tap((n) => expect(n).toBeNull())),
 			service.refreshTokenHeader$.pipe(tap((n) => expect(n).toBeNull())),
 			service.refreshTokenPayload$.pipe(tap((n) => expect(n).toBeNull())),
-			service.isRefreshTokenExpired$.pipe(tap((n) => expect(n).toBe(true))),
+			service.isRefreshTokenExpired$.pipe(tap((n) => expect(n).toBeNull())),
+			service.isRefreshTokenValid$.pipe(tap((n) => expect(n).toBe(false))),
 		];
 		return zip(...accessTokenObservables, ...refreshTokenObservables)
 			.pipe(
@@ -322,5 +346,143 @@ describe('JwtTokenService', () => {
 				tap(() => expect(mockGetToken).toBeCalledTimes(accessTokenObservables.length))
 			)
 			.toPromise();
+	});
+
+	describe('manualRefresh', () => {
+		const refreshUrl = 'refresh';
+		const TEST_REQUEST = new HttpRequest('GET', refreshUrl);
+
+		it('should return false if there is no refreshConfig', () => {
+			TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
+				useValue: undefined,
+			});
+
+			service = TestBed.inject(JwtTokenService);
+
+			const mockNext = jest.fn<void, [boolean]>((next) => {
+				expect(next).toBeFalsy();
+			});
+
+			const mockError = jest.fn();
+			const mockComplete = jest.fn();
+
+			service.manualRefresh().subscribe({
+				next: mockNext,
+				error: mockError,
+				complete: mockComplete,
+			});
+
+			expect(mockNext).toBeCalledTimes(1);
+			expect(mockError).toBeCalledTimes(0);
+			expect(mockComplete).toBeCalledTimes(1);
+		});
+
+		it('should refresh if called and there is a config with valid refreshConfig', () => {
+			const mockGetToken = jest.fn(() => TEST_VALID_TOKEN);
+			const mockGetRefreshToken = jest.fn(() => TEST_VALID_TOKEN);
+
+			const mockSetRefreshedTokens = jest.fn();
+
+			TestBed.overrideProvider(JWT_CONFIGURATION_TOKEN, {
+				useValue: {
+					getToken: mockGetToken as () => string,
+				},
+			} as JwtConfigurationProvider);
+
+			TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
+				useValue: {
+					getRefreshToken: mockGetRefreshToken as () => string,
+					createRefreshRequestBody: () => ({}),
+					refreshUrl,
+					setRefreshedTokens: mockSetRefreshedTokens as (
+						response: JwtRefreshResponse
+					) => void,
+					transformRefreshResponse: (a) => a,
+				},
+			} as JwtRefreshConfigurationProvider<unknown, JwtRefreshResponse>);
+
+			service = TestBed.inject(JwtTokenService);
+
+			const mockNext = jest.fn<void, [boolean]>((next) => {
+				expect(next).toBeTruthy();
+			});
+
+			const mockError = jest.fn();
+			const mockComplete = jest.fn();
+
+			const httpTestingController = TestBed.inject(HttpTestingController);
+
+			service.manualRefresh().subscribe({
+				next: mockNext,
+				error: mockError,
+				complete: mockComplete,
+			});
+
+			const mockRefreshRequest = httpTestingController.expectOne(refreshUrl);
+			mockRefreshRequest.flush(
+				{
+					accessToken: TEST_VALID_TOKEN,
+					refreshToken: TEST_VALID_TOKEN,
+				},
+				{}
+			);
+
+			expect(mockSetRefreshedTokens).toBeCalledTimes(1);
+
+			expect(mockNext).toBeCalledTimes(1);
+			expect(mockError).toBeCalledTimes(0);
+			expect(mockComplete).toBeCalledTimes(1);
+		});
+
+		it('should refresh if called and there is a config with valid refreshConfig, but not set if said refresh failed', () => {
+			const mockGetToken = jest.fn(() => TEST_INVALID_TOKEN);
+			const mockGetRefreshToken = jest.fn(() => TEST_INVALID_TOKEN);
+
+			const mockSetRefreshedTokens = jest.fn();
+
+			TestBed.overrideProvider(JWT_CONFIGURATION_TOKEN, {
+				useValue: {
+					getToken: mockGetToken as () => string,
+				},
+			} as JwtConfigurationProvider);
+
+			TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
+				useValue: {
+					getRefreshToken: mockGetRefreshToken as () => string,
+					createRefreshRequestBody: () => ({}),
+					refreshUrl,
+					setRefreshedTokens: mockSetRefreshedTokens as (
+						response: JwtRefreshResponse
+					) => void,
+					transformRefreshResponse: (a) => a,
+				},
+			} as JwtRefreshConfigurationProvider<unknown, JwtRefreshResponse>);
+
+			service = TestBed.inject(JwtTokenService);
+
+			const mockNext = jest.fn<void, [boolean]>((next) => {
+				expect(next).toBeFalsy();
+			});
+
+			const mockError = jest.fn();
+			const mockComplete = jest.fn();
+
+			const httpTestingController = TestBed.inject(HttpTestingController);
+
+			service.manualRefresh().subscribe({
+				next: mockNext,
+				error: mockError,
+				complete: mockComplete,
+			});
+
+			const mockRefreshRequest = httpTestingController.expectOne(refreshUrl);
+			mockRefreshRequest.error(JwtCouldntRefreshError.createErrorEvent(TEST_REQUEST, ''));
+
+			expect(mockSetRefreshedTokens).toBeCalledTimes(0);
+
+			expect(mockNext).toBeCalledTimes(1);
+			expect(mockError).toBeCalledTimes(0);
+			expect(mockComplete).toBeCalledTimes(1);
+		});
 	});
 });

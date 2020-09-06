@@ -19,9 +19,12 @@ export const DEFAULT_JWT_CONFIG: Partial<JwtConfiguration> = {
 	handleWithCredentials: true,
 };
 
+export const DEFAULT_JWT_REFRESH_CONFIG_DEFAULT_AUTO_IN_GUARD = true;
+
 export const DEFAULT_JWT_REFRESH_CONFIG: Partial<JwtRefreshConfiguration<unknown, unknown>> = {
 	method: 'POST',
 	errorCodeWhitelist: [401],
+	isAutoRefreshAllowedInLoginGuardByDefault: DEFAULT_JWT_REFRESH_CONFIG_DEFAULT_AUTO_IN_GUARD,
 };
 
 export interface JwtRefreshResponse {
@@ -196,6 +199,19 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
 				| undefined
 				| Promise<string | null | undefined>
 				| Observable<string | null | undefined>);
+
+	/**
+	 * When using the LoginGuard this setting will determine the default
+	 * value. So instead of disabling the autoRefresh behavior on every
+	 * route with the data option, or writing your own guard (Which would
+	 * be really simple) just set this to false. You can still override it
+	 * using route data.
+	 *
+	 * See the LoginGuardData helper interface to see what it can utilize.
+	 *
+	 * @default true
+	 */
+	isAutoRefreshAllowedInLoginGuardByDefault?: boolean;
 }
 
 /**
