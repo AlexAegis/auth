@@ -1,4 +1,10 @@
-# JWT
+# jwt
+
+<!-- markdownlint-disable MD013 -->
+
+[![Latest NPM Version](https://img.shields.io/npm/v/@aegis-auth/jwt/latest)](https://www.npmjs.com/package/@aegis-auth/jwt/v/latest)
+
+<!-- markdownlint-enable MD013 -->
 
 Handles common JWT use-cases, like adding the access token to
 requests **and automatically refreshing it when needed**.
@@ -10,6 +16,20 @@ It also provides a way to handle cases where a refresh cannot happen
 (For example: both token expired) with a redirection (As thats the most
 common recovery method) or a completely custom function for more advanced
 use-cases.
+
+## Installation
+
+Using npm
+
+```sh
+npm i @aegis-auth/jwt
+```
+
+Using yarn
+
+```sh
+yarn add @aegis-auth/jwt
+```
 
 ## Usage
 
