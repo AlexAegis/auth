@@ -6,7 +6,7 @@ import { catchError, map } from 'rxjs/operators';
 import { JwtCouldntRefreshError } from '../errors/jwt-error.class';
 import { intoObservable } from '../function/into-observable.function';
 import { isNotNullish } from '../function/is-not-nullish.predicate';
-import { handleJwtError } from '../function/jwt-error-handler.function';
+import { handleJwtError } from '../function/handle-jwt-error.function';
 import { tryRefresh } from '../function/refresh-token.function';
 import { isString } from '../function/string.predicate';
 import {
