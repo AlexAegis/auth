@@ -32,12 +32,12 @@ export function tryRefresh<Req, Res, Ret>(
 
 export function doRefresh<Req, Res, Ret>(
 	next: HttpHandler,
-	requestBody: any,
+	requestBody: Req,
 	jwtRefreshConfiguration: JwtRefreshConfiguration<Req, Res>,
 	onError: (refreshError: unknown) => Observable<Ret>,
 	originalAction: (refreshResponse: JwtRefreshResponse) => Observable<Ret>
 ): Observable<Ret> {
-	const refreshRequest = new HttpRequest<unknown>(
+	const refreshRequest = new HttpRequest<Req>(
 		jwtRefreshConfiguration.method ?? 'POST',
 		jwtRefreshConfiguration.refreshUrl,
 		requestBody,

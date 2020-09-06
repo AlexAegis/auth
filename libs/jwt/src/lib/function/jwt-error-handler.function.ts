@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Params, Router } from '@angular/router';
-import { throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { JwtCannotRefreshError, JwtCouldntRefreshError, JwtError } from '../errors/jwt-error.class';
 import { isNotNullish } from '../function/is-not-nullish.predicate';
 import { isString } from '../function/string.predicate';
@@ -20,7 +20,7 @@ export function handleJwtError<RefreshRequest = unknown, RefreshResponse = unkno
 	jwtConfiguration: JwtConfiguration,
 	jwtRefreshConfiguration?: JwtRefreshConfiguration<RefreshRequest, RefreshResponse>,
 	router?: Router
-) {
+): Observable<never> {
 	const error: undefined | JwtError | JwtCannotRefreshError | JwtCouldntRefreshError =
 		wrappedError.error?.error;
 

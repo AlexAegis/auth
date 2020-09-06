@@ -93,7 +93,7 @@ describe('JwtTokenService', () => {
 			service.accessToken$.pipe(tap((n) => expect(n).toBeNull())),
 			service.accessTokenHeader$.pipe(tap((n) => expect(n).toBeNull())),
 			service.accessTokenPayload$.pipe(tap((n) => expect(n).toBeNull())),
-			service.isAccessTokenExpired$.pipe(tap((n) => expect(n).toBeUndefined())),
+			service.isAccessTokenExpired$.pipe(tap((n) => expect(n).toBeNull())),
 			service.isAccessTokenValid$.pipe(tap((n) => expect(n).toBe(false))),
 		];
 
@@ -102,7 +102,7 @@ describe('JwtTokenService', () => {
 			service.refreshToken$.pipe(tap((n) => expect(n).toBeNull())),
 			service.refreshTokenHeader$.pipe(tap((n) => expect(n).toBeNull())),
 			service.refreshTokenPayload$.pipe(tap((n) => expect(n).toBeNull())),
-			service.isRefreshTokenExpired$.pipe(tap((n) => expect(n).toBeUndefined())),
+			service.isRefreshTokenExpired$.pipe(tap((n) => expect(n).toBeNull())),
 			service.isRefreshTokenValid$.pipe(tap((n) => expect(n).toBe(false))),
 		];
 
@@ -337,7 +337,7 @@ describe('JwtTokenService', () => {
 			service.refreshToken$.pipe(tap((n) => expect(n).toBeNull())),
 			service.refreshTokenHeader$.pipe(tap((n) => expect(n).toBeNull())),
 			service.refreshTokenPayload$.pipe(tap((n) => expect(n).toBeNull())),
-			service.isRefreshTokenExpired$.pipe(tap((n) => expect(n).toBeUndefined())),
+			service.isRefreshTokenExpired$.pipe(tap((n) => expect(n).toBeNull())),
 			service.isRefreshTokenValid$.pipe(tap((n) => expect(n).toBe(false))),
 		];
 		return zip(...accessTokenObservables, ...refreshTokenObservables)
