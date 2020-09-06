@@ -4,7 +4,7 @@ export class JwtError extends Error {
 	static type = 'JWT_ERROR';
 
 	public constructor(
-		public readonly originalRequest: HttpRequest<unknown>,
+		public readonly originalRequest: HttpRequest<unknown> | undefined,
 		public readonly originalError: unknown,
 		message = JwtError.type
 	) {
@@ -12,7 +12,7 @@ export class JwtError extends Error {
 	}
 
 	static createErrorResponse(
-		request: HttpRequest<unknown>,
+		request: HttpRequest<unknown> | undefined,
 		refreshError: unknown
 	): HttpErrorResponse {
 		return new HttpErrorResponse({
@@ -20,7 +20,10 @@ export class JwtError extends Error {
 		});
 	}
 
-	static createErrorEvent(request: HttpRequest<unknown>, refreshError: unknown): ErrorEvent {
+	static createErrorEvent(
+		request: HttpRequest<unknown> | undefined,
+		refreshError: unknown
+	): ErrorEvent {
 		return new ErrorEvent(JwtError.type, {
 			error: new JwtError(request, refreshError),
 		});
@@ -34,14 +37,14 @@ export class JwtCannotRefreshError extends JwtError {
 	static type = 'JWT_CANNOT_REFRESH_ERROR';
 
 	public constructor(
-		public readonly originalRequest: HttpRequest<unknown>,
+		public readonly originalRequest: HttpRequest<unknown> | undefined,
 		public readonly originalError: unknown
 	) {
 		super(originalRequest, originalError, JwtCannotRefreshError.type);
 	}
 
 	static createErrorResponse(
-		request: HttpRequest<unknown>,
+		request: HttpRequest<unknown> | undefined,
 		refreshError: unknown
 	): HttpErrorResponse {
 		return new HttpErrorResponse({
@@ -49,7 +52,10 @@ export class JwtCannotRefreshError extends JwtError {
 		});
 	}
 
-	static createErrorEvent(request: HttpRequest<unknown>, refreshError: unknown): ErrorEvent {
+	static createErrorEvent(
+		request: HttpRequest<unknown> | undefined,
+		refreshError: unknown
+	): ErrorEvent {
 		return new ErrorEvent(JwtCannotRefreshError.type, {
 			error: new JwtCannotRefreshError(request, refreshError),
 		});
@@ -63,14 +69,14 @@ export class JwtCouldntRefreshError extends JwtError {
 	static type = 'JWT_COULDNT_REFRESH_ERROR';
 
 	public constructor(
-		public readonly originalRequest: HttpRequest<unknown>,
+		public readonly originalRequest: HttpRequest<unknown> | undefined,
 		public readonly originalError: unknown
 	) {
 		super(originalRequest, originalError, JwtCouldntRefreshError.type);
 	}
 
 	static createErrorResponse(
-		request: HttpRequest<unknown>,
+		request: HttpRequest<unknown> | undefined,
 		refreshError: unknown
 	): HttpErrorResponse {
 		return new HttpErrorResponse({
@@ -78,7 +84,10 @@ export class JwtCouldntRefreshError extends JwtError {
 		});
 	}
 
-	static createErrorEvent(request: HttpRequest<unknown>, refreshError: unknown): ErrorEvent {
+	static createErrorEvent(
+		request: HttpRequest<unknown> | undefined,
+		refreshError: unknown
+	): ErrorEvent {
 		return new ErrorEvent(JwtCouldntRefreshError.type, {
 			error: new JwtCouldntRefreshError(request, refreshError),
 		});

@@ -364,6 +364,19 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
         | undefined
         | Promise<string | null | undefined>
         | Observable<string | null | undefined>);
+
+  /**
+   * When using the LoginGuard this setting will determine the default
+   * value. So instead of disabling the autoRefresh behavior on every
+   * route with the data option, or writing your own guard (Which would
+   * be really simple) just set this to false. You can still override it
+   * using route data.
+   *
+   * See the LoginGuardData helper interface to see what it can utilize.
+   *
+   * @default true
+   */
+  isAutoRefreshAllowedInLoginGuardByDefault?: boolean;
 }
 ````
 
@@ -470,3 +483,32 @@ tokens, and some methods on doing `login`, `refresh` and `logout`.
 
 This demo `AuthService` only has to manage the token storage, the library
 will always use the latest values.
+
+### The LoginGuard
+
+Using the LoginGuard on a route means that the route and all of its children
+cannot open unless there is a valid accessToken available. Since tokens are
+only refreshed on-demand it's possible that after an idle time that is longer
+than the accessTokens lifetime, that on guard activation the token is expired.
+
+For this reason, the guard does a `manualRefresh` if the token is invalid.
+
+The autorefreshing is controllable with a configuration option on the refresh
+configuration and per route with route data. See `LoginGuardData` for what is
+available.
+
+```ts
+/**
+ * This interface is for your convinience to use with Route data to see what
+ * you can configure on the LoginGuard
+ */
+export interface LoginGuardData {
+  /**
+   * Explicitly enable or disable auto refreshing on the route.
+   */
+  isRefreshAllowed: boolean;
+}
+```
+
+If you need something more custom, I highly recommend implementing your own
+guard as `LoginGuard` itself is also really simple.

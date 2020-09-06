@@ -1,4 +1,4 @@
-import { JwtModule } from '@aegis-auth/jwt';
+import { JwtModule, LoginGuard } from '@aegis-auth/jwt';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -11,10 +11,11 @@ import { BLACKLISTED_DOMAIN, JWT_HEADER, JWT_SCHEME, WHITELISTED_DOMAIN } from '
 import { FakeBackendInterceptor } from './interceptor/fake-backend.interceptor';
 import { RefreshRequest, RefreshResponse } from './model';
 import { DashboardComponent } from './page/dashboard.component';
+import { ProtectedComponent } from './page/protected.component';
 import { AuthService } from './service';
 
 @NgModule({
-	declarations: [AppComponent, DashboardComponent],
+	declarations: [AppComponent, DashboardComponent, ProtectedComponent],
 	imports: [
 		BrowserModule,
 		HttpClientModule,
@@ -24,6 +25,15 @@ import { AuthService } from './service';
 				{
 					path: '',
 					component: DashboardComponent,
+				},
+				{
+					path: 'login',
+					component: DashboardComponent,
+				},
+				{
+					path: 'protected',
+					component: ProtectedComponent,
+					canActivate: [LoginGuard],
 				},
 			],
 			{ initialNavigation: 'enabled' }
@@ -70,6 +80,8 @@ import { AuthService } from './service';
 						console.log('transformRefreshResponse', response);
 						return response;
 					},
+					// Redirect to /login when the refresh fails
+					onFailure: '/login',
 				}),
 				deps: [AuthService],
 			}

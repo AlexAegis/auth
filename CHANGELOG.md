@@ -2,11 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.1.0](https://github.com/AlexAegis/auth/compare/v10.0.0...v10.1.0) (2020-09-06)
+
+### Features
+
+* **jwt:** autorefreshing login guard [#204](https://github.com/AlexAegis/auth/issues/204) ([ddd08b2](https://github.com/AlexAegis/auth/commit/ddd08b250303b71f8f5172d2a3a3788fc2e88e8f))
+* **jwt:** simple login guard [#154](https://github.com/AlexAegis/auth/issues/154) ([780f88a](https://github.com/AlexAegis/auth/commit/780f88aaffc21e44e22547fce4d1a6b3496c3d37))
+
 ## [8.0.0](https://github.com/AlexAegis/auth/compare/v1.0.1...v8.0.0) (2020-09-03)
 
 ### Features
 
 * ng8 compatibility ([7bf0959](https://github.com/AlexAegis/auth/commit/7bf09599437a5aded9eec8cb940c6363683e95b3))
+
+## [10.0.0](https://github.com/AlexAegis/auth/compare/v1.0.1...v10.0.0) (2020-09-03)
+
+* Backports added for ng8 and 9 with the current version bumped to 10
 
 ### [1.0.1](https://github.com/AlexAegis/auth/compare/v1.0.0...v1.0.1) (2020-09-01)
 

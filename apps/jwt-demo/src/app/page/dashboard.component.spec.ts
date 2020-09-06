@@ -1,15 +1,18 @@
 import { JwtModule } from '@aegis-auth/jwt';
+import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 
 describe('DashboardComponent', () => {
-	beforeEach(async(() => {
-		TestBed.configureTestingModule({
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
 			imports: [
 				HttpClientModule,
 				FormsModule,
+				RouterModule.forRoot([]),
 				JwtModule.forRoot(
 					{
 						useValue: {
@@ -19,9 +22,10 @@ describe('DashboardComponent', () => {
 					{ useValue: {} }
 				),
 			],
+			providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
 			declarations: [DashboardComponent],
 		}).compileComponents();
-	}));
+	});
 
 	it('should create the app', () => {
 		const fixture = TestBed.createComponent(DashboardComponent);
