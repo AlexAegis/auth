@@ -4,10 +4,10 @@ import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { JwtCouldntRefreshError } from '../errors/jwt-error.class';
+import { handleJwtError } from '../function/handle-jwt-error.function';
 import { intoObservable } from '../function/into-observable.function';
 import { isNotNullish } from '../function/is-not-nullish.predicate';
-import { handleJwtError } from '../function/handle-jwt-error.function';
-import { tryRefresh } from '../function/refresh-token.function';
+import { tryJwtRefresh } from '../function/try-jwt-refresh.function';
 import { isString } from '../function/string.predicate';
 import {
 	JwtConfiguration,
@@ -136,7 +136,7 @@ export class JwtTokenService<
 	 */
 	public manualRefresh(): Observable<boolean> {
 		if (this.refreshConfig) {
-			return tryRefresh(
+			return tryJwtRefresh(
 				this.httpHandler,
 				'Access token not valid on guard activation',
 				this.refreshConfig,
