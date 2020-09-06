@@ -1,6 +1,18 @@
 {
 	"name": "@aegis-auth/ngrx",
+	"description": "Angular JWT authentication library for NGRX",
 	"version": "10.1.0",
+	"license": "MIT",
+	"author": {
+		"email": "alexaegis@gmail.com",
+		"name": "AlexAegis",
+		"url": "https://www.github.com/AlexAegis"
+	},
+	"homepage": "https://github.com/AlexAegis/auth/tree/master/libs/core#readme",
+	"repository": "github:AlexAegis/auth",
+	"bugs": {
+		"url": "https://www.github.com/AlexAegis/auth/issues"
+	},
 	"peerDependencies": {
 		"@angular/common": "10.*.*",
 		"@angular/core": "10.*.*",
