@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { JwtCouldntRefreshError } from '../errors/jwt-error.class';
 import { intoObservable } from '../function/into-observable.function';
+import { isNotNullish } from '../function/is-not-nullish.predicate';
 import { handleJwtError } from '../function/jwt-error-handler.function';
 import { tryRefresh } from '../function/refresh-token.function';
 import { isString } from '../function/string.predicate';
@@ -91,22 +92,22 @@ export class JwtTokenService<
 	 * TODO: Emit when expires
 	 */
 	public readonly isAccessTokenExpired$ = this.accessToken$.pipe(
-		map((token) => token?.isExpired())
+		map((token) => token?.isExpired() ?? null)
 	);
 
 	/**
 	 * TODO: Emit when expires
 	 */
 	public readonly isRefreshTokenExpired$ = this.refreshToken$.pipe(
-		map((token) => token?.isExpired())
+		map((token) => token?.isExpired() ?? null)
 	);
 
 	public readonly isAccessTokenValid$ = this.isAccessTokenExpired$.pipe(
-		map((isExpired) => isExpired !== undefined && !isExpired)
+		map((isExpired) => isNotNullish(isExpired) && !isExpired)
 	);
 
 	public readonly isRefreshTokenValid$ = this.isRefreshTokenExpired$.pipe(
-		map((isExpired) => isExpired !== undefined && !isExpired)
+		map((isExpired) => isNotNullish(isExpired) && !isExpired)
 	);
 
 	public constructor(

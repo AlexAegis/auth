@@ -43,7 +43,7 @@
 		"test:skip-cache": "nx run-many --all --target test --skip-nx-cache",
 		"lint": "nx workspace-lint && ng lint",
 		"lint:ts": "tslint --project tsconfig.base.json",
-		"lint:es": "eslint .",
+		"lint:es": "eslint --max-warnings=0 .",
 		"lint:css": "stylelint --allow-empty-input --syntax=css ./**/*.css",
 		"lint:scss": "stylelint --allow-empty-input --syntax=scss ./**/*.scss",
 		"lint:md": "markdownlint --ignore 'CHANGELOG.md' --ignore-path '.gitignore' .",
