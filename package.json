@@ -13,6 +13,21 @@
 	"bugs": {
 		"url": "https://www.github.com/AlexAegis/auth/issues"
 	},
+	"keywords": [
+		"ng",
+		"angular",
+		"jwt",
+		"token",
+		"auth",
+		"authentication",
+		"rxjs",
+		"reactive",
+		"interceptor",
+		"ts",
+		"typescript",
+		"js",
+		"javascript"
+	],
 	"sideEffects": false,
 	"private": true,
 	"config": {
@@ -105,7 +120,7 @@
 		"@types/jest": "~26.0.13",
 		"@types/js-base64": "~3.0.0",
 		"@types/node": "~14.6.4",
-		"@typescript-eslint/eslint-plugin": "~4.0.1",
+		"@typescript-eslint/eslint-plugin": "~4.1.0",
 		"@typescript-eslint/parser": "~4.1.0",
 		"codelyzer": "^6.0.0",
 		"cypress": "~5.1.0",

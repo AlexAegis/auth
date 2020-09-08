@@ -13,6 +13,23 @@
 	"bugs": {
 		"url": "https://www.github.com/AlexAegis/auth/issues"
 	},
+	"keywords": [
+		"ng",
+		"angular",
+		"jwt",
+		"token",
+		"ngrx",
+		"cqrs",
+		"auth",
+		"authentication",
+		"rxjs",
+		"reactive",
+		"interceptor",
+		"ts",
+		"typescript",
+		"js",
+		"javascript"
+	],
 	"peerDependencies": {
 		"@angular/common": "10.*.*",
 		"@angular/core": "10.*.*",

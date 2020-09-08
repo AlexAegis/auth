@@ -13,9 +13,21 @@
 	"bugs": {
 		"url": "https://www.github.com/AlexAegis/auth/issues"
 	},
-	"scripts": {
-		"release": "semantic-release"
-	},
+	"keywords": [
+		"ng",
+		"angular",
+		"jwt",
+		"token",
+		"auth",
+		"authentication",
+		"rxjs",
+		"reactive",
+		"interceptor",
+		"ts",
+		"typescript",
+		"js",
+		"javascript"
+	],
 	"peerDependencies": {
 		"@angular/common": "10.*.*",
 		"@angular/core": "10.*.*",
