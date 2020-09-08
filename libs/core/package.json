@@ -13,6 +13,19 @@
 	"bugs": {
 		"url": "https://www.github.com/AlexAegis/auth/issues"
 	},
+	"keywords": [
+		"ng",
+		"angular",
+		"auth",
+		"authentication",
+		"rxjs",
+		"reactive",
+		"interceptor",
+		"ts",
+		"typescript",
+		"js",
+		"javascript"
+	],
 	"dependencies": {
 		"tslib": "2.*.*"
 	},
