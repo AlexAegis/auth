@@ -40,4 +40,4 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
-          npm publish ./dist/libs/jwt --access public || return 0
+          npm publish ./dist/libs/jwt --access public 2>&1 || return 0
