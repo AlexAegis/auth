@@ -1,1 +1,25 @@
-/* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+body {
+	margin: 0;
+}
+
+html,
+body {
+	height: 100%;
+}
+
+iframe {
+	width: 100%;
+	height: inherit;
+}
+
+@media (max-width: 599px) {
+	body {
+		--toolbar-height: 56px;
+	}
+}
+
+body {
+	--toolbar-height: 64px;
+}

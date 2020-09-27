@@ -1,21 +1,21 @@
 :host {
 	display: block;
 	font-family: sans-serif;
-	min-width: 300px;
-	max-width: 600px;
-	margin: 50px auto;
+	height: 100%;
 
-	div {
-		display: flex;
-		align-items: center;
-
-		span {
-			margin-right: 1em;
-		}
+	h1 {
+		margin-right: 1em;
 	}
 
 	button {
-		display: block;
-		margin: 1em;
+		margin-right: 0.5em;
+	}
+
+	a {
+		margin-left: auto;
+	}
+
+	.main {
+		height: calc(100% - var(--toolbar-height));
 	}
 }

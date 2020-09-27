@@ -12,7 +12,7 @@ import { JwtCannotRefreshError, JwtCouldntRefreshError } from '../errors/jwt-err
 import { checkAgainstUrlFilter } from '../function/check-against-url-filter.function';
 import { intoObservable } from '../function/into-observable.function';
 import { matchAgainst } from '../function/match-against.function';
-import { tryRefresh } from '../function/refresh-token.function';
+import { tryJwtRefresh } from '../function/try-jwt-refresh.function';
 import { separateUrl } from '../function/separate-url.function';
 import {
 	JwtConfiguration,
@@ -115,7 +115,7 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 							// If the request failed, or we failed at the precheck
 							// Acquire a new token, but only if the error is allowing it
 
-							return tryRefresh(
+							return tryJwtRefresh(
 								next,
 								error,
 								this.jwtRefreshConfiguration,

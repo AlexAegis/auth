@@ -1,4 +1,3 @@
-export { BaseDirective } from './lib/component/base-directive.class';
 export { isUnixTimestampExpired } from './lib/function/is-unix-timestamp-expired.function';
 export * from './lib/guards/login.guard';
 export * from './lib/jwt.module';

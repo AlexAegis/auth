@@ -1,9 +1,33 @@
 {
 	"name": "@aegis-auth/jwt",
+	"description": "Angular JWT authentication library",
 	"version": "9.1.0",
-	"scripts": {
-		"release": "semantic-release"
+	"license": "MIT",
+	"author": {
+		"email": "alexaegis@gmail.com",
+		"name": "AlexAegis",
+		"url": "https://www.github.com/AlexAegis"
 	},
+	"homepage": "https://github.com/AlexAegis/auth/tree/master/libs/jwt#readme",
+	"repository": "github:AlexAegis/auth",
+	"bugs": {
+		"url": "https://www.github.com/AlexAegis/auth/issues"
+	},
+	"keywords": [
+		"ng",
+		"angular",
+		"jwt",
+		"token",
+		"auth",
+		"authentication",
+		"rxjs",
+		"reactive",
+		"interceptor",
+		"ts",
+		"typescript",
+		"js",
+		"javascript"
+	],
 	"peerDependencies": {
 		"@angular/common": "9.*.*",
 		"@angular/core": "9.*.*",
@@ -11,7 +35,7 @@
 		"rxjs": "6.5.*"
 	},
 	"dependencies": {
-		"js-base64": "^3.4.5",
+		"js-base64": "^3.5.2",
 		"tslib": "1.10.*"
 	}
 }

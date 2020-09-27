@@ -2,13 +2,14 @@ import { HttpHandler } from '@angular/common/http';
 import { Inject, Injectable, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { JwtCouldntRefreshError } from '../errors/jwt-error.class';
+import { handleJwtError } from '../function/handle-jwt-error.function';
 import { intoObservable } from '../function/into-observable.function';
 import { isNotNullish } from '../function/is-not-nullish.predicate';
-import { handleJwtError } from '../function/jwt-error-handler.function';
-import { tryRefresh } from '../function/refresh-token.function';
+import { isUnixTimestampExpiredNowAndWhenItIs } from '../function/is-unix-timestamp-expired-now-and-when-it-is.function';
 import { isString } from '../function/string.predicate';
+import { tryJwtRefresh } from '../function/try-jwt-refresh.function';
 import {
 	JwtConfiguration,
 	JwtRefreshConfiguration,
@@ -30,6 +31,26 @@ export class JwtTokenService<
 	RefreshRequest = Record<string | number, unknown>,
 	RefreshResponse = Record<string | number, unknown>
 > {
+	public constructor(
+		private readonly httpHandler: HttpHandler,
+		@Inject(JWT_CONFIGURATION_TOKEN)
+		private readonly rawConfig: JwtConfiguration,
+		@Inject(DEFAULT_JWT_CONFIGURATION_TOKEN)
+		private readonly rawDefaultConfig: JwtConfiguration,
+		@Inject(DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN)
+		@Optional()
+		private readonly rawDefaultRefreshConfig?: JwtRefreshConfiguration<
+			RefreshRequest,
+			RefreshResponse
+		>,
+		@Inject(JWT_REFRESH_CONFIGURATION_TOKEN)
+		@Optional()
+		private readonly rawRefreshConfig?: JwtRefreshConfiguration<
+			RefreshRequest,
+			RefreshResponse
+		>,
+		@Optional() private readonly router?: Router
+	) {}
 	public readonly config: JwtConfiguration = {
 		...this.rawDefaultConfig,
 		...this.rawConfig,
@@ -88,18 +109,16 @@ export class JwtTokenService<
 		map((token) => token?.payload ?? null)
 	);
 
-	/**
-	 * TODO: Emit when expires
-	 */
 	public readonly isAccessTokenExpired$ = this.accessToken$.pipe(
-		map((token) => token?.isExpired() ?? null)
+		switchMap((token) =>
+			token ? isUnixTimestampExpiredNowAndWhenItIs(token.payload.exp) : of(null)
+		)
 	);
 
-	/**
-	 * TODO: Emit when expires
-	 */
 	public readonly isRefreshTokenExpired$ = this.refreshToken$.pipe(
-		map((token) => token?.isExpired() ?? null)
+		switchMap((token) =>
+			token ? isUnixTimestampExpiredNowAndWhenItIs(token.payload.exp) : of(null)
+		)
 	);
 
 	public readonly isAccessTokenValid$ = this.isAccessTokenExpired$.pipe(
@@ -110,33 +129,12 @@ export class JwtTokenService<
 		map((isExpired) => isNotNullish(isExpired) && !isExpired)
 	);
 
-	public constructor(
-		private readonly httpHandler: HttpHandler,
-		@Inject(JWT_CONFIGURATION_TOKEN)
-		private readonly rawConfig: JwtConfiguration,
-		@Inject(DEFAULT_JWT_CONFIGURATION_TOKEN)
-		private readonly rawDefaultConfig: JwtConfiguration,
-		@Inject(DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN)
-		@Optional()
-		private readonly rawDefaultRefreshConfig?: JwtRefreshConfiguration<
-			RefreshRequest,
-			RefreshResponse
-		>,
-		@Inject(JWT_REFRESH_CONFIGURATION_TOKEN)
-		@Optional()
-		private readonly rawRefreshConfig?: JwtRefreshConfiguration<
-			RefreshRequest,
-			RefreshResponse
-		>,
-		@Optional() private readonly router?: Router
-	) {}
-
 	/**
 	 * Does a token refresh. Emits false if it failed, or true if succeeded.
 	 */
 	public manualRefresh(): Observable<boolean> {
 		if (this.refreshConfig) {
-			return tryRefresh(
+			return tryJwtRefresh(
 				this.httpHandler,
 				'Access token not valid on guard activation',
 				this.refreshConfig,

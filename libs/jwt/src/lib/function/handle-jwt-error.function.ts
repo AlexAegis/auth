@@ -1,13 +1,13 @@
-import { HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { Params, Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { JwtCannotRefreshError, JwtCouldntRefreshError, JwtError } from '../errors/jwt-error.class';
-import { isNotNullish } from '../function/is-not-nullish.predicate';
-import { isString } from '../function/string.predicate';
 import {
 	JwtConfiguration,
 	JwtRefreshConfiguration,
 } from '../model/auth-core-configuration.interface';
+import { handleJwtFailure } from './handle-jwt-failure.function';
+import { isNotNullish } from './is-not-nullish.predicate';
 
 export function handleJwtError<RefreshRequest = unknown, RefreshResponse = unknown>(
 	wrappedError:
@@ -26,7 +26,7 @@ export function handleJwtError<RefreshRequest = unknown, RefreshResponse = unkno
 
 	if (error instanceof JwtCannotRefreshError || error instanceof JwtCouldntRefreshError) {
 		if (jwtRefreshConfiguration && isNotNullish(jwtRefreshConfiguration.onFailure)) {
-			handleFailure(
+			handleJwtFailure(
 				jwtRefreshConfiguration.onFailure,
 				error,
 				router,
@@ -37,7 +37,7 @@ export function handleJwtError<RefreshRequest = unknown, RefreshResponse = unkno
 		return throwError(error);
 	} else if (error instanceof JwtError) {
 		if (isNotNullish(jwtConfiguration.onFailure)) {
-			handleFailure(
+			handleJwtFailure(
 				jwtConfiguration.onFailure,
 				error,
 				router,
@@ -48,35 +48,5 @@ export function handleJwtError<RefreshRequest = unknown, RefreshResponse = unkno
 	} else {
 		// Other errors are left untreated
 		return throwError(wrappedError);
-	}
-}
-
-export function handleFailure<E>(
-	errorCallbackOrRedirect: string | ((error: E) => void),
-	error: E,
-	router?: Router,
-	redirectParameters?: ((error: E) => HttpParams | Params) | HttpParams | Params
-): void {
-	if (isString(errorCallbackOrRedirect)) {
-		if (router) {
-			let queryParams = redirectParameters;
-			if (typeof redirectParameters === 'function') {
-				queryParams = redirectParameters(error);
-			}
-
-			router.navigate([errorCallbackOrRedirect], {
-				queryParams,
-			});
-		} else {
-			// This error is intended to surface as it's a configuration problem
-			throw new Error(
-				'JWT Refresh configuration error! ' +
-					'`onFailure` is defined as a string, but the ' +
-					'Router is not available! Is @angular/router ' +
-					'installed and the RouterModule imported?'
-			);
-		}
-	} else {
-		errorCallbackOrRedirect(error);
 	}
 }
