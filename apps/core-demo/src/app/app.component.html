@@ -1,1 +1,11 @@
-<h1>core-demo</h1>
+<mat-toolbar color="primary">
+	<h1>@aegis-auth</h1>
+	<button mat-button routerLink="/typedoc">Typedoc</button>
+	<button mat-button routerLink="/jwt">Jwt Demo</button>
+	<a mat-icon-button target="_blank" [href]="homepage"
+		><fa-icon [icon]="faGithub" size="lg"></fa-icon
+	></a>
+</mat-toolbar>
+<div class="main">
+	<router-outlet></router-outlet>
+</div>

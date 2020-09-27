@@ -8,23 +8,24 @@
 		"name": "AlexAegis",
 		"url": "https://www.github.com/AlexAegis"
 	},
-	"homepage": "https://www.github.com/AlexAegis/auth#readme",
-	"repository": {
-		"type": "git",
-		"url": "https://www.github.com/AlexAegis/auth",
-		"directory": "libs/core"
-	},
+	"homepage": "https://github.com/AlexAegis/auth/tree/master/libs/core#readme",
+	"repository": "github:AlexAegis/auth",
 	"bugs": {
 		"url": "https://www.github.com/AlexAegis/auth/issues"
 	},
-	"private": false,
-	"config": {
-		"engine-strict": true
-	},
-	"engines": {
-		"node": ">=10.13.0",
-		"yarn": ">=1.0.0"
-	},
+	"keywords": [
+		"ng",
+		"angular",
+		"auth",
+		"authentication",
+		"rxjs",
+		"reactive",
+		"interceptor",
+		"ts",
+		"typescript",
+		"js",
+		"javascript"
+	],
 	"dependencies": {
 		"tslib": "1.9.*"
 	},

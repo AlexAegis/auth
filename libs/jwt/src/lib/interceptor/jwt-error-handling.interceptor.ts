@@ -9,7 +9,7 @@ import { Inject, Injectable, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { handleJwtError } from '../function/jwt-error-handler.function';
+import { handleJwtError } from '../function/handle-jwt-error.function';
 import {
 	JwtConfiguration,
 	JwtRefreshConfiguration,

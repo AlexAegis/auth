@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+
+## [10.2.0](https://github.com/AlexAegis/auth/compare/v10.1.0...v10.2.0) (2020-09-27)
+
+
+### Features
+
+* **core:** combined demo page ([380a3a4](https://github.com/AlexAegis/auth/commit/380a3a4e9aa5d6bfea3510dafa7d2b90dd803ebe))
+* **jwt:** isExpired streams emit on expiration [#205](https://github.com/AlexAegis/auth/issues/205) ([e867fcc](https://github.com/AlexAegis/auth/commit/e867fcc33e044b1aec0de5ae393a95e0d0f212a8))
+
 ## [8.1.0](https://github.com/AlexAegis/auth/compare/v10.1.0...v8.1.0) (2020-09-06)
 
 ## [10.1.0](https://github.com/AlexAegis/auth/compare/v10.0.0...v10.1.0) (2020-09-06)

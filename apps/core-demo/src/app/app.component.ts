@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { homepage } from './../../../../package.json';
 @Component({
 	selector: 'aegis-auth-root',
 	templateUrl: './app.component.html',
@@ -7,5 +8,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-	public title = 'core-demo';
+	faGithub = faGithub;
+	homepage = homepage;
 }
