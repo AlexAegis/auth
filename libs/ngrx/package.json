@@ -1,0 +1,49 @@
+{
+  "name": "@aegis-auth/ngrx",
+  "description": "Angular JWT authentication library for NGRX",
+  "version": "10.1.0",
+  "license": "MIT",
+  "author": {
+    "email": "alexaegis@gmail.com",
+    "name": "AlexAegis",
+    "url": "https://www.github.com/AlexAegis"
+  },
+  "homepage": "https://github.com/AlexAegis/auth/tree/master/libs/core#readme",
+  "repository": "github:AlexAegis/auth",
+  "bugs": {
+    "url": "https://www.github.com/AlexAegis/auth/issues"
+  },
+  "keywords": [
+    "ng",
+    "angular",
+    "jwt",
+    "token",
+    "ngrx",
+    "cqrs",
+    "auth",
+    "authentication",
+    "rxjs",
+    "reactive",
+    "interceptor",
+    "ts",
+    "typescript",
+    "js",
+    "javascript"
+  ],
+  "peerDependencies": {
+    "@angular/common": "10.*.*",
+    "@angular/core": "10.*.*",
+    "@ngrx/store": "10.*.*"
+  },
+  "dependencies": {
+    "tslib": "2.*.*"
+  },
+  "main": "bundles/aegis-auth-ngrx.umd.js",
+  "module": "fesm2015/aegis-auth-ngrx.js",
+  "es2015": "fesm2015/aegis-auth-ngrx.js",
+  "esm2015": "esm2015/aegis-auth-ngrx.js",
+  "fesm2015": "fesm2015/aegis-auth-ngrx.js",
+  "typings": "aegis-auth-ngrx.d.ts",
+  "metadata": "aegis-auth-ngrx.metadata.json",
+  "sideEffects": false
+}

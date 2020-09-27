@@ -1,0 +1,49 @@
+{
+  "name": "@aegis-auth/jwt",
+  "description": "Angular JWT authentication library",
+  "version": "10.1.0",
+  "license": "MIT",
+  "author": {
+    "email": "alexaegis@gmail.com",
+    "name": "AlexAegis",
+    "url": "https://www.github.com/AlexAegis"
+  },
+  "homepage": "https://github.com/AlexAegis/auth/tree/master/libs/jwt#readme",
+  "repository": "github:AlexAegis/auth",
+  "bugs": {
+    "url": "https://www.github.com/AlexAegis/auth/issues"
+  },
+  "keywords": [
+    "ng",
+    "angular",
+    "jwt",
+    "token",
+    "auth",
+    "authentication",
+    "rxjs",
+    "reactive",
+    "interceptor",
+    "ts",
+    "typescript",
+    "js",
+    "javascript"
+  ],
+  "peerDependencies": {
+    "@angular/common": "10.*.*",
+    "@angular/core": "10.*.*",
+    "@angular/router": "10.*.*",
+    "rxjs": "6.6.*"
+  },
+  "dependencies": {
+    "js-base64": "^3.5.2",
+    "tslib": "2.*.*"
+  },
+  "main": "bundles/aegis-auth-jwt.umd.js",
+  "module": "fesm2015/aegis-auth-jwt.js",
+  "es2015": "fesm2015/aegis-auth-jwt.js",
+  "esm2015": "esm2015/aegis-auth-jwt.js",
+  "fesm2015": "fesm2015/aegis-auth-jwt.js",
+  "typings": "aegis-auth-jwt.d.ts",
+  "metadata": "aegis-auth-jwt.metadata.json",
+  "sideEffects": false
+}

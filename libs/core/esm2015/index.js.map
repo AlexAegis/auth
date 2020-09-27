@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"/home/runner/work/auth/auth/libs/core/src/","sources":["index.ts"],"names":[],"mappings":"AAAA,cAAc,wBAAwB,CAAC","sourcesContent":["export * from './lib/auth-core.module';\n"]}

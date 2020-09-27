@@ -1,0 +1,44 @@
+{
+  "name": "@aegis-auth/core",
+  "description": "Angular authentication libraries",
+  "version": "10.1.0",
+  "license": "MIT",
+  "author": {
+    "email": "alexaegis@gmail.com",
+    "name": "AlexAegis",
+    "url": "https://www.github.com/AlexAegis"
+  },
+  "homepage": "https://github.com/AlexAegis/auth/tree/master/libs/core#readme",
+  "repository": "github:AlexAegis/auth",
+  "bugs": {
+    "url": "https://www.github.com/AlexAegis/auth/issues"
+  },
+  "keywords": [
+    "ng",
+    "angular",
+    "auth",
+    "authentication",
+    "rxjs",
+    "reactive",
+    "interceptor",
+    "ts",
+    "typescript",
+    "js",
+    "javascript"
+  ],
+  "dependencies": {
+    "tslib": "2.*.*"
+  },
+  "peerDependencies": {
+    "@angular/common": "10.*.*",
+    "@angular/core": "10.*.*"
+  },
+  "main": "bundles/aegis-auth-core.umd.js",
+  "module": "fesm2015/aegis-auth-core.js",
+  "es2015": "fesm2015/aegis-auth-core.js",
+  "esm2015": "esm2015/aegis-auth-core.js",
+  "fesm2015": "fesm2015/aegis-auth-core.js",
+  "typings": "aegis-auth-core.d.ts",
+  "metadata": "aegis-auth-core.metadata.json",
+  "sideEffects": false
+}

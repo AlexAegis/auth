@@ -1,0 +1,1 @@
+[{"__symbolic":"module","version":4,"metadata":{"Base64String":{"__symbolic":"interface"},"JsonString":{"__symbolic":"interface"},"decodeJsonLikeBase64":{"__symbolic":"error","message":"Lambda not supported","line":9,"character":36}}}]

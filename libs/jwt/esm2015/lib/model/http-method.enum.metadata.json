@@ -1,0 +1,1 @@
+[{"__symbolic":"module","version":4,"metadata":{"HttpMethod":{"GET":"GET","HEAD":"HEAD","POST":"POST","PUT":"PUT","DELETE":"DELETE","CONNECT":"CONNECT","OPTIONS":"OPTIONS","TRACE":"TRACE","PATCH":"PATCH"},"HttpMethodType":{"__symbolic":"interface"}}}]
