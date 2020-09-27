@@ -16,30 +16,40 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-      - name: Cache Version
-        id: cache-version
-        uses: actions/cache@v2
-        with:
-          path: .github/version.txt
-          key: version-${{ hashFiles('**/.github/version.txt') }}
       - name: Setup Node.js
-        if: steps.cache-version.outputs.cache-hit != 'true'
         uses: actions/setup-node@v1
         with:
           node-version: 14
+      - name: Check if @aegis-auth/jwt is already deployed
+        run: |
+          VERSION=$(cat ".github/version.txt")
+          echo "::set-env name=VERSION::$VERSION"
+          JWT_IS_ON_NPM=$(if [ ! -z "$(npm view @aegis-auth/jwt@$VERSION 2> /dev/null)" ]; then echo 'true'; else echo 'false'; fi)
+          echo "::set-env name=JWT_IS_ON_NPM::$JWT_IS_ON_NPM"
+          echo "$VERSION"
+          echo "$JWT_IS_ON_NPM"
       - name: Install dependencies
-        if: steps.cache-packages.outputs.cache-hit != 'true'
+        if: env.JWT_IS_ON_NPM != 'true' && steps.cache-packages.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
-      - name: Build Library
-        if: steps.cache-version.outputs.cache-hit != 'true'
-        run: yarn build
-      - name: Release jwt
-        if: steps.cache-version.outputs.cache-hit != 'true'
+      - name: Build
+        if: env.JWT_IS_ON_NPM != 'true'
+        run: |
+          yarn build
+          yarn hoist:core
+      - name: Build Typedocs
+        if: env.JWT_IS_ON_NPM != 'true'
+        run: yarn typedoc
+      - name: Release @aegis-auth/jwt on NPM
+        if: env.JWT_IS_ON_NPM != 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
-          set +e
-          npm publish ./dist/libs/jwt --access public || return 0
-          set -e
+          npm publish ./dist/libs/jwt --access public
+      - name: Deploy Github Pages
+        if: env.JWT_IS_ON_NPM != 'true'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
