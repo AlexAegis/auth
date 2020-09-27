@@ -1,7 +1,7 @@
 {
 	"name": "@aegis-auth/jwt",
 	"description": "Angular JWT authentication library",
-	"version": "8.1.0",
+	"version": "8.2.0",
 	"license": "MIT",
 	"author": {
 		"email": "alexaegis@gmail.com",

@@ -21,7 +21,7 @@ See the individual packages for more information
 
 ```json
 {
-  "@aegis-auth/jwt": "^8.1.0"
+  "@aegis-auth/jwt": "^8.2.0"
 }
 ```
 

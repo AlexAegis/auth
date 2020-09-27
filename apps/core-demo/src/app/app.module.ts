@@ -11,7 +11,7 @@ import { JwtDemoPageComponent } from './pages/jwt-demo-page.component';
 import { TypedocPageComponent } from './pages/typedoc-page.component';
 
 @NgModule({
-	declarations: [AppComponent, TypedocPageComponent, TargetBlankDirective],
+	declarations: [AppComponent, TypedocPageComponent, JwtDemoPageComponent, TargetBlankDirective],
 	imports: [
 		BrowserModule,
 		BrowserAnimationsModule,

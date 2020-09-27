@@ -1,7 +1,7 @@
 {
 	"name": "aegis-auth",
 	"description": "Angular authentication libraries",
-	"version": "8.1.0",
+	"version": "8.2.0",
 	"license": "MIT",
 	"author": {
 		"email": "alexaegis@gmail.com",
@@ -168,7 +168,7 @@
 		"tslint": "~6.1.3",
 		"tslint-config-prettier": "~1.18.0",
 		"tslint-plugin-prettier": "~2.3.0",
-		"typedoc": "~0.19.2",
+		"typedoc": "0.15.*",
 		"typedoc-plugin-external-module-name": "~4.0.3",
 		"typescript": "3.5.*",
 		"webpack-bundle-analyzer": "~3.9.0",
