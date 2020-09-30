@@ -32,7 +32,7 @@ export function tryJwtRefresh<Req, Res, Ret>(
 						originalAction
 					);
 				} else {
-					return throwError(originalError);
+					return onError(originalError);
 				}
 			})
 		);
