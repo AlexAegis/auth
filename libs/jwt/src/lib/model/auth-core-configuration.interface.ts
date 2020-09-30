@@ -139,14 +139,20 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
 
 	/**
 	 * A callback or observable that can be used to retrieve the body of the
-	 * request.
+	 * request. If it's null or undefined, the refresh won't be executed. This
+	 * can be utilized to not do a refresh on a logged out state.
 	 *
 	 * @example getValue: () => localstorage.get('foo')
 	 * @example getValue: myTokenService.foo$
 	 */
 	createRefreshRequestBody:
-		| Observable<RefreshRequest>
-		| (() => RefreshRequest | Promise<RefreshRequest> | Observable<RefreshRequest>);
+		| Observable<RefreshRequest | null | undefined>
+		| (() =>
+				| RefreshRequest
+				| null
+				| undefined
+				| Promise<RefreshRequest | null | undefined>
+				| Observable<RefreshRequest | null | undefined>);
 
 	/**
 	 * A callback that should return the defaults on the request

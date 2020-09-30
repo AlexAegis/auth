@@ -22,9 +22,19 @@ export function tryJwtRefresh<Req, Res, Ret>(
 	if (isRefreshAllowed) {
 		return intoObservable(jwtRefreshConfiguration.createRefreshRequestBody).pipe(
 			take(1),
-			switchMap((requestBody) =>
-				doJwtRefresh(next, requestBody, jwtRefreshConfiguration, onError, originalAction)
-			)
+			switchMap((requestBody) => {
+				if (requestBody) {
+					return doJwtRefresh(
+						next,
+						requestBody,
+						jwtRefreshConfiguration,
+						onError,
+						originalAction
+					);
+				} else {
+					return throwError(originalError);
+				}
+			})
 		);
 	} else return throwError(originalError);
 }
