@@ -22,9 +22,10 @@ describe('tryJwtRefresh', () => {
 	const refreshResult = {};
 	const onError = jest.fn();
 	const originalAction = jest.fn();
+	const createRefreshRequestBody: jest.Mock<string | undefined | null, []> = jest.fn(() => body);
 
 	const jwtRefreshConfiguration = ({
-		createRefreshRequestBody: jest.fn(() => body),
+		createRefreshRequestBody,
 	} as unknown) as JwtRefreshConfiguration<unknown, unknown>;
 
 	const mockObserver: Observer<unknown> = {
@@ -37,6 +38,26 @@ describe('tryJwtRefresh', () => {
 
 	it('should just rethrow if the original error is not a string and the error filter does not allow the refresh', () => {
 		mockCheckAgainstHttpErrorFilter.mockImplementationOnce(() => false);
+		createRefreshRequestBody.mockImplementation(() => body);
+		tryJwtRefresh(
+			httpHandler,
+			error,
+			jwtRefreshConfiguration,
+			onError,
+			originalAction
+		).subscribe(mockObserver);
+
+		expect(mockDoJwtRefresh).toHaveBeenCalledTimes(0);
+		expect(mockCheckAgainstHttpErrorFilter).toHaveBeenCalledTimes(1);
+		expect(mockObserver.next).toHaveBeenCalledTimes(0);
+		expect(mockObserver.error).toHaveBeenCalledTimes(1);
+		expect(mockObserver.error).toHaveBeenCalledWith(error);
+		expect(mockObserver.complete).toHaveBeenCalledTimes(0);
+	});
+
+	it('should just rethrow if the original error if the body is nullish', () => {
+		mockCheckAgainstHttpErrorFilter.mockImplementationOnce(() => false);
+		createRefreshRequestBody.mockImplementation(() => null);
 		tryJwtRefresh(
 			httpHandler,
 			error,
@@ -56,6 +77,7 @@ describe('tryJwtRefresh', () => {
 	it('should call doRefresh if the original error is a string even when the error filter would not allow the refresh', () => {
 		mockDoJwtRefresh.mockImplementationOnce(() => of(refreshResult));
 		mockCheckAgainstHttpErrorFilter.mockImplementationOnce(() => false);
+		createRefreshRequestBody.mockImplementation(() => body);
 		tryJwtRefresh(
 			httpHandler,
 			strError,
