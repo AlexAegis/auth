@@ -260,7 +260,14 @@ function tryJwtRefresh(next, originalError, jwtRefreshConfiguration, onError, or
     const isRefreshAllowed = typeof originalError === 'string' ||
         checkAgainstHttpErrorFilter(jwtRefreshConfiguration, originalError);
     if (isRefreshAllowed) {
-        return intoObservable(jwtRefreshConfiguration.createRefreshRequestBody).pipe(take(1), switchMap((requestBody) => doJwtRefresh(next, requestBody, jwtRefreshConfiguration, onError, originalAction)));
+        return intoObservable(jwtRefreshConfiguration.createRefreshRequestBody).pipe(take(1), switchMap((requestBody) => {
+            if (requestBody) {
+                return doJwtRefresh(next, requestBody, jwtRefreshConfiguration, onError, originalAction);
+            }
+            else {
+                return throwError(originalError);
+            }
+        }));
     }
     else
         return throwError(originalError);

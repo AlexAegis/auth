@@ -570,7 +570,14 @@
         var isRefreshAllowed = typeof originalError === 'string' ||
             checkAgainstHttpErrorFilter(jwtRefreshConfiguration, originalError);
         if (isRefreshAllowed) {
-            return intoObservable(jwtRefreshConfiguration.createRefreshRequestBody).pipe(operators.take(1), operators.switchMap(function (requestBody) { return doJwtRefresh(next, requestBody, jwtRefreshConfiguration, onError, originalAction); }));
+            return intoObservable(jwtRefreshConfiguration.createRefreshRequestBody).pipe(operators.take(1), operators.switchMap(function (requestBody) {
+                if (requestBody) {
+                    return doJwtRefresh(next, requestBody, jwtRefreshConfiguration, onError, originalAction);
+                }
+                else {
+                    return rxjs.throwError(originalError);
+                }
+            }));
         }
         else
             return rxjs.throwError(originalError);
