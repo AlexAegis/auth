@@ -60,17 +60,17 @@ describe('tryJwtRefresh', () => {
 		createRefreshRequestBody.mockImplementation(() => null);
 		tryJwtRefresh(
 			httpHandler,
-			error,
+			strError,
 			jwtRefreshConfiguration,
 			onError,
 			originalAction
 		).subscribe(mockObserver);
 
 		expect(mockDoJwtRefresh).toHaveBeenCalledTimes(0);
-		expect(mockCheckAgainstHttpErrorFilter).toHaveBeenCalledTimes(1);
+		expect(mockCheckAgainstHttpErrorFilter).toHaveBeenCalledTimes(0);
 		expect(mockObserver.next).toHaveBeenCalledTimes(0);
 		expect(mockObserver.error).toHaveBeenCalledTimes(1);
-		expect(mockObserver.error).toHaveBeenCalledWith(error);
+		expect(mockObserver.error).toHaveBeenCalledWith(strError);
 		expect(mockObserver.complete).toHaveBeenCalledTimes(0);
 	});
 
