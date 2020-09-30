@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [10.2.1](https://github.com/AlexAegis/auth/compare/v10.2.0...v10.2.1) (2020-09-30)
+
+
+### Bug Fixes
+
+* **jwt:** no refresh without body ([66da342](https://github.com/AlexAegis/auth/commit/66da342d7a9f36357d1f950faa4cd43fa30059cf))
+
 ## [10.2.0](https://github.com/AlexAegis/auth/compare/v10.1.0...v10.2.0) (2020-09-27)
 
 
