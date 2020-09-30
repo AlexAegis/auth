@@ -575,7 +575,7 @@
                     return doJwtRefresh(next, requestBody, jwtRefreshConfiguration, onError, originalAction);
                 }
                 else {
-                    return rxjs.throwError(originalError);
+                    return onError(originalError);
                 }
             }));
         }

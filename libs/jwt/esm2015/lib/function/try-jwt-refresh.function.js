@@ -12,7 +12,7 @@ export function tryJwtRefresh(next, originalError, jwtRefreshConfiguration, onEr
                 return doJwtRefresh(next, requestBody, jwtRefreshConfiguration, onError, originalAction);
             }
             else {
-                return throwError(originalError);
+                return onError(originalError);
             }
         }));
     }

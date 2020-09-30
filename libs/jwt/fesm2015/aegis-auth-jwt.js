@@ -265,7 +265,7 @@ function tryJwtRefresh(next, originalError, jwtRefreshConfiguration, onError, or
                 return doJwtRefresh(next, requestBody, jwtRefreshConfiguration, onError, originalAction);
             }
             else {
-                return throwError(originalError);
+                return onError(originalError);
             }
         }));
     }
