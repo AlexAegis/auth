@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [10.2.2](https://github.com/AlexAegis/auth/compare/v10.2.1...v10.2.2) (2020-09-30)
+
+
+### Bug Fixes
+
+* **jwt:** fallback instead of error ([1a2bc3b](https://github.com/AlexAegis/auth/commit/1a2bc3be892c7c9a768d738db800c202abfffb3f))
+
 ### [10.2.1](https://github.com/AlexAegis/auth/compare/v10.2.0...v10.2.1) (2020-09-30)
 
 
