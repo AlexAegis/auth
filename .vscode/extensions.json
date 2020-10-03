@@ -8,18 +8,11 @@
 		"eg2.vscode-npm-script",
 		"pkief.material-icon-theme",
 		"msjsdiag.debugger-for-chrome",
-		"wix.vscode-import-cost",
 		"eamodio.gitlens",
-		"npxms.hide-gitignored",
 		"vivaxy.vscode-conventional-commits",
 		"cyrilletuzi.angular-schematics",
-		"mikael.angular-beastcode",
 		"equinusocio.vsc-material-theme",
 		"editorconfig.editorconfig",
-		"aaron-bond.better-comments",
-		"pflannery.vscode-versionlens",
-		"gruntfuggly.todo-tree",
-		"kisstkondoros.csstriggers",
-		"kisstkondoros.vscode-gutter-preview"
+		"aaron-bond.better-comments"
 	]
 }
