@@ -105,7 +105,7 @@
 		"@angular/platform-browser-dynamic": "~10.1.4",
 		"@angular/router": "~10.1.4",
 		"@fortawesome/angular-fontawesome": "^0.7.0",
-		"@fortawesome/fontawesome-svg-core": "^1.2.31",
+		"@fortawesome/fontawesome-svg-core": "^1.2.32",
 		"@fortawesome/free-brands-svg-icons": "^5.15.0",
 		"@fortawesome/free-solid-svg-icons": "^5.15.0",
 		"@nrwl/angular": "10.2.1",
