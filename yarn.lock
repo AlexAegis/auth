@@ -4615,7 +4615,7 @@ commander@^4.1.1:
   resolved "https://registry.yarnpkg.com/commander/-/commander-4.1.1.tgz#9fd602bd936294e9e9ef46a3f4d6964044b18068"
   integrity sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==
 
-commander@^6.0.0, commander@^6.1.0, commander@^6.2.0:
+commander@^6.0.0, commander@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-6.2.0.tgz#b990bfb8ac030aedc6d11bc04d1488ffef56db75"
   integrity sha512-zP4jEKbe8SHzKJYQmq8Y9gYjtO/POJLgIdKgV7B9qNmABVFVc+ctqSX6iXh4mCpJfRBOabiZ2YKPg8ciDw6C+Q==
@@ -10654,15 +10654,15 @@ npm-bundled@^1.0.1, npm-bundled@^1.1.1:
   dependencies:
     npm-normalize-package-bin "^1.0.1"
 
-npm-check-updates@~9.2.3:
-  version "9.2.3"
-  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-9.2.3.tgz#81f79b946fe3c1c0afc527d4273c879b5345179b"
-  integrity sha512-HNXgM0VNb4BkPqPyGbnt0DhebUYibgN5RBawBBA0I/W9JO8+hI873S29KWHbPAi5RkqTgQ5uPxdZxCf5gaMotg==
+npm-check-updates@~9.2.4:
+  version "9.2.4"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-9.2.4.tgz#53d35b62943fdee2bf30d546b6ae6f1b847148f9"
+  integrity sha512-YXEIqKXzxOhtPWg670+JAp/jPtjfTdaBJVGSlWL3eHbUDY4O80ELQNGO/qDy8oxh3pOrxSdII7vNglDf4FDw4w==
   dependencies:
     chalk "^4.1.0"
     cint "^8.2.1"
     cli-table "^0.3.1"
-    commander "^6.1.0"
+    commander "^6.2.0"
     find-up "5.0.0"
     get-stdin "^8.0.0"
     json-parse-helpfulerror "^1.0.3"
@@ -10673,7 +10673,7 @@ npm-check-updates@~9.2.3:
     pacote "^11.1.11"
     parse-github-url "^1.0.2"
     progress "^2.0.3"
-    prompts "^2.3.2"
+    prompts "^2.4.0"
     rc-config-loader "^3.0.0"
     remote-git-tags "^3.0.0"
     rimraf "^3.0.2"
@@ -12191,7 +12191,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prompts@^2.0.1, prompts@^2.3.2:
+prompts@^2.0.1, prompts@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/prompts/-/prompts-2.4.0.tgz#4aa5de0723a231d1ee9121c40fdf663df73f61d7"
   integrity sha512-awZAKrk3vN6CroQukBL+R9051a4R3zCZBlJm/HBfrSZ8iTpYix3VX1vU4mveiLpiwmOJT4wokTF9m6HUk4KqWQ==
