@@ -6871,6 +6871,11 @@ forwarded@~0.1.2:
   resolved "https://registry.yarnpkg.com/forwarded/-/forwarded-0.1.2.tgz#98c23dab1175657b8c0573e8ceccd91b0ff18c84"
   integrity sha1-mMI9qxF1ZXuMBXPozszZGw/xjIQ=
 
+fp-and-or@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/fp-and-or/-/fp-and-or-0.1.2.tgz#42f817b48a2566462f546cd61c165f17a9090b54"
+  integrity sha512-3P8x4W/BF5x5xreG06D28I1+sOKyNKo2rShYyEBg/0XJDGuocwcv2KnD4CeuK4OSokFQbuuTlkdb4NlWNHhcKQ==
+
 fragment-cache@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/fragment-cache/-/fragment-cache-0.2.1.tgz#4290fad27f13e89be7f33799c6bc5a0abfff0d19"
@@ -10646,16 +10651,17 @@ npm-bundled@^1.0.1, npm-bundled@^1.1.1:
   dependencies:
     npm-normalize-package-bin "^1.0.1"
 
-npm-check-updates@~10.1.1:
-  version "10.1.1"
-  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-10.1.1.tgz#52932f989177ee7e3d066465d0db2196266eb86f"
-  integrity sha512-d1lwJqv0sRKJwXwaAUSZTNqBzvJJOQfTiEqkM674tThNmtPd5WU0Mqar//0BpDdSIRs2fEQkvKvg57+2Kbosaw==
+npm-check-updates@~10.2.1:
+  version "10.2.1"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-10.2.1.tgz#5487519ded71420c86d58ccbcfb3277d8c991cfe"
+  integrity sha512-p6FM1JXDs2ZfYZ5pyOPkiIWHi+dldjS26QoVYcfaBgF/SmGBqyU3m0WW/y3PSPvOdb610cnI+wzQxzFxTSx+5Q==
   dependencies:
     chalk "^4.1.0"
     cint "^8.2.1"
     cli-table "^0.3.1"
     commander "^6.2.0"
     find-up "5.0.0"
+    fp-and-or "^0.1.2"
     get-stdin "^8.0.0"
     hosted-git-info "^3.0.7"
     json-parse-helpfulerror "^1.0.3"
