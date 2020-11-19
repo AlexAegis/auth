@@ -120,7 +120,7 @@
 		"@angular-devkit/build-ng-packagr": "~0.1002.0",
 		"@angular/cli": "~10.2.0",
 		"@angular/compiler-cli": "~10.2.0",
-		"@angular/language-service": "~10.2.3",
+		"@angular/language-service": "~11.0.1",
 		"@commitlint/cli": "~11.0.0",
 		"@commitlint/config-conventional": "~11.0.0",
 		"@nrwl/cypress": "~10.3.1",
