@@ -23,9 +23,9 @@ jobs:
       - name: Check if @aegis-auth/jwt is already deployed
         run: |
           VERSION=$(cat ".github/version.txt")
-          echo "::set-env name=VERSION::$VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
           JWT_IS_ON_NPM=$(if [ ! -z "$(npm view @aegis-auth/jwt@$VERSION 2> /dev/null)" ]; then echo 'true'; else echo 'false'; fi)
-          echo "::set-env name=JWT_IS_ON_NPM::$JWT_IS_ON_NPM"
+          echo "JWT_IS_ON_NPM=$JWT_IS_ON_NPM" >> $GITHUB_ENV
           echo "$VERSION"
           echo "$JWT_IS_ON_NPM"
       - name: Install dependencies
