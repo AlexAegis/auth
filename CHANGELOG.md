@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [11.0.0](https://github.com/AlexAegis/auth/compare/v10.2.2...v11.0.0) (2020-11-21)
+
+
+### Features
+
+* eslint migration ([e0024bf](https://github.com/AlexAegis/auth/commit/e0024bfadfa07e7f8ec7ea56c95e6e77e8e4a58d))
+* upgrade to ng11 ([7edf863](https://github.com/AlexAegis/auth/commit/7edf8636183c80c5409fd5953701a928bc6074fb))
+
 ### [10.2.2](https://github.com/AlexAegis/auth/compare/v10.2.1...v10.2.2) (2020-09-30)
 
 
