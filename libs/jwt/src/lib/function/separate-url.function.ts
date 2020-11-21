@@ -29,11 +29,11 @@ export interface SeparatedUrl {
  * Separator between protocol and domain is `://`, and between domain
  * and path is `/`.
  */
-export function separateUrl(url?: string): SeparatedUrl {
+export const separateUrl = (url?: string): SeparatedUrl => {
 	const urlMatch = url?.match(/^((.*):\/\/)?([^/].*?)?(\/(.*))?$/);
 	return {
 		protocol: urlMatch?.[2] as UrlProtocol,
 		domain: urlMatch?.[3] as UrlDomain,
 		path: urlMatch?.[5] as UrlPath,
 	};
-}
+};

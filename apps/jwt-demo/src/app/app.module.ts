@@ -62,7 +62,7 @@ import { AuthService } from './service';
 						authService.refreshTokenStorage$.next(refreshResponse.refreshToken);
 					},
 					// endpoint to hit to refresh
-					refreshUrl: `http://localhost/refresh`,
+					refreshUrl: 'http://localhost/refresh',
 					// This is not needed here, it's just for reference, refreshUrl is already
 					// excluded. But in case you do something fancy with your interceptors, having
 					// explicit control over on what url will be refreshed and what not, is useful.
@@ -72,7 +72,7 @@ import { AuthService } from './service';
 					// The result of this will be passed to the initials object of HttpRequest
 					createRefreshRequestBody: authService.refreshTokenStorage$.pipe(
 						map((refreshToken) => ({
-							refreshToken: refreshToken,
+							refreshToken,
 							lifespan: 4,
 						}))
 					),

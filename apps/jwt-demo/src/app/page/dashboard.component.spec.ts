@@ -33,7 +33,7 @@ describe('DashboardComponent', () => {
 		expect(app).toBeTruthy();
 	});
 
-	it(`should have as title 'jwt-demo'`, () => {
+	it("should have as title 'jwt-demo'", () => {
 		const fixture = TestBed.createComponent(DashboardComponent);
 		const app = fixture.componentInstance;
 		expect(app.title).toEqual('jwt-demo');

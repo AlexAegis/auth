@@ -1,5 +1,4 @@
 {
-	"tslint.alwaysShowRuleFailuresAsWarnings": true,
 	"editor.formatOnSave": true,
 	"editor.autoIndent": "full",
 	"editor.tabCompletion": "off",
@@ -27,8 +26,6 @@
 		"source.organizeImports": true,
 		// For ESLint
 		"source.fixAll.eslint": true,
-		// For TSLint
-		"source.fixAll.tslint": true,
 		// For Stylelint
 		"source.fixAll.stylelint": true
 	},

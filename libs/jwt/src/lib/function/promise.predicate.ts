@@ -3,10 +3,7 @@
  * Using `instanceof` would not be sufficient as Promises can be contructed
  * in many ways, and it's just a specification.
  */
-export function isPromise<T>(promiseLike: unknown): promiseLike is Promise<T> {
-	return (
-		promiseLike &&
-		typeof (promiseLike as Promise<T>).then === 'function' &&
-		typeof (promiseLike as Promise<T>).catch === 'function'
-	);
-}
+export const isPromise = <T>(promiseLike: unknown): promiseLike is Promise<T> =>
+	promiseLike &&
+	typeof (promiseLike as Promise<T>).then === 'function' &&
+	typeof (promiseLike as Promise<T>).catch === 'function';

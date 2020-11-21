@@ -31,26 +31,6 @@ export class JwtTokenService<
 	RefreshRequest = Record<string | number, unknown>,
 	RefreshResponse = Record<string | number, unknown>
 > {
-	public constructor(
-		private readonly httpHandler: HttpHandler,
-		@Inject(JWT_CONFIGURATION_TOKEN)
-		private readonly rawConfig: JwtConfiguration,
-		@Inject(DEFAULT_JWT_CONFIGURATION_TOKEN)
-		private readonly rawDefaultConfig: JwtConfiguration,
-		@Inject(DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN)
-		@Optional()
-		private readonly rawDefaultRefreshConfig?: JwtRefreshConfiguration<
-			RefreshRequest,
-			RefreshResponse
-		>,
-		@Inject(JWT_REFRESH_CONFIGURATION_TOKEN)
-		@Optional()
-		private readonly rawRefreshConfig?: JwtRefreshConfiguration<
-			RefreshRequest,
-			RefreshResponse
-		>,
-		@Optional() private readonly router?: Router
-	) {}
 	public readonly config: JwtConfiguration = {
 		...this.rawDefaultConfig,
 		...this.rawConfig,
@@ -77,9 +57,14 @@ export class JwtTokenService<
 		map((token) => {
 			if (isString(token)) {
 				const jwtToken = JwtToken.from<Claims>(token);
-				if (!jwtToken) throw new Error('Non-valid token observed');
-				else return jwtToken;
-			} else return null;
+				if (!jwtToken) {
+					throw new Error('Non-valid token observed');
+				} else {
+					return jwtToken;
+				}
+			} else {
+				return null;
+			}
 		})
 	);
 
@@ -87,9 +72,14 @@ export class JwtTokenService<
 		map((refreshToken) => {
 			if (isString(refreshToken)) {
 				const jwtToken = JwtToken.from<RefreshClaims>(refreshToken);
-				if (!jwtToken) throw new Error('Non-valid token observed');
-				else return jwtToken;
-			} else return null;
+				if (!jwtToken) {
+					throw new Error('Non-valid token observed');
+				} else {
+					return jwtToken;
+				}
+			} else {
+				return null;
+			}
 		})
 	);
 
@@ -128,6 +118,27 @@ export class JwtTokenService<
 	public readonly isRefreshTokenValid$ = this.isRefreshTokenExpired$.pipe(
 		map((isExpired) => isNotNullish(isExpired) && !isExpired)
 	);
+
+	public constructor(
+		private readonly httpHandler: HttpHandler,
+		@Inject(JWT_CONFIGURATION_TOKEN)
+		private readonly rawConfig: JwtConfiguration,
+		@Inject(DEFAULT_JWT_CONFIGURATION_TOKEN)
+		private readonly rawDefaultConfig: JwtConfiguration,
+		@Inject(DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN)
+		@Optional()
+		private readonly rawDefaultRefreshConfig?: JwtRefreshConfiguration<
+			RefreshRequest,
+			RefreshResponse
+		>,
+		@Inject(JWT_REFRESH_CONFIGURATION_TOKEN)
+		@Optional()
+		private readonly rawRefreshConfig?: JwtRefreshConfiguration<
+			RefreshRequest,
+			RefreshResponse
+		>,
+		@Optional() private readonly router?: Router
+	) {}
 
 	/**
 	 * Does a token refresh. Emits false if it failed, or true if succeeded.

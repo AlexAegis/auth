@@ -1,49 +1,32 @@
-/**
- * This is a "Solution Style" tsconfig.json file, and is used by editors and
- * TypeScript’s language server to improve development experience.
- * It is not intended to be used to perform a compilation.
- *
- * To learn more about this file see: https://angular.io/config/solution-tsconfig.
- */
 {
-	"files": [],
-	"compilerOptions": { "resolveJsonModule": true },
-	"references": [
-		{
-			"path": "./libs/core/tsconfig.lib.json"
-		},
-		{
-			"path": "./libs/core/tsconfig.spec.json"
-		},
-		{
-			"path": "./apps/core-demo/tsconfig.app.json"
-		},
-		{
-			"path": "./apps/core-demo/tsconfig.spec.json"
-		},
-		{
-			"path": "./apps/core-demo-e2e/tsconfig.e2e.json"
-		},
-		{
-			"path": "./libs/ngrx/tsconfig.lib.json"
-		},
-		{
-			"path": "./libs/ngrx/tsconfig.spec.json"
-		},
-		{
-			"path": "./libs/jwt/tsconfig.lib.json"
-		},
-		{
-			"path": "./libs/jwt/tsconfig.spec.json"
-		},
-		{
-			"path": "./apps/jwt-demo/tsconfig.app.json"
-		},
-		{
-			"path": "./apps/jwt-demo/tsconfig.spec.json"
-		},
-		{
-			"path": "./apps/jwt-demo-e2e/tsconfig.e2e.json"
+	"compileOnSave": false,
+	"compilerOptions": {
+		"rootDir": ".",
+		"sourceMap": true,
+		"declaration": false,
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"importHelpers": true,
+		"target": "es2015",
+		"module": "es2020",
+		"resolveJsonModule": true,
+		"strict": true,
+		"typeRoots": ["node_modules/@types"],
+		"lib": ["es2017", "dom"],
+		"skipLibCheck": true,
+		"skipDefaultLibCheck": true,
+		"baseUrl": ".",
+		"paths": {
+			"@aegis-auth/core": ["libs/core/src/index.ts"],
+			"@aegis-auth/ngrx": ["libs/ngrx/src/index.ts"],
+			"@aegis-auth/jwt": ["libs/jwt/src/index.ts"]
 		}
-	]
+	},
+	"angularCompilerOptions": {
+		"enableIvy": true,
+		"fullTemplateTypeCheck": true
+	},
+	"exclude": ["node_modules", "tmp"]
 }

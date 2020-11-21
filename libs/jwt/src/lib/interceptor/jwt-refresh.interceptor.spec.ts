@@ -153,16 +153,12 @@ describe('JwtRefreshInterceptor', () => {
 	it('should not refresh with a valid token', () => {
 		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
 			useValue: {
-				createRefreshRequestBody: () => {
-					return {
-						refreshToken: 'refTok',
-					};
-				},
+				createRefreshRequestBody: () => ({
+					refreshToken: 'refTok',
+				}),
 				refreshUrl: TEST_REFRESH_URL,
 				setRefreshedTokens: setRefreshedTokensMock,
-				transformRefreshResponse: (response) => {
-					return response;
-				},
+				transformRefreshResponse: (response) => response,
 			} as JwtRefreshConfiguration<TestRefreshRequest, TestRefreshResponse>,
 		});
 
@@ -187,16 +183,12 @@ describe('JwtRefreshInterceptor', () => {
 	it('should refresh with an expired token, without first trying', () => {
 		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
 			useValue: {
-				createRefreshRequestBody: () => {
-					return {
-						refreshToken: 'token',
-					};
-				},
+				createRefreshRequestBody: () => ({
+					refreshToken: 'token',
+				}),
 				refreshUrl: TEST_REFRESH_URL,
 				setRefreshedTokens: setRefreshedTokensMock,
-				transformRefreshResponse: (response) => {
-					return response;
-				},
+				transformRefreshResponse: (response) => response,
 			} as JwtRefreshConfiguration<TestRefreshRequest, TestRefreshResponse>,
 		});
 
@@ -223,17 +215,13 @@ describe('JwtRefreshInterceptor', () => {
 	it('should refresh with a non-expired but invalid token, with first trying', () => {
 		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
 			useValue: {
-				createRefreshRequestBody: () => {
-					return {
-						refreshToken: 'token',
-					};
-				},
+				createRefreshRequestBody: () => ({
+					refreshToken: 'token',
+				}),
 				refreshUrl: TEST_REFRESH_URL,
 				setRefreshedTokens: setRefreshedTokensMock,
 				errorCodeWhitelist: undefined,
-				transformRefreshResponse: (response) => {
-					return response;
-				},
+				transformRefreshResponse: (response) => response,
 			} as JwtRefreshConfiguration<TestRefreshRequest, TestRefreshResponse>,
 		});
 
@@ -263,17 +251,13 @@ describe('JwtRefreshInterceptor', () => {
 		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
 			useValue: {
 				getRefreshToken: () => TEST_INVALID_TOKEN,
-				createRefreshRequestBody: () => {
-					return {
-						refreshToken: TEST_INVALID_TOKEN,
-					};
-				},
+				createRefreshRequestBody: () => ({
+					refreshToken: TEST_INVALID_TOKEN,
+				}),
 				refreshUrl: TEST_REFRESH_URL,
 				setRefreshedTokens: setRefreshedTokensMock,
 				errorCodeWhitelist: undefined,
-				transformRefreshResponse: (response) => {
-					return response;
-				},
+				transformRefreshResponse: (response) => response,
 			} as JwtRefreshConfiguration<TestRefreshRequest, TestRefreshResponse>,
 		});
 
@@ -309,17 +293,13 @@ describe('JwtRefreshInterceptor', () => {
 		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
 			useValue: {
 				getRefreshToken: () => TEST_EXPIRED_TOKEN,
-				createRefreshRequestBody: () => {
-					return {
-						refreshToken: TEST_EXPIRED_TOKEN,
-					};
-				},
+				createRefreshRequestBody: () => ({
+					refreshToken: TEST_EXPIRED_TOKEN,
+				}),
 				refreshUrl: TEST_REFRESH_URL,
 				setRefreshedTokens: setRefreshedTokensMock,
 				errorCodeWhitelist: undefined,
-				transformRefreshResponse: (response) => {
-					return response;
-				},
+				transformRefreshResponse: (response) => response,
 			} as JwtRefreshConfiguration<TestRefreshRequest, TestRefreshResponse>,
 		});
 
@@ -352,17 +332,13 @@ describe('JwtRefreshInterceptor', () => {
 	it('should not try to refresh if the token was valid but the request failed, and fail', () => {
 		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
 			useValue: {
-				createRefreshRequestBody: () => {
-					return {
-						refreshToken: 'token',
-					};
-				},
+				createRefreshRequestBody: () => ({
+					refreshToken: 'token',
+				}),
 				refreshUrl: TEST_REFRESH_URL,
 				setRefreshedTokens: setRefreshedTokensMock,
 				errorCodeWhitelist: [401],
-				transformRefreshResponse: (response) => {
-					return response;
-				},
+				transformRefreshResponse: (response) => response,
 			} as JwtRefreshConfiguration<TestRefreshRequest, TestRefreshResponse>,
 		});
 
@@ -388,17 +364,13 @@ describe('JwtRefreshInterceptor', () => {
 	it('should try a refresh on a custom error code if its whitelisted', () => {
 		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
 			useValue: {
-				createRefreshRequestBody: () => {
-					return {
-						refreshToken: 'token',
-					};
-				},
+				createRefreshRequestBody: () => ({
+					refreshToken: 'token',
+				}),
 				refreshUrl: TEST_REFRESH_URL,
 				setRefreshedTokens: setRefreshedTokensMock,
 				errorCodeWhitelist: [500],
-				transformRefreshResponse: (response) => {
-					return response;
-				},
+				transformRefreshResponse: (response) => response,
 			} as JwtRefreshConfiguration<TestRefreshRequest, TestRefreshResponse>,
 		});
 
@@ -427,18 +399,14 @@ describe('JwtRefreshInterceptor', () => {
 	it('should not try to refresh if the endpoint is not allowed to be refreshed on even with an expired token', () => {
 		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
 			useValue: {
-				createRefreshRequestBody: () => {
-					return {
-						refreshToken: 'token',
-					};
-				},
+				createRefreshRequestBody: () => ({
+					refreshToken: 'token',
+				}),
 				refreshUrl: TEST_REFRESH_URL,
 				domainBlacklist: [TEST_REQUEST_DOMAIN],
 				setRefreshedTokens: setRefreshedTokensMock,
 				errorCodeWhitelist: [401],
-				transformRefreshResponse: (response) => {
-					return response;
-				},
+				transformRefreshResponse: (response) => response,
 			} as JwtRefreshConfiguration<TestRefreshRequest, TestRefreshResponse>,
 		});
 
@@ -464,17 +432,13 @@ describe('JwtRefreshInterceptor', () => {
 	it('should just fail if it fails again after a successful refresh', () => {
 		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
 			useValue: {
-				createRefreshRequestBody: () => {
-					return {
-						refreshToken: 'token',
-					};
-				},
+				createRefreshRequestBody: () => ({
+					refreshToken: 'token',
+				}),
 				refreshUrl: TEST_REFRESH_URL,
 				setRefreshedTokens: setRefreshedTokensMock,
 				errorCodeWhitelist: undefined,
-				transformRefreshResponse: (response) => {
-					return response;
-				},
+				transformRefreshResponse: (response) => response,
 			} as JwtRefreshConfiguration<TestRefreshRequest, TestRefreshResponse>,
 		});
 
@@ -503,17 +467,13 @@ describe('JwtRefreshInterceptor', () => {
 	it('should just fail if a token was not present at all at the beginning', () => {
 		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
 			useValue: {
-				createRefreshRequestBody: () => {
-					return {
-						refreshToken: 'token',
-					};
-				},
+				createRefreshRequestBody: () => ({
+					refreshToken: 'token',
+				}),
 				refreshUrl: TEST_REFRESH_URL,
 				setRefreshedTokens: setRefreshedTokensMock,
 				errorCodeWhitelist: undefined,
-				transformRefreshResponse: (response) => {
-					return response;
-				},
+				transformRefreshResponse: (response) => response,
 			} as JwtRefreshConfiguration<TestRefreshRequest, TestRefreshResponse>,
 		});
 
@@ -553,16 +513,12 @@ describe('JwtRefreshInterceptor', () => {
 
 		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
 			useValue: {
-				createRefreshRequestBody: () => {
-					return {
-						refreshToken: 'token',
-					};
-				},
+				createRefreshRequestBody: () => ({
+					refreshToken: 'token',
+				}),
 				refreshUrl: TEST_REFRESH_URL,
 				setRefreshedTokens: setRefreshedTokensMock,
-				transformRefreshResponse: (response) => {
-					return response;
-				},
+				transformRefreshResponse: (response) => response,
 			} as JwtRefreshConfiguration<TestRefreshRequest, TestRefreshResponse>,
 		});
 
@@ -589,17 +545,13 @@ describe('JwtRefreshInterceptor', () => {
 	it('should also try to refresh if the token was malformed', () => {
 		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
 			useValue: {
-				createRefreshRequestBody: () => {
-					return {
-						refreshToken: 'token',
-					};
-				},
+				createRefreshRequestBody: () => ({
+					refreshToken: 'token',
+				}),
 				refreshUrl: TEST_REFRESH_URL,
 				setRefreshedTokens: setRefreshedTokensMock,
 				errorCodeWhitelist: undefined,
-				transformRefreshResponse: (response) => {
-					return response;
-				},
+				transformRefreshResponse: (response) => response,
 			} as JwtRefreshConfiguration<TestRefreshRequest, TestRefreshResponse>,
 		});
 

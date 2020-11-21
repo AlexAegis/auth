@@ -9,13 +9,13 @@ import { checkAgainstHttpErrorFilter } from './check-against-http-error-filter.f
 import { doJwtRefresh } from './do-jwt-refresh.function';
 import { intoObservable } from './into-observable.function';
 
-export function tryJwtRefresh<Req, Res, Ret>(
+export const tryJwtRefresh = <Req, Res, Ret>(
 	next: HttpHandler,
 	originalError: string | HttpErrorResponse,
 	jwtRefreshConfiguration: JwtRefreshConfiguration<Req, Res>,
 	onError: (refreshError: unknown) => Observable<Ret>,
 	originalAction: (refreshResponse: JwtRefreshResponse) => Observable<Ret>
-): Observable<Ret> {
+): Observable<Ret> => {
 	const isRefreshAllowed =
 		typeof originalError === 'string' ||
 		checkAgainstHttpErrorFilter(jwtRefreshConfiguration, originalError);
@@ -36,5 +36,7 @@ export function tryJwtRefresh<Req, Res, Ret>(
 				}
 			})
 		);
-	} else return throwError(originalError);
-}
+	} else {
+		return throwError(originalError);
+	}
+};

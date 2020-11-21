@@ -1,6 +1,6 @@
 import { isFunction } from './function.predicate';
 
-export function callWhenFunction<T = unknown>(functionLike: (() => T) | T): T {
+export const callWhenFunction = <T = unknown>(functionLike: (() => T) | T): T => {
 	let result;
 	if (isFunction<T>(functionLike)) {
 		result = functionLike();
@@ -8,4 +8,4 @@ export function callWhenFunction<T = unknown>(functionLike: (() => T) | T): T {
 		result = functionLike;
 	}
 	return result;
-}
+};

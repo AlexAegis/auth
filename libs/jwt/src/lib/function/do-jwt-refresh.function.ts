@@ -8,13 +8,13 @@ import {
 import { callWhenFunction } from './call-when-function.function';
 import { isHttpResponse } from './http-response.predicate';
 
-export function doJwtRefresh<Req, Res, Ret>(
+export const doJwtRefresh = <Req, Res, Ret>(
 	next: HttpHandler,
 	requestBody: Req,
 	jwtRefreshConfiguration: JwtRefreshConfiguration<Req, Res>,
 	onError: (refreshError: unknown) => Observable<Ret>,
 	originalAction: (refreshResponse: JwtRefreshResponse) => Observable<Ret>
-): Observable<Ret> {
+): Observable<Ret> => {
 	const refreshRequest = new HttpRequest<Req>(
 		jwtRefreshConfiguration.method ?? 'POST',
 		jwtRefreshConfiguration.refreshUrl,
@@ -29,4 +29,4 @@ export function doJwtRefresh<Req, Res, Ret>(
 		mergeMap((refreshResponse) => originalAction(refreshResponse)),
 		catchError(onError)
 	);
-}
+};

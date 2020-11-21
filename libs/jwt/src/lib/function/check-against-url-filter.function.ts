@@ -7,10 +7,10 @@ import { SeparatedUrl } from './separate-url.function';
  * automatically pass. **Empty whitelist rulesets never pass.** Empty blacklist
  * rulesets always pass.
  */
-export function checkAgainstUrlFilter(
+export const checkAgainstUrlFilter = (
 	urlFilter: UrlFilter,
 	{ domain, path, protocol }: SeparatedUrl
-): boolean {
+): boolean => {
 	const protocolMatcher = matchAgainst(protocol);
 	const domainMatcher = matchAgainst(domain);
 	const pathMatcher = matchAgainst(path);
@@ -35,4 +35,4 @@ export function checkAgainstUrlFilter(
 		pathWhitelistRulesPass &&
 		pathBlacklistRulesPass
 	);
-}
+};

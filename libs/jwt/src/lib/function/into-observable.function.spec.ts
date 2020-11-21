@@ -78,18 +78,14 @@ describe('intoObservable', () => {
 	});
 
 	it('make an observable out of an async function', () => {
-		const fun = async function () {
-			return 1;
-		};
+		const fun = async () => 1;
 		intoObservable(fun)
 			.pipe(tap((next) => expect(next).toBe(1)))
 			.subscribe();
 	});
 
 	it('make an observable out of a function that returns an observable', () => {
-		const fun = () => {
-			return of(1);
-		};
+		const fun = () => of(1);
 		intoObservable(fun)
 			.pipe(tap((next) => expect(next).toBe(1)))
 			.subscribe();
