@@ -15,8 +15,8 @@ export declare class LoginGuard implements CanActivate, CanActivateChild, CanLoa
     private readonly jwtTokenService;
     private isAccessTokenValidOnce$;
     constructor(jwtTokenService: JwtTokenService);
-    private isValid;
     canActivate(route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree;
     canActivateChild(childRoute: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree;
     canLoad(route: Route, _segments: UrlSegment[]): Observable<boolean> | Promise<boolean> | boolean;
+    private isValid;
 }

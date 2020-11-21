@@ -3,7 +3,7 @@ import { switchMap, take } from 'rxjs/operators';
 import { checkAgainstHttpErrorFilter } from './check-against-http-error-filter.function';
 import { doJwtRefresh } from './do-jwt-refresh.function';
 import { intoObservable } from './into-observable.function';
-export function tryJwtRefresh(next, originalError, jwtRefreshConfiguration, onError, originalAction) {
+export const tryJwtRefresh = (next, originalError, jwtRefreshConfiguration, onError, originalAction) => {
     const isRefreshAllowed = typeof originalError === 'string' ||
         checkAgainstHttpErrorFilter(jwtRefreshConfiguration, originalError);
     if (isRefreshAllowed) {
@@ -16,7 +16,8 @@ export function tryJwtRefresh(next, originalError, jwtRefreshConfiguration, onEr
             }
         }));
     }
-    else
+    else {
         return throwError(originalError);
-}
+    }
+};
 //# sourceMappingURL=try-jwt-refresh.function.js.map

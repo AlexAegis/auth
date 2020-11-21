@@ -1,11 +1,14 @@
 import { isString } from './string.predicate';
 export const matchRule = (rule, against) => {
-    if (isString(rule))
+    if (isString(rule)) {
         return rule === against;
-    else if (against)
+    }
+    else if (against) {
         return rule.test(against);
-    else
+    }
+    else {
         return false;
+    }
 };
 /**
  *

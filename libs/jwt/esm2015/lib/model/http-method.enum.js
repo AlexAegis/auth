@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-shadow
 export var HttpMethod;
 (function (HttpMethod) {
     HttpMethod["GET"] = "GET";

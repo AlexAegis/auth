@@ -71,14 +71,14 @@
 					are not using that feature there&#39;s no need to define it.</p>
 					<p>Example configuration:</p>
 					<pre><code class="language-typescript">AuthCoreModule.forRoot&lt;TokenStorageService&gt;({
-        useFactory: <span class="hljs-function">(<span class="hljs-params">service: TokenStorageService</span>) =&gt;</span> ({
-            getToken: service.accessToken$
-            autoRefresher: {
-                endpoint: <span class="hljs-string">`<span class="hljs-subst">${environment.api}</span>/auth/refresh`</span>,
-                setToken: <span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> service.accessToken$.next(response.accessToken)
+        <span class="hljs-attr">useFactory</span>: <span class="hljs-function">(<span class="hljs-params">service: TokenStorageService</span>) =&gt;</span> ({
+            <span class="hljs-attr">getToken</span>: service.accessToken$
+            <span class="hljs-attr">autoRefresher</span>: {
+                <span class="hljs-attr">endpoint</span>: <span class="hljs-string">`<span class="hljs-subst">${environment.api}</span>/auth/refresh`</span>,
+                <span class="hljs-attr">setToken</span>: <span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> service.accessToken$.next(response.accessToken)
             }
         }),
-        deps: [TokenStorageService],
+        <span class="hljs-attr">deps</span>: [TokenStorageService],
 })</code></pre>
 				</div>
 			</section>
@@ -129,7 +129,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="normalizedheaderconfiguration.html">NormalizedHeaderConfiguration</a>.<a href="normalizedheaderconfiguration.html#domainblacklist">domainBlacklist</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/AlexAegis/auth/blob/c94dc06/libs/jwt/src/lib/model/header-configuration.interface.ts#L67">libs/jwt/src/lib/model/header-configuration.interface.ts:67</a></li>
+							<li>Defined in <a href="https://github.com/AlexAegis/auth/blob/12000d2/libs/jwt/src/lib/model/header-configuration.interface.ts#L67">libs/jwt/src/lib/model/header-configuration.interface.ts:67</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -160,7 +160,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="normalizedheaderconfiguration.html">NormalizedHeaderConfiguration</a>.<a href="normalizedheaderconfiguration.html#domainwhitelist">domainWhitelist</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/AlexAegis/auth/blob/c94dc06/libs/jwt/src/lib/model/header-configuration.interface.ts#L80">libs/jwt/src/lib/model/header-configuration.interface.ts:80</a></li>
+							<li>Defined in <a href="https://github.com/AlexAegis/auth/blob/12000d2/libs/jwt/src/lib/model/header-configuration.interface.ts#L80">libs/jwt/src/lib/model/header-configuration.interface.ts:80</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -189,7 +189,7 @@
 					<div class="tsd-signature tsd-kind-icon">get<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AlexAegis/auth/blob/c94dc06/libs/jwt/src/lib/model/header-configuration.interface.ts#L39">libs/jwt/src/lib/model/header-configuration.interface.ts:39</a></li>
+							<li>Defined in <a href="https://github.com/AlexAegis/auth/blob/12000d2/libs/jwt/src/lib/model/header-configuration.interface.ts#L39">libs/jwt/src/lib/model/header-configuration.interface.ts:39</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -213,7 +213,7 @@
 					<div class="tsd-signature tsd-kind-icon">header<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AlexAegis/auth/blob/c94dc06/libs/jwt/src/lib/model/header-configuration.interface.ts#L51">libs/jwt/src/lib/model/header-configuration.interface.ts:51</a></li>
+							<li>Defined in <a href="https://github.com/AlexAegis/auth/blob/12000d2/libs/jwt/src/lib/model/header-configuration.interface.ts#L51">libs/jwt/src/lib/model/header-configuration.interface.ts:51</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -229,7 +229,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="normalizedheaderconfiguration.html">NormalizedHeaderConfiguration</a>.<a href="normalizedheaderconfiguration.html#pathblacklist">pathBlacklist</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/AlexAegis/auth/blob/c94dc06/libs/jwt/src/lib/model/header-configuration.interface.ts#L94">libs/jwt/src/lib/model/header-configuration.interface.ts:94</a></li>
+							<li>Defined in <a href="https://github.com/AlexAegis/auth/blob/12000d2/libs/jwt/src/lib/model/header-configuration.interface.ts#L94">libs/jwt/src/lib/model/header-configuration.interface.ts:94</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -260,7 +260,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="normalizedheaderconfiguration.html">NormalizedHeaderConfiguration</a>.<a href="normalizedheaderconfiguration.html#pathwhitelist">pathWhitelist</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/AlexAegis/auth/blob/c94dc06/libs/jwt/src/lib/model/header-configuration.interface.ts#L107">libs/jwt/src/lib/model/header-configuration.interface.ts:107</a></li>
+							<li>Defined in <a href="https://github.com/AlexAegis/auth/blob/12000d2/libs/jwt/src/lib/model/header-configuration.interface.ts#L107">libs/jwt/src/lib/model/header-configuration.interface.ts:107</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -290,7 +290,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="normalizedheaderconfiguration.html">NormalizedHeaderConfiguration</a>.<a href="normalizedheaderconfiguration.html#protocolblacklist">protocolBlacklist</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/AlexAegis/auth/blob/c94dc06/libs/jwt/src/lib/model/header-configuration.interface.ts#L121">libs/jwt/src/lib/model/header-configuration.interface.ts:121</a></li>
+							<li>Defined in <a href="https://github.com/AlexAegis/auth/blob/12000d2/libs/jwt/src/lib/model/header-configuration.interface.ts#L121">libs/jwt/src/lib/model/header-configuration.interface.ts:121</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -321,7 +321,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="normalizedheaderconfiguration.html">NormalizedHeaderConfiguration</a>.<a href="normalizedheaderconfiguration.html#protocolwhitelist">protocolWhitelist</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/AlexAegis/auth/blob/c94dc06/libs/jwt/src/lib/model/header-configuration.interface.ts#L134">libs/jwt/src/lib/model/header-configuration.interface.ts:134</a></li>
+							<li>Defined in <a href="https://github.com/AlexAegis/auth/blob/12000d2/libs/jwt/src/lib/model/header-configuration.interface.ts#L134">libs/jwt/src/lib/model/header-configuration.interface.ts:134</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">

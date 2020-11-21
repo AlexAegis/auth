@@ -5,8 +5,8 @@ import { JwtCannotRefreshError, JwtCouldntRefreshError } from '../errors/jwt-err
 import { checkAgainstUrlFilter } from '../function/check-against-url-filter.function';
 import { intoObservable } from '../function/into-observable.function';
 import { matchAgainst } from '../function/match-against.function';
-import { tryJwtRefresh } from '../function/try-jwt-refresh.function';
 import { separateUrl } from '../function/separate-url.function';
+import { tryJwtRefresh } from '../function/try-jwt-refresh.function';
 import { JwtToken } from '../model/jwt-token.class';
 import { DEFAULT_JWT_CONFIGURATION_TOKEN, DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN, JWT_CONFIGURATION_TOKEN, JWT_REFRESH_CONFIGURATION_TOKEN, } from '../token/jwt-configuration.token';
 export class JwtRefreshInterceptor {
@@ -46,21 +46,21 @@ export class JwtRefreshInterceptor {
                     ? // If the token is used and is expired, don't even try the request.
                         throwError('Expired token, refresh first')
                     : // If it seems okay, try the request
-                        next.handle(request)).pipe(catchError((error) => {
-                    // If the request failed, or we failed at the precheck
-                    // Acquire a new token, but only if the error is allowing it
-                    return tryJwtRefresh(next, error, this.jwtRefreshConfiguration, (refreshError) => throwError(JwtCouldntRefreshError.createErrorResponse(request, refreshError)), (refreshResponse) => {
-                        const requestWithUpdatedTokens = request.clone({
-                            headers: request.headers.set(this.jwtConfiguration.header, this.jwtConfiguration.scheme +
-                                refreshResponse.accessToken),
-                        });
-                        return next.handle(requestWithUpdatedTokens);
+                        next.handle(request)).pipe(catchError((error) => 
+                // If the request failed, or we failed at the precheck
+                // Acquire a new token, but only if the error is allowing it
+                tryJwtRefresh(next, error, this.jwtRefreshConfiguration, (refreshError) => throwError(JwtCouldntRefreshError.createErrorResponse(request, refreshError)), (refreshResponse) => {
+                    const requestWithUpdatedTokens = request.clone({
+                        headers: request.headers.set(this.jwtConfiguration.header, this.jwtConfiguration.scheme +
+                            refreshResponse.accessToken),
                     });
-                }));
+                    return next.handle(requestWithUpdatedTokens);
+                })));
             }));
         }
-        else
+        else {
             return next.handle(request);
+        }
     }
 }
 JwtRefreshInterceptor.decorators = [

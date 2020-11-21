@@ -38,8 +38,9 @@ export class JwtInjectorInterceptor {
                     return throwError(JwtError.createErrorResponse(request, 'Token is expired or invalid, and refresh is not configured.'));
                 }
             }
-            else
+            else {
                 return next.handle(request);
+            }
         }));
     }
 }

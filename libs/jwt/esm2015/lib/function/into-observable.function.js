@@ -6,19 +6,22 @@ import { isPromise } from './promise.predicate';
  * Returns a cold observable from a function, or returns an observable if
  * one is directly passed to it
  */
-export function intoObservable(getValue) {
+export const intoObservable = (getValue) => {
     if (isObservable(getValue)) {
         return getValue;
     }
     else if (isFunction(getValue)) {
         return of(null).pipe(switchMap(() => {
             const result = getValue();
-            if (isObservable(result))
+            if (isObservable(result)) {
                 return result;
-            if (isPromise(result))
+            }
+            if (isPromise(result)) {
                 return from(result);
-            else
+            }
+            else {
                 return of(result);
+            }
         }));
     }
     else if (isPromise(getValue)) {
@@ -27,5 +30,5 @@ export function intoObservable(getValue) {
     else {
         return of(getValue);
     }
-}
+};
 //# sourceMappingURL=into-observable.function.js.map

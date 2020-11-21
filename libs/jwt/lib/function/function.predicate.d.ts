@@ -1,1 +1,1 @@
-export declare function isFunction<Return>(funlike: unknown): funlike is () => Return;
+export declare const isFunction: <Return>(funlike: unknown) => funlike is () => Return;

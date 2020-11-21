@@ -5,7 +5,7 @@ import { isString } from '../function/string.predicate';
  *
  * @internal
  */
-export function handleJwtFailure(errorCallbackOrRedirect, error, router, redirectParameters) {
+export const handleJwtFailure = (errorCallbackOrRedirect, error, router, redirectParameters) => {
     if (isString(errorCallbackOrRedirect)) {
         if (router) {
             let queryParams = redirectParameters;
@@ -27,5 +27,5 @@ export function handleJwtFailure(errorCallbackOrRedirect, error, router, redirec
     else {
         errorCallbackOrRedirect(error);
     }
-}
+};
 //# sourceMappingURL=handle-jwt-failure.function.js.map

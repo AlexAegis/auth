@@ -1,1 +1,1 @@
-export declare function isString(stringLike: unknown): stringLike is string;
+export declare const isString: (stringLike: unknown) => stringLike is string;

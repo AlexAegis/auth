@@ -5,4 +5,4 @@ import { SeparatedUrl } from './separate-url.function';
  * automatically pass. **Empty whitelist rulesets never pass.** Empty blacklist
  * rulesets always pass.
  */
-export declare function checkAgainstUrlFilter(urlFilter: UrlFilter, { domain, path, protocol }: SeparatedUrl): boolean;
+export declare const checkAgainstUrlFilter: (urlFilter: UrlFilter, { domain, path, protocol }: SeparatedUrl) => boolean;

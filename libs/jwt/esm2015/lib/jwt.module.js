@@ -5,23 +5,9 @@ import { JwtErrorHandlingInterceptor } from './interceptor/jwt-error-handling.in
 import { JwtInjectorInterceptor } from './interceptor/jwt-injector.interceptor';
 import { JwtRefreshInterceptor } from './interceptor/jwt-refresh.interceptor';
 import { DEFAULT_JWT_CONFIG, DEFAULT_JWT_REFRESH_CONFIG, } from './model/auth-core-configuration.interface';
-import { DEFAULT_JWT_CONFIGURATION_TOKEN, DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN, JWT_CONFIGURATION_TOKEN, JWT_REFRESH_CONFIGURATION_TOKEN, } from './token/jwt-configuration.token';
-/**
- * Helps you define a JwtConfigurationProvider
- *
- * @internal
- */
-export function createJwtConfigurationProvider(tokenConfigurationProvider) {
-    return Object.assign({ provide: JWT_CONFIGURATION_TOKEN, multi: false }, tokenConfigurationProvider);
-}
-/**
- * Helps you define a JwtConfigurationProvider
- *
- * @internal
- */
-export function createJwtRefreshConfigurationProvider(tokenRefreshConfigurationProvider) {
-    return Object.assign({ provide: JWT_REFRESH_CONFIGURATION_TOKEN, multi: false }, tokenRefreshConfigurationProvider);
-}
+import { createJwtConfigurationProvider } from './providers/create-jwt-configuration-provider.function';
+import { createJwtRefreshConfigurationProvider } from './providers/create-jwt-refresh-configuration-provider.function';
+import { DEFAULT_JWT_CONFIGURATION_TOKEN, DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN, } from './token/jwt-configuration.token';
 /**
  * This module needs to be configured to use. See the
  * {@link JwtModule#forRoot | forRoot} method for more information.

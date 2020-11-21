@@ -3,9 +3,7 @@
  * Using `instanceof` would not be sufficient as Promises can be contructed
  * in many ways, and it's just a specification.
  */
-export function isPromise(promiseLike) {
-    return (promiseLike &&
-        typeof promiseLike.then === 'function' &&
-        typeof promiseLike.catch === 'function');
-}
+export const isPromise = (promiseLike) => promiseLike &&
+    typeof promiseLike.then === 'function' &&
+    typeof promiseLike.catch === 'function';
 //# sourceMappingURL=promise.predicate.js.map

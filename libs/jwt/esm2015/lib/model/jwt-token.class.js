@@ -9,13 +9,15 @@ export class JwtToken {
     }
     static from(token) {
         const convertedSegments = JwtToken.splitTokenString(token);
-        if (!convertedSegments)
+        if (!convertedSegments) {
             return null;
+        }
         const header = decodeJsonLikeBase64(convertedSegments[0]);
         const payload = decodeJsonLikeBase64(convertedSegments[1]);
         const signature = Base64.decode(convertedSegments[2]); // Not used, only for validation
-        if (!header || !payload || !signature)
+        if (!header || !payload || !signature) {
             return null;
+        }
         return new JwtToken(header, payload, signature);
     }
     static stripScheme(jwtHeaderValue, scheme) {

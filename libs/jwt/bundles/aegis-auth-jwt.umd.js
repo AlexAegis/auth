@@ -9,10 +9,10 @@
      * @param unixTimestamp seconds from the unix epoch 1970-01-01T00:00:00Z
      * if not supplied it will always be expired
      */
-    function isUnixTimestampExpired(unixTimestamp) {
+    var isUnixTimestampExpired = function (unixTimestamp) {
         if (unixTimestamp === void 0) { unixTimestamp = -Infinity; }
         return unixTimestamp < Math.floor(new Date().getTime() / 1000);
-    }
+    };
 
     var DEFAULT_HEADER_CONFIG = {
         getValue: new rxjs.BehaviorSubject(null),
@@ -400,13 +400,7 @@
     }(JwtError));
     JwtCouldntRefreshError.type = 'JWT_COULDNT_REFRESH_ERROR';
 
-    function isNotNullish(t) {
-        return t !== undefined && t !== null;
-    }
-
-    function isString(stringLike) {
-        return typeof stringLike === 'string';
-    }
+    var isString = function (stringLike) { return typeof stringLike === 'string'; };
 
     /**
      * Jwt failures are handled by either calling a callback or if its a string,
@@ -414,7 +408,7 @@
      *
      * @internal
      */
-    function handleJwtFailure(errorCallbackOrRedirect, error, router, redirectParameters) {
+    var handleJwtFailure = function (errorCallbackOrRedirect, error, router, redirectParameters) {
         if (isString(errorCallbackOrRedirect)) {
             if (router) {
                 var queryParams = redirectParameters;
@@ -436,9 +430,11 @@
         else {
             errorCallbackOrRedirect(error);
         }
-    }
+    };
 
-    function handleJwtError(wrappedError, jwtConfiguration, jwtRefreshConfiguration, router) {
+    var isNotNullish = function (t) { return t !== undefined && t !== null; };
+
+    var handleJwtError = function (wrappedError, jwtConfiguration, jwtRefreshConfiguration, router) {
         var _a;
         var error = (_a = wrappedError.error) === null || _a === void 0 ? void 0 : _a.error;
         if (error instanceof JwtCannotRefreshError || error instanceof JwtCouldntRefreshError) {
@@ -458,40 +454,39 @@
             // Other errors are left untreated
             return rxjs.throwError(wrappedError);
         }
-    }
+    };
 
-    function isFunction(funlike) {
-        return typeof funlike === 'function';
-    }
+    var isFunction = function (funlike) { return typeof funlike === 'function'; };
 
     /**
      * Returns true if the object is truthy and has a `then` and a `catch` function.
      * Using `instanceof` would not be sufficient as Promises can be contructed
      * in many ways, and it's just a specification.
      */
-    function isPromise(promiseLike) {
-        return (promiseLike &&
-            typeof promiseLike.then === 'function' &&
-            typeof promiseLike.catch === 'function');
-    }
+    var isPromise = function (promiseLike) { return promiseLike &&
+        typeof promiseLike.then === 'function' &&
+        typeof promiseLike.catch === 'function'; };
 
     /**
      * Returns a cold observable from a function, or returns an observable if
      * one is directly passed to it
      */
-    function intoObservable(getValue) {
+    var intoObservable = function (getValue) {
         if (rxjs.isObservable(getValue)) {
             return getValue;
         }
         else if (isFunction(getValue)) {
             return rxjs.of(null).pipe(operators.switchMap(function () {
                 var result = getValue();
-                if (rxjs.isObservable(result))
+                if (rxjs.isObservable(result)) {
                     return result;
-                if (isPromise(result))
+                }
+                if (isPromise(result)) {
                     return rxjs.from(result);
-                else
+                }
+                else {
                     return rxjs.of(result);
+                }
             }));
         }
         else if (isPromise(getValue)) {
@@ -500,7 +495,7 @@
         else {
             return rxjs.of(getValue);
         }
-    }
+    };
 
     /**
      * It returns an observable which emits instantly a boolean describing if the
@@ -528,24 +523,22 @@
      * @param unixTimestamp seconds from the unix epoch 1970-01-01T00:00:00Z
      * if not supplied it will always be expired
      */
-    var isUnixTimestampExpiredNowAndWhenItIs = function (unixTimestamp) {
-        return isTimestampExpiredNowAndWhenItIs(Math.floor(unixTimestamp * 1000));
-    };
+    var isUnixTimestampExpiredNowAndWhenItIs = function (unixTimestamp) { return isTimestampExpiredNowAndWhenItIs(Math.floor(unixTimestamp * 1000)); };
 
     /**
      * Matches the filter against an error response. Non-existend rulesets
      * automatically pass. **Empty whitelist rulesets never pass.** Empty blacklist
      * rulesets always pass.
      */
-    function checkAgainstHttpErrorFilter(httpErrorFilter, error) {
+    var checkAgainstHttpErrorFilter = function (httpErrorFilter, error) {
         var _a, _b, _c;
         var statusMatcher = function (code) { return code === error.status; };
         var errorCodeWhitelistRulesPass = (_b = (_a = httpErrorFilter.errorCodeWhitelist) === null || _a === void 0 ? void 0 : _a.some(statusMatcher)) !== null && _b !== void 0 ? _b : true;
         var errorCodeBlacklistRulesPass = !((_c = httpErrorFilter.errorCodeBlacklist) === null || _c === void 0 ? void 0 : _c.some(statusMatcher));
         return errorCodeWhitelistRulesPass && errorCodeBlacklistRulesPass;
-    }
+    };
 
-    function callWhenFunction(functionLike) {
+    var callWhenFunction = function (functionLike) {
         var result;
         if (isFunction(functionLike)) {
             result = functionLike();
@@ -554,19 +547,17 @@
             result = functionLike;
         }
         return result;
-    }
+    };
 
-    function isHttpResponse(httpEvent) {
-        return httpEvent.type === i1.HttpEventType.Response;
-    }
+    var isHttpResponse = function (httpEvent) { return httpEvent.type === i1.HttpEventType.Response; };
 
-    function doJwtRefresh(next, requestBody, jwtRefreshConfiguration, onError, originalAction) {
+    var doJwtRefresh = function (next, requestBody, jwtRefreshConfiguration, onError, originalAction) {
         var _a;
         var refreshRequest = new i1.HttpRequest((_a = jwtRefreshConfiguration.method) !== null && _a !== void 0 ? _a : 'POST', jwtRefreshConfiguration.refreshUrl, requestBody, callWhenFunction(jwtRefreshConfiguration.refreshRequestInitials));
         return next.handle(refreshRequest).pipe(operators.filter(isHttpResponse), operators.map(function (response) { return jwtRefreshConfiguration.transformRefreshResponse(response.body); }), operators.tap(function (refreshResponse) { return jwtRefreshConfiguration.setRefreshedTokens(refreshResponse); }), operators.mergeMap(function (refreshResponse) { return originalAction(refreshResponse); }), operators.catchError(onError));
-    }
+    };
 
-    function tryJwtRefresh(next, originalError, jwtRefreshConfiguration, onError, originalAction) {
+    var tryJwtRefresh = function (next, originalError, jwtRefreshConfiguration, onError, originalAction) {
         var isRefreshAllowed = typeof originalError === 'string' ||
             checkAgainstHttpErrorFilter(jwtRefreshConfiguration, originalError);
         if (isRefreshAllowed) {
@@ -579,9 +570,10 @@
                 }
             }));
         }
-        else
+        else {
             return rxjs.throwError(originalError);
-    }
+        }
+    };
 
     /**
      *
@@ -605,13 +597,15 @@
         }
         JwtToken.from = function (token) {
             var convertedSegments = JwtToken.splitTokenString(token);
-            if (!convertedSegments)
+            if (!convertedSegments) {
                 return null;
+            }
             var header = decodeJsonLikeBase64(convertedSegments[0]);
             var payload = decodeJsonLikeBase64(convertedSegments[1]);
             var signature = jsBase64.Base64.decode(convertedSegments[2]); // Not used, only for validation
-            if (!header || !payload || !signature)
+            if (!header || !payload || !signature) {
                 return null;
+            }
             return new JwtToken(header, payload, signature);
         };
         JwtToken.stripScheme = function (jwtHeaderValue, scheme) {
@@ -658,24 +652,30 @@
             this.accessToken$ = this.rawAccessToken$.pipe(operators.map(function (token) {
                 if (isString(token)) {
                     var jwtToken = JwtToken.from(token);
-                    if (!jwtToken)
+                    if (!jwtToken) {
                         throw new Error('Non-valid token observed');
-                    else
+                    }
+                    else {
                         return jwtToken;
+                    }
                 }
-                else
+                else {
                     return null;
+                }
             }));
             this.refreshToken$ = this.rawRefreshToken$.pipe(operators.map(function (refreshToken) {
                 if (isString(refreshToken)) {
                     var jwtToken = JwtToken.from(refreshToken);
-                    if (!jwtToken)
+                    if (!jwtToken) {
                         throw new Error('Non-valid token observed');
-                    else
+                    }
+                    else {
                         return jwtToken;
+                    }
                 }
-                else
+                else {
                     return null;
+                }
             }));
             this.accessTokenHeader$ = this.accessToken$.pipe(operators.map(function (token) { var _a; return (_a = token === null || token === void 0 ? void 0 : token.header) !== null && _a !== void 0 ? _a : null; }));
             this.accessTokenPayload$ = this.accessToken$.pipe(operators.map(function (token) { var _a; return (_a = token === null || token === void 0 ? void 0 : token.payload) !== null && _a !== void 0 ? _a : null; }));
@@ -720,6 +720,18 @@
             this.jwtTokenService = jwtTokenService;
             this.isAccessTokenValidOnce$ = this.jwtTokenService.isAccessTokenValid$.pipe(operators.take(1));
         }
+        LoginGuard.prototype.canActivate = function (route, _state) {
+            var data = route.data;
+            return this.isValid(data === null || data === void 0 ? void 0 : data.isRefreshAllowed);
+        };
+        LoginGuard.prototype.canActivateChild = function (childRoute, _state) {
+            var data = childRoute.data;
+            return this.isValid(data === null || data === void 0 ? void 0 : data.isRefreshAllowed);
+        };
+        LoginGuard.prototype.canLoad = function (route, _segments) {
+            var data = route.data;
+            return this.isValid(data === null || data === void 0 ? void 0 : data.isRefreshAllowed);
+        };
         LoginGuard.prototype.isValid = function (isRefreshAllowed) {
             var _this = this;
             var _a, _b;
@@ -732,18 +744,6 @@
                     return rxjs.of(isValid);
                 }
             }));
-        };
-        LoginGuard.prototype.canActivate = function (route, _state) {
-            var data = route.data;
-            return this.isValid(data === null || data === void 0 ? void 0 : data.isRefreshAllowed);
-        };
-        LoginGuard.prototype.canActivateChild = function (childRoute, _state) {
-            var data = childRoute.data;
-            return this.isValid(data === null || data === void 0 ? void 0 : data.isRefreshAllowed);
-        };
-        LoginGuard.prototype.canLoad = function (route, _segments) {
-            var data = route.data;
-            return this.isValid(data === null || data === void 0 ? void 0 : data.isRefreshAllowed);
         };
         return LoginGuard;
     }());
@@ -789,12 +789,15 @@
     ]; };
 
     var matchRule = function (rule, against) {
-        if (isString(rule))
+        if (isString(rule)) {
             return rule === against;
-        else if (against)
+        }
+        else if (against) {
             return rule.test(against);
-        else
+        }
+        else {
             return false;
+        }
     };
     /**
      *
@@ -810,7 +813,7 @@
      * automatically pass. **Empty whitelist rulesets never pass.** Empty blacklist
      * rulesets always pass.
      */
-    function checkAgainstUrlFilter(urlFilter, _k) {
+    var checkAgainstUrlFilter = function (urlFilter, _k) {
         var domain = _k.domain, path = _k.path, protocol = _k.protocol;
         var _a, _b, _c, _d, _e, _f, _g, _h, _j;
         var protocolMatcher = matchAgainst(protocol);
@@ -828,21 +831,21 @@
             domainBlacklistRulesPass &&
             pathWhitelistRulesPass &&
             pathBlacklistRulesPass);
-    }
+    };
 
     /**
      * Returns the url split into parts, without the separators.
      * Separator between protocol and domain is `://`, and between domain
      * and path is `/`.
      */
-    function separateUrl(url) {
+    var separateUrl = function (url) {
         var urlMatch = url === null || url === void 0 ? void 0 : url.match(/^((.*):\/\/)?([^/].*?)?(\/(.*))?$/);
         return {
             protocol: urlMatch === null || urlMatch === void 0 ? void 0 : urlMatch[2],
             domain: urlMatch === null || urlMatch === void 0 ? void 0 : urlMatch[3],
             path: urlMatch === null || urlMatch === void 0 ? void 0 : urlMatch[5],
         };
-    }
+    };
 
     var JwtInjectorInterceptor = /** @class */ (function () {
         function JwtInjectorInterceptor(jwtConfig, defaultJwtConfig, refreshConfig, defaultJwtRefreshConfig) {
@@ -876,8 +879,9 @@
                         return rxjs.throwError(JwtError.createErrorResponse(request, 'Token is expired or invalid, and refresh is not configured.'));
                     }
                 }
-                else
+                else {
                     return next.handle(request);
+                }
             }));
         };
         return JwtInjectorInterceptor;
@@ -943,8 +947,9 @@
                     }));
                 }));
             }
-            else
+            else {
                 return next.handle(request);
+            }
         };
         return JwtRefreshInterceptor;
     }());
@@ -963,17 +968,15 @@
      *
      * @internal
      */
-    function createJwtConfigurationProvider(tokenConfigurationProvider) {
-        return Object.assign({ provide: JWT_CONFIGURATION_TOKEN, multi: false }, tokenConfigurationProvider);
-    }
+    var createJwtConfigurationProvider = function (tokenConfigurationProvider) { return (Object.assign({ provide: JWT_CONFIGURATION_TOKEN, multi: false }, tokenConfigurationProvider)); };
+
     /**
      * Helps you define a JwtConfigurationProvider
      *
      * @internal
      */
-    function createJwtRefreshConfigurationProvider(tokenRefreshConfigurationProvider) {
-        return Object.assign({ provide: JWT_REFRESH_CONFIGURATION_TOKEN, multi: false }, tokenRefreshConfigurationProvider);
-    }
+    var createJwtRefreshConfigurationProvider = function (tokenRefreshConfigurationProvider) { return (Object.assign({ provide: JWT_REFRESH_CONFIGURATION_TOKEN, multi: false }, tokenRefreshConfigurationProvider)); };
+
     /**
      * This module needs to be configured to use. See the
      * {@link JwtModule#forRoot | forRoot} method for more information.
@@ -1027,6 +1030,7 @@
                 },] }
     ];
 
+    // eslint-disable-next-line no-shadow
     (function (HttpMethod) {
         HttpMethod["GET"] = "GET";
         HttpMethod["HEAD"] = "HEAD";

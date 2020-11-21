@@ -1,1 +1,1 @@
-export declare function callWhenFunction<T = unknown>(functionLike: (() => T) | T): T;
+export declare const callWhenFunction: <T = unknown>(functionLike: T | (() => T)) => T;

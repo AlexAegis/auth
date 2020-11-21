@@ -1,17 +1,5 @@
 import { ModuleWithProviders } from '@angular/core';
-import { JwtConfigurationProvider, JwtModuleConfigurationProvider, JwtModuleRefreshConfigurationProvider, JwtRefreshConfigurationProvider } from './token/jwt-configuration.token';
-/**
- * Helps you define a JwtConfigurationProvider
- *
- * @internal
- */
-export declare function createJwtConfigurationProvider(tokenConfigurationProvider: JwtModuleConfigurationProvider): JwtConfigurationProvider;
-/**
- * Helps you define a JwtConfigurationProvider
- *
- * @internal
- */
-export declare function createJwtRefreshConfigurationProvider<RefreshRequest, RefreshResponse>(tokenRefreshConfigurationProvider: JwtModuleRefreshConfigurationProvider<RefreshRequest, RefreshResponse>): JwtRefreshConfigurationProvider<RefreshRequest, RefreshResponse>;
+import { JwtModuleConfigurationProvider, JwtModuleRefreshConfigurationProvider } from './token/jwt-configuration.token';
 /**
  * This module needs to be configured to use. See the
  * {@link JwtModule#forRoot | forRoot} method for more information.

@@ -5,4 +5,4 @@ import { HttpErrorFilter } from '../model/auth-core-configuration.interface';
  * automatically pass. **Empty whitelist rulesets never pass.** Empty blacklist
  * rulesets always pass.
  */
-export declare function checkAgainstHttpErrorFilter(httpErrorFilter: HttpErrorFilter, error: HttpErrorResponse): boolean;
+export declare const checkAgainstHttpErrorFilter: (httpErrorFilter: HttpErrorFilter, error: HttpErrorResponse) => boolean;

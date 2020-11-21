@@ -37,24 +37,30 @@ export class JwtTokenService {
         this.accessToken$ = this.rawAccessToken$.pipe(map((token) => {
             if (isString(token)) {
                 const jwtToken = JwtToken.from(token);
-                if (!jwtToken)
+                if (!jwtToken) {
                     throw new Error('Non-valid token observed');
-                else
+                }
+                else {
                     return jwtToken;
+                }
             }
-            else
+            else {
                 return null;
+            }
         }));
         this.refreshToken$ = this.rawRefreshToken$.pipe(map((refreshToken) => {
             if (isString(refreshToken)) {
                 const jwtToken = JwtToken.from(refreshToken);
-                if (!jwtToken)
+                if (!jwtToken) {
                     throw new Error('Non-valid token observed');
-                else
+                }
+                else {
                     return jwtToken;
+                }
             }
-            else
+            else {
                 return null;
+            }
         }));
         this.accessTokenHeader$ = this.accessToken$.pipe(map((token) => { var _a; return (_a = token === null || token === void 0 ? void 0 : token.header) !== null && _a !== void 0 ? _a : null; }));
         this.accessTokenPayload$ = this.accessToken$.pipe(map((token) => { var _a; return (_a = token === null || token === void 0 ? void 0 : token.payload) !== null && _a !== void 0 ? _a : null; }));

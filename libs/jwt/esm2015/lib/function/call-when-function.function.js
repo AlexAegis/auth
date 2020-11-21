@@ -1,5 +1,5 @@
 import { isFunction } from './function.predicate';
-export function callWhenFunction(functionLike) {
+export const callWhenFunction = (functionLike) => {
     let result;
     if (isFunction(functionLike)) {
         result = functionLike();
@@ -8,5 +8,5 @@ export function callWhenFunction(functionLike) {
         result = functionLike;
     }
     return result;
-}
+};
 //# sourceMappingURL=call-when-function.function.js.map

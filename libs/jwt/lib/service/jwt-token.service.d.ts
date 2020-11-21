@@ -10,7 +10,6 @@ export declare class JwtTokenService<Claims = Record<string | number, unknown>, 
     private readonly rawDefaultRefreshConfig?;
     private readonly rawRefreshConfig?;
     private readonly router?;
-    constructor(httpHandler: HttpHandler, rawConfig: JwtConfiguration, rawDefaultConfig: JwtConfiguration, rawDefaultRefreshConfig?: JwtRefreshConfiguration<RefreshRequest, RefreshResponse> | undefined, rawRefreshConfig?: JwtRefreshConfiguration<RefreshRequest, RefreshResponse> | undefined, router?: Router | undefined);
     readonly config: JwtConfiguration;
     readonly refreshConfig?: JwtRefreshConfiguration<RefreshRequest, RefreshResponse>;
     /**
@@ -28,6 +27,7 @@ export declare class JwtTokenService<Claims = Record<string | number, unknown>, 
     readonly isRefreshTokenExpired$: Observable<boolean | null>;
     readonly isAccessTokenValid$: Observable<boolean>;
     readonly isRefreshTokenValid$: Observable<boolean>;
+    constructor(httpHandler: HttpHandler, rawConfig: JwtConfiguration, rawDefaultConfig: JwtConfiguration, rawDefaultRefreshConfig?: JwtRefreshConfiguration<RefreshRequest, RefreshResponse> | undefined, rawRefreshConfig?: JwtRefreshConfiguration<RefreshRequest, RefreshResponse> | undefined, router?: Router | undefined);
     /**
      * Does a token refresh. Emits false if it failed, or true if succeeded.
      */

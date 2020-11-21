@@ -1,1 +1,1 @@
-{"version":3,"file":"index.js","sourceRoot":"/home/runner/work/auth/auth/libs/ngrx/src/","sources":["index.ts"],"names":[],"mappings":"AAAA,cAAc,mBAAmB,CAAC","sourcesContent":["export * from './lib/ngrx.module';\n"]}
+{"version":3,"file":"index.js","sourceRoot":"../../../../libs/ngrx/src/","sources":["index.ts"],"names":[],"mappings":"AAAA,cAAc,mBAAmB,CAAC","sourcesContent":["export * from './lib/ngrx.module';\n"]}

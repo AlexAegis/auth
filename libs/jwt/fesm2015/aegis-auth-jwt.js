@@ -11,9 +11,7 @@ import { CommonModule } from '@angular/common';
  * @param unixTimestamp seconds from the unix epoch 1970-01-01T00:00:00Z
  * if not supplied it will always be expired
  */
-function isUnixTimestampExpired(unixTimestamp = -Infinity) {
-    return unixTimestamp < Math.floor(new Date().getTime() / 1000);
-}
+const isUnixTimestampExpired = (unixTimestamp = -Infinity) => unixTimestamp < Math.floor(new Date().getTime() / 1000);
 
 const DEFAULT_HEADER_CONFIG = {
     getValue: new BehaviorSubject(null),
@@ -90,13 +88,7 @@ class JwtCouldntRefreshError extends JwtError {
 }
 JwtCouldntRefreshError.type = 'JWT_COULDNT_REFRESH_ERROR';
 
-function isNotNullish(t) {
-    return t !== undefined && t !== null;
-}
-
-function isString(stringLike) {
-    return typeof stringLike === 'string';
-}
+const isString = (stringLike) => typeof stringLike === 'string';
 
 /**
  * Jwt failures are handled by either calling a callback or if its a string,
@@ -104,7 +96,7 @@ function isString(stringLike) {
  *
  * @internal
  */
-function handleJwtFailure(errorCallbackOrRedirect, error, router, redirectParameters) {
+const handleJwtFailure = (errorCallbackOrRedirect, error, router, redirectParameters) => {
     if (isString(errorCallbackOrRedirect)) {
         if (router) {
             let queryParams = redirectParameters;
@@ -126,9 +118,11 @@ function handleJwtFailure(errorCallbackOrRedirect, error, router, redirectParame
     else {
         errorCallbackOrRedirect(error);
     }
-}
+};
 
-function handleJwtError(wrappedError, jwtConfiguration, jwtRefreshConfiguration, router) {
+const isNotNullish = (t) => t !== undefined && t !== null;
+
+const handleJwtError = (wrappedError, jwtConfiguration, jwtRefreshConfiguration, router) => {
     var _a;
     const error = (_a = wrappedError.error) === null || _a === void 0 ? void 0 : _a.error;
     if (error instanceof JwtCannotRefreshError || error instanceof JwtCouldntRefreshError) {
@@ -148,40 +142,39 @@ function handleJwtError(wrappedError, jwtConfiguration, jwtRefreshConfiguration,
         // Other errors are left untreated
         return throwError(wrappedError);
     }
-}
+};
 
-function isFunction(funlike) {
-    return typeof funlike === 'function';
-}
+const isFunction = (funlike) => typeof funlike === 'function';
 
 /**
  * Returns true if the object is truthy and has a `then` and a `catch` function.
  * Using `instanceof` would not be sufficient as Promises can be contructed
  * in many ways, and it's just a specification.
  */
-function isPromise(promiseLike) {
-    return (promiseLike &&
-        typeof promiseLike.then === 'function' &&
-        typeof promiseLike.catch === 'function');
-}
+const isPromise = (promiseLike) => promiseLike &&
+    typeof promiseLike.then === 'function' &&
+    typeof promiseLike.catch === 'function';
 
 /**
  * Returns a cold observable from a function, or returns an observable if
  * one is directly passed to it
  */
-function intoObservable(getValue) {
+const intoObservable = (getValue) => {
     if (isObservable(getValue)) {
         return getValue;
     }
     else if (isFunction(getValue)) {
         return of(null).pipe(switchMap(() => {
             const result = getValue();
-            if (isObservable(result))
+            if (isObservable(result)) {
                 return result;
-            if (isPromise(result))
+            }
+            if (isPromise(result)) {
                 return from(result);
-            else
+            }
+            else {
                 return of(result);
+            }
         }));
     }
     else if (isPromise(getValue)) {
@@ -190,7 +183,7 @@ function intoObservable(getValue) {
     else {
         return of(getValue);
     }
-}
+};
 
 /**
  * It returns an observable which emits instantly a boolean describing if the
@@ -218,24 +211,22 @@ const isTimestampExpiredNowAndWhenItIs = (timestamp) => {
  * @param unixTimestamp seconds from the unix epoch 1970-01-01T00:00:00Z
  * if not supplied it will always be expired
  */
-const isUnixTimestampExpiredNowAndWhenItIs = (unixTimestamp) => {
-    return isTimestampExpiredNowAndWhenItIs(Math.floor(unixTimestamp * 1000));
-};
+const isUnixTimestampExpiredNowAndWhenItIs = (unixTimestamp) => isTimestampExpiredNowAndWhenItIs(Math.floor(unixTimestamp * 1000));
 
 /**
  * Matches the filter against an error response. Non-existend rulesets
  * automatically pass. **Empty whitelist rulesets never pass.** Empty blacklist
  * rulesets always pass.
  */
-function checkAgainstHttpErrorFilter(httpErrorFilter, error) {
+const checkAgainstHttpErrorFilter = (httpErrorFilter, error) => {
     var _a, _b, _c;
     const statusMatcher = (code) => code === error.status;
     const errorCodeWhitelistRulesPass = (_b = (_a = httpErrorFilter.errorCodeWhitelist) === null || _a === void 0 ? void 0 : _a.some(statusMatcher)) !== null && _b !== void 0 ? _b : true;
     const errorCodeBlacklistRulesPass = !((_c = httpErrorFilter.errorCodeBlacklist) === null || _c === void 0 ? void 0 : _c.some(statusMatcher));
     return errorCodeWhitelistRulesPass && errorCodeBlacklistRulesPass;
-}
+};
 
-function callWhenFunction(functionLike) {
+const callWhenFunction = (functionLike) => {
     let result;
     if (isFunction(functionLike)) {
         result = functionLike();
@@ -244,19 +235,17 @@ function callWhenFunction(functionLike) {
         result = functionLike;
     }
     return result;
-}
+};
 
-function isHttpResponse(httpEvent) {
-    return httpEvent.type === HttpEventType.Response;
-}
+const isHttpResponse = (httpEvent) => httpEvent.type === HttpEventType.Response;
 
-function doJwtRefresh(next, requestBody, jwtRefreshConfiguration, onError, originalAction) {
+const doJwtRefresh = (next, requestBody, jwtRefreshConfiguration, onError, originalAction) => {
     var _a;
     const refreshRequest = new HttpRequest((_a = jwtRefreshConfiguration.method) !== null && _a !== void 0 ? _a : 'POST', jwtRefreshConfiguration.refreshUrl, requestBody, callWhenFunction(jwtRefreshConfiguration.refreshRequestInitials));
     return next.handle(refreshRequest).pipe(filter(isHttpResponse), map((response) => jwtRefreshConfiguration.transformRefreshResponse(response.body)), tap((refreshResponse) => jwtRefreshConfiguration.setRefreshedTokens(refreshResponse)), mergeMap((refreshResponse) => originalAction(refreshResponse)), catchError(onError));
-}
+};
 
-function tryJwtRefresh(next, originalError, jwtRefreshConfiguration, onError, originalAction) {
+const tryJwtRefresh = (next, originalError, jwtRefreshConfiguration, onError, originalAction) => {
     const isRefreshAllowed = typeof originalError === 'string' ||
         checkAgainstHttpErrorFilter(jwtRefreshConfiguration, originalError);
     if (isRefreshAllowed) {
@@ -269,9 +258,10 @@ function tryJwtRefresh(next, originalError, jwtRefreshConfiguration, onError, or
             }
         }));
     }
-    else
+    else {
         return throwError(originalError);
-}
+    }
+};
 
 /**
  *
@@ -295,13 +285,15 @@ class JwtToken {
     }
     static from(token) {
         const convertedSegments = JwtToken.splitTokenString(token);
-        if (!convertedSegments)
+        if (!convertedSegments) {
             return null;
+        }
         const header = decodeJsonLikeBase64(convertedSegments[0]);
         const payload = decodeJsonLikeBase64(convertedSegments[1]);
         const signature = Base64.decode(convertedSegments[2]); // Not used, only for validation
-        if (!header || !payload || !signature)
+        if (!header || !payload || !signature) {
             return null;
+        }
         return new JwtToken(header, payload, signature);
     }
     static stripScheme(jwtHeaderValue, scheme) {
@@ -346,24 +338,30 @@ class JwtTokenService {
         this.accessToken$ = this.rawAccessToken$.pipe(map((token) => {
             if (isString(token)) {
                 const jwtToken = JwtToken.from(token);
-                if (!jwtToken)
+                if (!jwtToken) {
                     throw new Error('Non-valid token observed');
-                else
+                }
+                else {
                     return jwtToken;
+                }
             }
-            else
+            else {
                 return null;
+            }
         }));
         this.refreshToken$ = this.rawRefreshToken$.pipe(map((refreshToken) => {
             if (isString(refreshToken)) {
                 const jwtToken = JwtToken.from(refreshToken);
-                if (!jwtToken)
+                if (!jwtToken) {
                     throw new Error('Non-valid token observed');
-                else
+                }
+                else {
                     return jwtToken;
+                }
             }
-            else
+            else {
                 return null;
+            }
         }));
         this.accessTokenHeader$ = this.accessToken$.pipe(map((token) => { var _a; return (_a = token === null || token === void 0 ? void 0 : token.header) !== null && _a !== void 0 ? _a : null; }));
         this.accessTokenPayload$ = this.accessToken$.pipe(map((token) => { var _a; return (_a = token === null || token === void 0 ? void 0 : token.payload) !== null && _a !== void 0 ? _a : null; }));
@@ -406,18 +404,6 @@ class LoginGuard {
         this.jwtTokenService = jwtTokenService;
         this.isAccessTokenValidOnce$ = this.jwtTokenService.isAccessTokenValid$.pipe(take(1));
     }
-    isValid(isRefreshAllowed) {
-        var _a, _b;
-        const allowed = (_b = isRefreshAllowed !== null && isRefreshAllowed !== void 0 ? isRefreshAllowed : (_a = this.jwtTokenService.refreshConfig) === null || _a === void 0 ? void 0 : _a.isAutoRefreshAllowedInLoginGuardByDefault) !== null && _b !== void 0 ? _b : DEFAULT_JWT_REFRESH_CONFIG_DEFAULT_AUTO_IN_GUARD;
-        return this.isAccessTokenValidOnce$.pipe(switchMap((isValid) => {
-            if (!isValid && allowed) {
-                return this.jwtTokenService.manualRefresh();
-            }
-            else {
-                return of(isValid);
-            }
-        }));
-    }
     canActivate(route, _state) {
         const data = route.data;
         return this.isValid(data === null || data === void 0 ? void 0 : data.isRefreshAllowed);
@@ -429,6 +415,18 @@ class LoginGuard {
     canLoad(route, _segments) {
         const data = route.data;
         return this.isValid(data === null || data === void 0 ? void 0 : data.isRefreshAllowed);
+    }
+    isValid(isRefreshAllowed) {
+        var _a, _b;
+        const allowed = (_b = isRefreshAllowed !== null && isRefreshAllowed !== void 0 ? isRefreshAllowed : (_a = this.jwtTokenService.refreshConfig) === null || _a === void 0 ? void 0 : _a.isAutoRefreshAllowedInLoginGuardByDefault) !== null && _b !== void 0 ? _b : DEFAULT_JWT_REFRESH_CONFIG_DEFAULT_AUTO_IN_GUARD;
+        return this.isAccessTokenValidOnce$.pipe(switchMap((isValid) => {
+            if (!isValid && allowed) {
+                return this.jwtTokenService.manualRefresh();
+            }
+            else {
+                return of(isValid);
+            }
+        }));
     }
 }
 LoginGuard.ɵprov = ɵɵdefineInjectable({ factory: function LoginGuard_Factory() { return new LoginGuard(ɵɵinject(JwtTokenService)); }, token: LoginGuard, providedIn: "root" });
@@ -471,12 +469,15 @@ JwtErrorHandlingInterceptor.ctorParameters = () => [
 ];
 
 const matchRule = (rule, against) => {
-    if (isString(rule))
+    if (isString(rule)) {
         return rule === against;
-    else if (against)
+    }
+    else if (against) {
         return rule.test(against);
-    else
+    }
+    else {
         return false;
+    }
 };
 /**
  *
@@ -489,7 +490,7 @@ const matchAgainst = (against, inverse = false) => (rule) => (inverse ? !matchRu
  * automatically pass. **Empty whitelist rulesets never pass.** Empty blacklist
  * rulesets always pass.
  */
-function checkAgainstUrlFilter(urlFilter, { domain, path, protocol }) {
+const checkAgainstUrlFilter = (urlFilter, { domain, path, protocol }) => {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     const protocolMatcher = matchAgainst(protocol);
     const domainMatcher = matchAgainst(domain);
@@ -506,21 +507,21 @@ function checkAgainstUrlFilter(urlFilter, { domain, path, protocol }) {
         domainBlacklistRulesPass &&
         pathWhitelistRulesPass &&
         pathBlacklistRulesPass);
-}
+};
 
 /**
  * Returns the url split into parts, without the separators.
  * Separator between protocol and domain is `://`, and between domain
  * and path is `/`.
  */
-function separateUrl(url) {
+const separateUrl = (url) => {
     const urlMatch = url === null || url === void 0 ? void 0 : url.match(/^((.*):\/\/)?([^/].*?)?(\/(.*))?$/);
     return {
         protocol: urlMatch === null || urlMatch === void 0 ? void 0 : urlMatch[2],
         domain: urlMatch === null || urlMatch === void 0 ? void 0 : urlMatch[3],
         path: urlMatch === null || urlMatch === void 0 ? void 0 : urlMatch[5],
     };
-}
+};
 
 class JwtInjectorInterceptor {
     constructor(jwtConfig, defaultJwtConfig, refreshConfig, defaultJwtRefreshConfig) {
@@ -553,8 +554,9 @@ class JwtInjectorInterceptor {
                     return throwError(JwtError.createErrorResponse(request, 'Token is expired or invalid, and refresh is not configured.'));
                 }
             }
-            else
+            else {
                 return next.handle(request);
+            }
         }));
     }
 }
@@ -605,21 +607,21 @@ class JwtRefreshInterceptor {
                     ? // If the token is used and is expired, don't even try the request.
                         throwError('Expired token, refresh first')
                     : // If it seems okay, try the request
-                        next.handle(request)).pipe(catchError((error) => {
-                    // If the request failed, or we failed at the precheck
-                    // Acquire a new token, but only if the error is allowing it
-                    return tryJwtRefresh(next, error, this.jwtRefreshConfiguration, (refreshError) => throwError(JwtCouldntRefreshError.createErrorResponse(request, refreshError)), (refreshResponse) => {
-                        const requestWithUpdatedTokens = request.clone({
-                            headers: request.headers.set(this.jwtConfiguration.header, this.jwtConfiguration.scheme +
-                                refreshResponse.accessToken),
-                        });
-                        return next.handle(requestWithUpdatedTokens);
+                        next.handle(request)).pipe(catchError((error) => 
+                // If the request failed, or we failed at the precheck
+                // Acquire a new token, but only if the error is allowing it
+                tryJwtRefresh(next, error, this.jwtRefreshConfiguration, (refreshError) => throwError(JwtCouldntRefreshError.createErrorResponse(request, refreshError)), (refreshResponse) => {
+                    const requestWithUpdatedTokens = request.clone({
+                        headers: request.headers.set(this.jwtConfiguration.header, this.jwtConfiguration.scheme +
+                            refreshResponse.accessToken),
                     });
-                }));
+                    return next.handle(requestWithUpdatedTokens);
+                })));
             }));
         }
-        else
+        else {
             return next.handle(request);
+        }
     }
 }
 JwtRefreshInterceptor.decorators = [
@@ -637,17 +639,15 @@ JwtRefreshInterceptor.ctorParameters = () => [
  *
  * @internal
  */
-function createJwtConfigurationProvider(tokenConfigurationProvider) {
-    return Object.assign({ provide: JWT_CONFIGURATION_TOKEN, multi: false }, tokenConfigurationProvider);
-}
+const createJwtConfigurationProvider = (tokenConfigurationProvider) => (Object.assign({ provide: JWT_CONFIGURATION_TOKEN, multi: false }, tokenConfigurationProvider));
+
 /**
  * Helps you define a JwtConfigurationProvider
  *
  * @internal
  */
-function createJwtRefreshConfigurationProvider(tokenRefreshConfigurationProvider) {
-    return Object.assign({ provide: JWT_REFRESH_CONFIGURATION_TOKEN, multi: false }, tokenRefreshConfigurationProvider);
-}
+const createJwtRefreshConfigurationProvider = (tokenRefreshConfigurationProvider) => (Object.assign({ provide: JWT_REFRESH_CONFIGURATION_TOKEN, multi: false }, tokenRefreshConfigurationProvider));
+
 /**
  * This module needs to be configured to use. See the
  * {@link JwtModule#forRoot | forRoot} method for more information.
@@ -699,6 +699,7 @@ JwtModule.decorators = [
             },] }
 ];
 
+// eslint-disable-next-line no-shadow
 var HttpMethod;
 (function (HttpMethod) {
     HttpMethod["GET"] = "GET";

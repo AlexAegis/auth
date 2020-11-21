@@ -1,1 +1,1 @@
-[{"__symbolic":"module","version":4,"metadata":{"isFunction":{"__symbolic":"function","parameters":["funlike"],"value":{"__symbolic":"binop","operator":"===","left":{"__symbolic":"error","message":"Expression form not supported","line":1,"character":8},"right":"function"}}}}]
+[{"__symbolic":"module","version":4,"metadata":{"isFunction":{"__symbolic":"error","message":"Lambda not supported","line":0,"character":26}}}]

@@ -10,18 +10,6 @@ export class LoginGuard {
         this.jwtTokenService = jwtTokenService;
         this.isAccessTokenValidOnce$ = this.jwtTokenService.isAccessTokenValid$.pipe(take(1));
     }
-    isValid(isRefreshAllowed) {
-        var _a, _b;
-        const allowed = (_b = isRefreshAllowed !== null && isRefreshAllowed !== void 0 ? isRefreshAllowed : (_a = this.jwtTokenService.refreshConfig) === null || _a === void 0 ? void 0 : _a.isAutoRefreshAllowedInLoginGuardByDefault) !== null && _b !== void 0 ? _b : DEFAULT_JWT_REFRESH_CONFIG_DEFAULT_AUTO_IN_GUARD;
-        return this.isAccessTokenValidOnce$.pipe(switchMap((isValid) => {
-            if (!isValid && allowed) {
-                return this.jwtTokenService.manualRefresh();
-            }
-            else {
-                return of(isValid);
-            }
-        }));
-    }
     canActivate(route, _state) {
         const data = route.data;
         return this.isValid(data === null || data === void 0 ? void 0 : data.isRefreshAllowed);
@@ -33,6 +21,18 @@ export class LoginGuard {
     canLoad(route, _segments) {
         const data = route.data;
         return this.isValid(data === null || data === void 0 ? void 0 : data.isRefreshAllowed);
+    }
+    isValid(isRefreshAllowed) {
+        var _a, _b;
+        const allowed = (_b = isRefreshAllowed !== null && isRefreshAllowed !== void 0 ? isRefreshAllowed : (_a = this.jwtTokenService.refreshConfig) === null || _a === void 0 ? void 0 : _a.isAutoRefreshAllowedInLoginGuardByDefault) !== null && _b !== void 0 ? _b : DEFAULT_JWT_REFRESH_CONFIG_DEFAULT_AUTO_IN_GUARD;
+        return this.isAccessTokenValidOnce$.pipe(switchMap((isValid) => {
+            if (!isValid && allowed) {
+                return this.jwtTokenService.manualRefresh();
+            }
+            else {
+                return of(isValid);
+            }
+        }));
     }
 }
 LoginGuard.ɵprov = i0.ɵɵdefineInjectable({ factory: function LoginGuard_Factory() { return new LoginGuard(i0.ɵɵinject(i1.JwtTokenService)); }, token: LoginGuard, providedIn: "root" });

@@ -63,9 +63,9 @@ export declare class JwtToken<Claims = Record<string | number, unknown>> {
     header: JwtTokenHeader;
     payload: JwtTokenPayload & Claims;
     signature: string;
+    static readonly JWT_TOKEN_SEPARATOR = ".";
     constructor(header: JwtTokenHeader, payload: JwtTokenPayload & Claims, signature: string);
-    static JWT_TOKEN_SEPARATOR: string;
-    static from<Claims = Record<string | number, unknown>>(token: JwtTokenString): JwtToken<Claims> | null;
+    static from<FromClaims = Record<string | number, unknown>>(token: JwtTokenString): JwtToken<FromClaims> | null;
     static stripScheme(jwtHeaderValue: string, scheme?: string): JwtTokenString;
     static splitTokenString(token: JwtTokenString, separator?: string): [Base64String, Base64String, Base64String] | null;
     isExpired(): boolean;

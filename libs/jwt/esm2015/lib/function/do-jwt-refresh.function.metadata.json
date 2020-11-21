@@ -1,1 +1,1 @@
-[{"__symbolic":"module","version":4,"metadata":{"doJwtRefresh":{"__symbolic":"function"}}}]
+[{"__symbolic":"module","version":4,"metadata":{"doJwtRefresh":{"__symbolic":"error","message":"Lambda not supported","line":10,"character":28}}}]

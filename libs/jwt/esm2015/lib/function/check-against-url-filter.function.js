@@ -4,7 +4,7 @@ import { matchAgainst } from './match-against.function';
  * automatically pass. **Empty whitelist rulesets never pass.** Empty blacklist
  * rulesets always pass.
  */
-export function checkAgainstUrlFilter(urlFilter, { domain, path, protocol }) {
+export const checkAgainstUrlFilter = (urlFilter, { domain, path, protocol }) => {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     const protocolMatcher = matchAgainst(protocol);
     const domainMatcher = matchAgainst(domain);
@@ -21,5 +21,5 @@ export function checkAgainstUrlFilter(urlFilter, { domain, path, protocol }) {
         domainBlacklistRulesPass &&
         pathWhitelistRulesPass &&
         pathBlacklistRulesPass);
-}
+};
 //# sourceMappingURL=check-against-url-filter.function.js.map

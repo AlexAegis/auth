@@ -1,8 +1,8 @@
 import { throwError } from 'rxjs';
 import { JwtCannotRefreshError, JwtCouldntRefreshError, JwtError } from '../errors/jwt-error.class';
-import { isNotNullish } from './is-not-nullish.predicate';
 import { handleJwtFailure } from './handle-jwt-failure.function';
-export function handleJwtError(wrappedError, jwtConfiguration, jwtRefreshConfiguration, router) {
+import { isNotNullish } from './is-not-nullish.predicate';
+export const handleJwtError = (wrappedError, jwtConfiguration, jwtRefreshConfiguration, router) => {
     var _a;
     const error = (_a = wrappedError.error) === null || _a === void 0 ? void 0 : _a.error;
     if (error instanceof JwtCannotRefreshError || error instanceof JwtCouldntRefreshError) {
@@ -22,5 +22,5 @@ export function handleJwtError(wrappedError, jwtConfiguration, jwtRefreshConfigu
         // Other errors are left untreated
         return throwError(wrappedError);
     }
-}
+};
 //# sourceMappingURL=handle-jwt-error.function.js.map

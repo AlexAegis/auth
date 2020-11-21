@@ -3,4 +3,4 @@
  * Using `instanceof` would not be sufficient as Promises can be contructed
  * in many ways, and it's just a specification.
  */
-export declare function isPromise<T>(promiseLike: unknown): promiseLike is Promise<T>;
+export declare const isPromise: <T>(promiseLike: unknown) => promiseLike is Promise<T>;
