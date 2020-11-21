@@ -36,7 +36,7 @@ import { AuthService } from './service';
 					canActivate: [LoginGuard],
 				},
 			],
-			{ initialNavigation: 'enabled' }
+			{ initialNavigation: 'enabled', relativeLinkResolution: 'legacy' }
 		),
 		JwtModule.forRoot<RefreshRequest, RefreshResponse>(
 			{
