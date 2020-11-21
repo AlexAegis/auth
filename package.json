@@ -92,6 +92,8 @@
 		"help": "nx help",
 		"_postinstall": "husky install && ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points --tsconfig tsconfig.base.json",
 		"release": "standard-version",
+		"release:minor": "standard-version --release-as minor",
+		"release:major": "standard-version --release-as major",
 		"prepublishOnly": "yarn build",
 		"prepublish": "pinst --disable",
 		"postpublish": "pinst --enable"
