@@ -1,0 +1,2 @@
+yarn affected:test
+yarn affected:lint
