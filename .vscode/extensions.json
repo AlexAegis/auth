@@ -2,7 +2,6 @@
 	"recommendations": [
 		"nrwl.angular-console",
 		"angular.ng-template",
-		"ms-vscode.vscode-typescript-tslint-plugin",
 		"stylelint.vscode-stylelint",
 		"esbenp.prettier-vscode",
 		"eg2.vscode-npm-script",

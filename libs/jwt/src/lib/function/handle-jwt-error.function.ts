@@ -2,14 +2,14 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { JwtCannotRefreshError, JwtCouldntRefreshError, JwtError } from '../errors/jwt-error.class';
-import { isNotNullish } from './is-not-nullish.predicate';
 import {
 	JwtConfiguration,
 	JwtRefreshConfiguration,
 } from '../model/auth-core-configuration.interface';
 import { handleJwtFailure } from './handle-jwt-failure.function';
+import { isNotNullish } from './is-not-nullish.predicate';
 
-export function handleJwtError<RefreshRequest = unknown, RefreshResponse = unknown>(
+export const handleJwtError = <RefreshRequest = unknown, RefreshResponse = unknown>(
 	wrappedError:
 		| (Omit<HttpErrorResponse, 'error'> & {
 				error?: Omit<ErrorEvent, 'error'> & {
@@ -20,7 +20,7 @@ export function handleJwtError<RefreshRequest = unknown, RefreshResponse = unkno
 	jwtConfiguration: JwtConfiguration,
 	jwtRefreshConfiguration?: JwtRefreshConfiguration<RefreshRequest, RefreshResponse>,
 	router?: Router
-): Observable<never> {
+): Observable<never> => {
 	const error: undefined | JwtError | JwtCannotRefreshError | JwtCouldntRefreshError =
 		wrappedError.error?.error;
 
@@ -49,4 +49,4 @@ export function handleJwtError<RefreshRequest = unknown, RefreshResponse = unkno
 		// Other errors are left untreated
 		return throwError(wrappedError);
 	}
-}
+};

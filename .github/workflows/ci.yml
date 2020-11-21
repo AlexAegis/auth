@@ -32,8 +32,6 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Lint packages
         run: yarn lint
-      - name: Lint using eslint
-        run: yarn run lint:es
       - name: Lint scss stylesheets
         run: yarn run lint:scss
       - name: Lint css stylesheets
