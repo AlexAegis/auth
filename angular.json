@@ -31,7 +31,8 @@
 						"jestConfig": "libs/core/jest.config.js",
 						"passWithNoTests": true,
 						"codeCoverage": true
-					}
+					},
+					"outputs": ["coverage/libs/core"]
 				}
 			},
 			"schematics": {
@@ -92,7 +93,8 @@
 								}
 							]
 						}
-					}
+					},
+					"outputs": ["{options.outputPath}"]
 				},
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
@@ -124,7 +126,8 @@
 						"jestConfig": "apps/core-demo/jest.config.js",
 						"passWithNoTests": true,
 						"codeCoverage": false
-					}
+					},
+					"outputs": ["coverage/apps/core-demo"]
 				}
 			}
 		},
@@ -187,7 +190,8 @@
 						"jestConfig": "libs/ngrx/jest.config.js",
 						"passWithNoTests": true,
 						"codeCoverage": true
-					}
+					},
+					"outputs": ["coverage/libs/ngrx"]
 				}
 			},
 			"schematics": {}
@@ -222,7 +226,8 @@
 						"jestConfig": "libs/jwt/jest.config.js",
 						"passWithNoTests": true,
 						"codeCoverage": true
-					}
+					},
+					"outputs": ["coverage/libs/jwt"]
 				}
 			},
 			"schematics": {}
@@ -279,7 +284,8 @@
 								}
 							]
 						}
-					}
+					},
+					"outputs": ["{options.outputPath}"]
 				},
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
@@ -311,7 +317,8 @@
 						"jestConfig": "apps/jwt-demo/jest.config.js",
 						"passWithNoTests": true,
 						"codeCoverage": false
-					}
+					},
+					"outputs": ["coverage/apps/jwt-demo"]
 				}
 			}
 		},
