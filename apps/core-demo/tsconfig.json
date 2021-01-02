@@ -1,7 +1,16 @@
 {
-	"extends": "../../tsconfig.json",
-	"compilerOptions": {
-		"resolveJsonModule": true,
-		"types": ["node", "jest"]
-	}
+	"extends": "../../tsconfig.base.json",
+	"files": [],
+	"include": [],
+	"references": [
+		{
+			"path": "./tsconfig.app.json"
+		},
+		{
+			"path": "./tsconfig.spec.json"
+		},
+		{
+			"path": "./tsconfig.editor.json"
+		}
+	]
 }

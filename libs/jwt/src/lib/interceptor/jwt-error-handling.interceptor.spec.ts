@@ -210,7 +210,8 @@ describe('JwtErrorHandlingInterceptor', () => {
 		expect(routerMock.navigate).toBeCalledTimes(0);
 	});
 
-	it('should redirect to the one configured for the refresh, when a refresh error happens, and the redirectparameters called with the correct error', () => {
+	it('should redirect to the one configured for the refresh, when a refresh\
+	error happens, and the redirectparameters called with the correct error', () => {
 		TestBed.overrideProvider(JWT_CONFIGURATION_TOKEN, {
 			useValue: {
 				onFailure: FALSY_STRING,

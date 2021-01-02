@@ -15,6 +15,7 @@ describe('JwtToken', () => {
 		const result = JwtToken.from(validToken);
 		expect(result).toBeInstanceOf(JwtToken);
 	});
+
 	it("can't be made from a valid token string", () => {
 		const result = JwtToken.from(invalidToken);
 		expect(result).toBeNull();
