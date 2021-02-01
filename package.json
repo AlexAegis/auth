@@ -162,7 +162,7 @@
 		"markdownlint-cli": "~0.26.0",
 		"ng-packagr": "^11.0.3",
 		"npm-check-updates": "~10.2.5",
-		"pinst": "^2.1.1",
+		"pinst": "^2.1.4",
 		"prettier": "~2.2.1",
 		"remark": "~13.0.0",
 		"remark-cli": "~9.0.0",
