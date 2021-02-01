@@ -1,7 +1,9 @@
 import { JwtTokenService } from '@aegis-auth/jwt';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { Claims } from '../model/claims.interface';
+// TODO: Remove this ignore once this lands: https://github.com/typescript-eslint/typescript-eslint/issues/2972
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { Claims } from '../model/claims.interface';
 import { ApiService } from '../service';
 import { AuthService } from '../service/auth.service';
 
