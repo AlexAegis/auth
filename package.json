@@ -174,7 +174,7 @@
 		"rollup": "~2.39.0",
 		"rollup-plugin-gzip": "~2.5.0",
 		"rollup-plugin-terser": "~7.0.2",
-		"standard-version": "~9.1.0",
+		"standard-version": "~9.1.1",
 		"stylelint": "~13.10.0",
 		"stylelint-config-prettier": "~8.0.2",
 		"stylelint-prettier": "~1.1.2",
