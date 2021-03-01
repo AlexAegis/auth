@@ -112,7 +112,7 @@
 		"@fortawesome/fontawesome-svg-core": "^1.2.34",
 		"@fortawesome/free-brands-svg-icons": "^5.15.2",
 		"@fortawesome/free-solid-svg-icons": "^5.15.2",
-		"@nrwl/angular": "11.2.12",
+		"@nrwl/angular": "11.4.0",
 		"core-js": "~3.8.3",
 		"rxjs": "~6.6.3",
 		"tslib": "^2.1.0",
