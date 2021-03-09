@@ -36,9 +36,6 @@ jobs:
         run: |
           yarn build
           yarn hoist:core
-      - name: Build Typedocs
-        if: env.JWT_IS_ON_NPM != 'true'
-        run: yarn typedoc
       - name: Release @aegis-auth/jwt on NPM
         if: env.JWT_IS_ON_NPM != 'true'
         env:
