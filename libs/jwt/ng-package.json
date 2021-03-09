@@ -8,5 +8,5 @@
 			"js-base64": "jsBase64"
 		}
 	},
-	"whitelistedNonPeerDependencies": ["tslib", "js-base64"]
+	"allowedNonPeerDependencies": ["tslib", "js-base64"]
 }
