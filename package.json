@@ -82,7 +82,7 @@
 		"format:write": "nx format:write",
 		"format:check": "nx format:check",
 		"ncu": "ncu -u",
-		"typedoc": "typedoc libs --tsconfig ./tsconfig.base.json --out ./dist/typedoc",
+		"typedoc": "typedoc --tsconfig ./tsconfig.base.json --out ./dist/typedoc",
 		"update": "ng update @nrwl/workspace",
 		"update:all": "nx update --all --force",
 		"dep-graph": "nx dep-graph",
