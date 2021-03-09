@@ -31,3 +31,18 @@ It also provides a way to handle cases where a refresh cannot happen
 common recovery method) or a completely custom function for more advanced
 use-cases. It does so both on http requests and on navigation where the
 LoginGuard is utilized (And is enabled)
+
+## Requirements
+
+### Node
+
+Use the latest LTS version
+
+### Cypress
+
+To run Cypress e2e tests on a WSL2 Ubuntu instance install the following
+dependencies:
+
+```sh
+apt install -y xvfb libgtk-3-0 libgbm-dev
+```
