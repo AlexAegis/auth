@@ -3,6 +3,7 @@
 	"root": true,
 	"ignorePatterns": ["**/*"],
 	"plugins": ["@nrwl/nx", "prettier"],
+	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
 	"overrides": [
 		{
 			"files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
