@@ -1,0 +1,65 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: "04:00"
+  open-pull-requests-limit: 10
+  reviewers:
+  - AlexAegis
+  assignees:
+  - AlexAegis
+  ignore:
+  - dependency-name: rollup
+    versions:
+    - 2.38.2
+    - 2.38.3
+    - 2.40.0
+  - dependency-name: tslib
+    versions:
+    - 2.1.0
+  - dependency-name: "@fortawesome/fontawesome-svg-core"
+    versions:
+    - 1.2.34
+  - dependency-name: pinst
+    versions:
+    - 2.1.4
+  - dependency-name: typedoc
+    versions:
+    - 0.20.20
+    - 0.20.28
+  - dependency-name: cypress
+    versions:
+    - 6.3.0
+    - 6.5.0
+  - dependency-name: "@typescript-eslint/eslint-plugin"
+    versions:
+    - 4.14.1
+  - dependency-name: eslint-plugin-jsdoc
+    versions:
+    - 31.6.0
+  - dependency-name: webpack-bundle-analyzer
+    versions:
+    - 4.4.0
+  - dependency-name: elliptic
+    versions:
+    - 6.5.4
+  - dependency-name: "@nrwl/eslint-plugin-nx"
+    versions:
+    - 11.4.0
+  - dependency-name: ts-jest
+    versions:
+    - 26.5.2
+  - dependency-name: "@nrwl/angular"
+    versions:
+    - 11.4.0
+  - dependency-name: stylelint
+    versions:
+    - 13.11.0
+  - dependency-name: "@nrwl/linter"
+    versions:
+    - 11.4.0
+  - dependency-name: "@nrwl/cypress"
+    versions:
+    - 11.4.0
