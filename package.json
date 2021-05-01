@@ -131,7 +131,7 @@
 		"@commitlint/config-conventional": "~12.0.1",
 		"@nrwl/cypress": "11.5.1",
 		"@nrwl/eslint-plugin-nx": "11.5.1",
-		"@nrwl/jest": "11.5.1",
+		"@nrwl/jest": "12.0.8",
 		"@nrwl/linter": "11.5.1",
 		"@nrwl/node": "11.5.1",
 		"@nrwl/web": "11.5.1",
