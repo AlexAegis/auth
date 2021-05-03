@@ -1,2 +1,2 @@
-yarn affected:test
-yarn affected:lint
+npm run affected:test
+npm run affected:lint
