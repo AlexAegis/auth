@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'jwt-demo',
-	preset: '../../jest.config.js',
+	preset: '../../jest.preset.js',
 	coverageDirectory: '../../coverage/apps/jwt-demo',
 	snapshotSerializers: [
 		'jest-preset-angular/build/serializers/no-ng-attributes',

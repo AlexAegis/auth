@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'core',
-	preset: '../../jest.config.js',
+	preset: '../../jest.preset.js',
 	coverageDirectory: '../../coverage/libs/core',
 	snapshotSerializers: [
 		'jest-preset-angular/build/serializers/no-ng-attributes',

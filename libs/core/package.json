@@ -31,6 +31,6 @@
 	},
 	"peerDependencies": {
 		"@angular/common": "11.*.*",
-		"@angular/core": "101*.*"
+		"@angular/core": "11.*.*"
 	}
 }
