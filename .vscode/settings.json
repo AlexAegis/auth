@@ -36,7 +36,8 @@
 		"**/.DS_Store": true
 	},
 	"files.associations": {
-		"*.json": "jsonc"
+		"*.json": "jsonc",
+		".stylelintrc": "jsonc"
 	},
 	"terminal.integrated.windowsEnableConpty": true,
 	"remote.extensionKind": {
