@@ -31,6 +31,7 @@
 	},
 	"editor.fontLigatures": true,
 	"editor.mouseWheelZoom": true,
+	"debug.javascript.usePreview": true,
 	"files.exclude": {
 		"**/.git": true,
 		"**/.DS_Store": true
@@ -41,7 +42,7 @@
 	},
 	"terminal.integrated.windowsEnableConpty": true,
 	"remote.extensionKind": {
-		"ms-azuretools.vscode-docker": ["ui"],
+		"ms-azuretools.vscode-docker": ["workspace"],
 		"msjsdiag.debugger-for-chrome": ["workspace"]
 	},
 	"json.schemas": [

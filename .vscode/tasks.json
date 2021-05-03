@@ -1,37 +1,6 @@
 {
 	"version": "2.0.0",
-
 	"tasks": [
-		{
-			"label": "start:core",
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			},
-			"type": "npm",
-			"script": "start:core",
-			"isBackground": true,
-			"options": { "env": { "NODE_OPTIONS": "--max_old_space_size=8192 " } },
-			"problemMatcher": [
-				"$tsc-watch",
-				{
-					"owner": "typescript",
-					"pattern": {
-						"regexp": "^([^\\s].*)\\((\\d+|\\,\\d+|\\d+,\\d+,\\d+,\\d+)\\):\\s+(error|warning|info)\\s+(TS\\d+)\\s*:\\s*(.*)$",
-						"file": 1,
-						"location": 2,
-						"severity": 3,
-						"code": 4,
-						"message": 5
-					},
-					"background": {
-						"activeOnStart": true,
-						"beginsPattern": "^\\s*\\d{1,2}:\\d{1,2}:\\d{1,2}(?: AM| PM)? - File change detected\\. Starting incremental compilation\\.\\.\\.",
-						"endsPattern": "^.*Compiled successfully."
-					}
-				}
-			]
-		},
 		{
 			"label": "start:jwt",
 			"group": {
@@ -43,21 +12,53 @@
 			"isBackground": true,
 			"options": { "env": { "NODE_OPTIONS": "--max_old_space_size=8192 " } },
 			"problemMatcher": [
-				"$tsc-watch",
 				{
+					"base": "$tsc",
 					"owner": "typescript",
 					"pattern": {
-						"regexp": "^([^\\s].*)\\((\\d+|\\,\\d+|\\d+,\\d+,\\d+,\\d+)\\):\\s+(error|warning|info)\\s+(TS\\d+)\\s*:\\s*(.*)$",
-						"file": 1,
-						"location": 2,
-						"severity": 3,
-						"code": 4,
-						"message": 5
+						"regexp": "^(Error: )?([^\\s].*)[\\(:](\\d+)[,:](\\d+)(?:\\):\\s+|\\s+-\\s+)(error|warning|info)\\s+TS(\\d+)\\s*:\\s*(.*)$",
+						"file": 2,
+						"line": 3,
+						"column": 4,
+						"severity": 5,
+						"code": 6,
+						"message": 7
 					},
 					"background": {
 						"activeOnStart": true,
-						"beginsPattern": "^\\s*\\d{1,2}:\\d{1,2}:\\d{1,2}(?: AM| PM)? - File change detected\\. Starting incremental compilation\\.\\.\\.",
-						"endsPattern": "^.*Compiled successfully."
+						"beginsPattern": "^.*$",
+						"endsPattern": "^.*Compiled successfully..*$"
+					}
+				}
+			]
+		},
+		{
+			"label": "start:core",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"type": "npm",
+			"script": "start:core",
+			"isBackground": true,
+			"options": { "env": { "NODE_OPTIONS": "--max_old_space_size=8192 " } },
+			"problemMatcher": [
+				{
+					"base": "$tsc",
+					"owner": "typescript",
+					"pattern": {
+						"regexp": "^(Error: )?([^\\s].*)[\\(:](\\d+)[,:](\\d+)(?:\\):\\s+|\\s+-\\s+)(error|warning|info)\\s+TS(\\d+)\\s*:\\s*(.*)$",
+						"file": 2,
+						"line": 3,
+						"column": 4,
+						"severity": 5,
+						"code": 6,
+						"message": 7
+					},
+					"background": {
+						"activeOnStart": true,
+						"beginsPattern": "^.*$",
+						"endsPattern": "^.*Compiled successfully..*$"
 					}
 				}
 			]
@@ -73,21 +74,22 @@
 			"isBackground": true,
 			"options": { "env": { "NODE_OPTIONS": "--max_old_space_size=8192 " } },
 			"problemMatcher": [
-				"$tsc-watch",
 				{
+					"base": "$tsc",
 					"owner": "typescript",
 					"pattern": {
-						"regexp": "^([^\\s].*)\\((\\d+|\\,\\d+|\\d+,\\d+,\\d+,\\d+)\\):\\s+(error|warning|info)\\s+(TS\\d+)\\s*:\\s*(.*)$",
-						"file": 1,
-						"location": 2,
-						"severity": 3,
-						"code": 4,
-						"message": 5
+						"regexp": "^(Error: )?([^\\s].*)[\\(:](\\d+)[,:](\\d+)(?:\\):\\s+|\\s+-\\s+)(error|warning|info)\\s+TS(\\d+)\\s*:\\s*(.*)$",
+						"file": 2,
+						"line": 3,
+						"column": 4,
+						"severity": 5,
+						"code": 6,
+						"message": 7
 					},
 					"background": {
 						"activeOnStart": true,
-						"beginsPattern": "^\\s*\\d{1,2}:\\d{1,2}:\\d{1,2}(?: AM| PM)? - File change detected\\. Starting incremental compilation\\.\\.\\.",
-						"endsPattern": "^.*Compiled successfully."
+						"beginsPattern": "^.*$",
+						"endsPattern": "^.*Compiled successfully..*$"
 					}
 				}
 			]
