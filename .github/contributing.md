@@ -1,15 +1,8 @@
 # Contributing
 
-- [Code of Conduct](#code-of-conduct)
 - [Issues](#issues)
 - [Pull Requests](#pull-requests)
 - [Developer's Certificate of Origin 1.1](#developers-certificate-of-origin)
-
-## [Code of Conduct](./code-of-conduct.md)
-
-The project has a
-[Code of Conduct](./code_of_conduct.md)
-to which all contributors must adhere.
 
 ## [Issues](./issues.md)
 

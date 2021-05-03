@@ -39,7 +39,10 @@
 		"*.json": "jsonc"
 	},
 	"terminal.integrated.windowsEnableConpty": true,
-	"liveServer.settings.multiRootWorkspaceName": "starter-stack",
+	"remote.extensionKind": {
+		"ms-azuretools.vscode-docker": ["ui"],
+		"msjsdiag.debugger-for-chrome": ["workspace"]
+	},
 	"json.schemas": [
 		{
 			"fileMatch": ["typedoc.json"],
