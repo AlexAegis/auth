@@ -2,9 +2,6 @@
 	"configurations": [
 		{
 			"type": "chrome",
-			"linux": {
-				"runtimeExecutable": "/usr/bin/chromium"
-			},
 			"request": "launch",
 			"name": "Launch Core Demo",
 			"url": "http://localhost:4801",
@@ -14,9 +11,6 @@
 		},
 		{
 			"type": "chrome",
-			"linux": {
-				"runtimeExecutable": "/usr/bin/chromium"
-			},
 			"request": "launch",
 			"name": "Launch Jwt Demo",
 			"url": "http://localhost:4802",
@@ -26,9 +20,6 @@
 		},
 		{
 			"type": "chrome",
-			"linux": {
-				"runtimeExecutable": "/usr/bin/chromium"
-			},
 			"request": "launch",
 			"name": "Launch Ngrx Demo",
 			"url": "http://localhost:4802",
@@ -38,23 +29,13 @@
 		},
 		{
 			"name": "Current TS File",
-			"type": "node",
+			"type": "pwa-node",
 			"request": "launch",
-			"env": {
-				"TS_NODE_PROJECT": "./tsconfig.base.json",
-				"TS_NODE_TRANSPILE_ONLY": "true",
-				"TS_NODE_FILES": "true"
-			},
+			"sourceMaps": true,
+			"smartStep": true,
 			"args": ["${relativeFile}"],
-			"runtimeArgs": [
-				"-r",
-				"ts-node/register",
-				"-r",
-				"tsconfig-paths/register",
-				"--max-old-space-size=8192"
-			],
+			"runtimeArgs": ["-r", "ts-node/register", "-r", "tsconfig-paths/register"],
 			"cwd": "${workspaceRoot}",
-			"protocol": "inspector",
 			"internalConsoleOptions": "openOnSessionStart"
 		}
 	]
