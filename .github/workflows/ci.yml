@@ -30,8 +30,7 @@ jobs:
       - name: Ensure NPM 7
         run: npm install --global npm@7
       - name: Install packages
-        if: steps.cache-packages.outputs.cache-hit != 'true'
-        run: npm install --frozen-lockfile
+        run: npm install
       - name: Lint packages
         run: npm run lint
       - name: Lint scss stylesheets
@@ -67,8 +66,7 @@ jobs:
       - name: Ensure NPM 7
         run: npm install --global npm@7
       - name: Install packages
-        if: steps.cache-packages.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm install
       - name: Test
         run: npm run test:skip-cache
       - name: Upload coverage result to codacy
@@ -103,7 +101,6 @@ jobs:
       - name: Ensure NPM 7
         run: npm install --global npm@7
       - name: Install packages
-        if: steps.cache-packages.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm install
       - name: Build production
         run: npm run build
