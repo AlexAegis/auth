@@ -15,11 +15,13 @@ jobs:
         uses: actions/cache@v2
         with:
           path: node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14
+      - name: Ensure NPM 7
+        run: npm install --global npm@7
       - name: Check if @aegis-auth/jwt is already deployed
         run: |
           VERSION=$(cat ".github/version.txt")
@@ -30,12 +32,12 @@ jobs:
           echo "$JWT_IS_ON_NPM"
       - name: Install dependencies
         if: env.JWT_IS_ON_NPM != 'true' && steps.cache-packages.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfile
+        run: npm ci
       - name: Build
         if: env.JWT_IS_ON_NPM != 'true'
         run: |
-          yarn build
-          yarn hoist:core
+          npm run build
+          npm run hoist:core
       - name: Release @aegis-auth/jwt on NPM
         if: env.JWT_IS_ON_NPM != 'true'
         env:
