@@ -1,0 +1,74 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: "04:00"
+  open-pull-requests-limit: 10
+  reviewers:
+  - AlexAegis
+  assignees:
+  - AlexAegis
+  ignore:
+  - dependency-name: "@nrwl/jest"
+    versions:
+    - 12.0.8
+    - 12.1.0
+  - dependency-name: cypress
+    versions:
+    - 6.5.0
+    - 6.9.1
+    - 7.2.0
+  - dependency-name: rxjs
+    versions:
+    - 6.6.7
+  - dependency-name: "@angular-eslint/eslint-plugin"
+    versions:
+    - 4.2.0
+  - dependency-name: "@commitlint/config-conventional"
+    versions:
+    - 12.1.1
+  - dependency-name: "@typescript-eslint/eslint-plugin"
+    versions:
+    - 4.22.0
+  - dependency-name: eslint-plugin-prettier
+    versions:
+    - 3.4.0
+  - dependency-name: "@types/jest"
+    versions:
+    - 26.0.23
+  - dependency-name: "@fortawesome/free-brands-svg-icons"
+    versions:
+    - 5.15.3
+  - dependency-name: ssri
+    versions:
+    - 6.0.2
+  - dependency-name: rollup
+    versions:
+    - 2.38.3
+    - 2.40.0
+  - dependency-name: elliptic
+    versions:
+    - 6.5.4
+  - dependency-name: "@nrwl/eslint-plugin-nx"
+    versions:
+    - 11.4.0
+  - dependency-name: typedoc
+    versions:
+    - 0.20.28
+  - dependency-name: ts-jest
+    versions:
+    - 26.5.2
+  - dependency-name: "@nrwl/angular"
+    versions:
+    - 11.4.0
+  - dependency-name: stylelint
+    versions:
+    - 13.11.0
+  - dependency-name: "@nrwl/linter"
+    versions:
+    - 11.4.0
+  - dependency-name: "@nrwl/cypress"
+    versions:
+    - 11.4.0
