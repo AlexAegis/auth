@@ -17,9 +17,11 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14
+      - name: Ensure NPM 7
+        run: npm install --global npm@7
       - name: Check if @aegis-auth/jwt is already deployed
         run: |
           VERSION=$(cat ".github/version.txt")

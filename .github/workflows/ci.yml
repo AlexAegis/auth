@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [14.x]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -24,14 +24,16 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2-beta
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Ensure NPM 7
+        run: npm install --global npm@7
       - name: Install packages
         if: steps.cache-packages.outputs.cache-hit != 'true'
         run: npm install --frozen-lockfile
       - name: Lint packages
-        run: npm lint
+        run: npm run lint
       - name: Lint scss stylesheets
         run: npm run lint:scss
       - name: Lint css stylesheets
@@ -46,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [14.x]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -59,9 +61,11 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2-beta
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Ensure NPM 7
+        run: npm install --global npm@7
       - name: Install packages
         if: steps.cache-packages.outputs.cache-hit != 'true'
         run: npm ci
@@ -80,7 +84,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [14.x]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -93,9 +97,11 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2-beta
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Ensure NPM 7
+        run: npm install --global npm@7
       - name: Install packages
         if: steps.cache-packages.outputs.cache-hit != 'true'
         run: npm ci
