@@ -1,8 +1,9 @@
 import { HttpClientModule, HttpErrorResponse, HttpHandler } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
-import { Observer, of } from 'rxjs';
+import { BehaviorSubject, Observer, of } from 'rxjs';
 import { JwtRefreshConfiguration } from '../model/auth-core-configuration.interface';
+import { JwtRefreshStateService } from '../service/jwt-refresh-state.service';
 import { doJwtRefresh } from './do-jwt-refresh.function';
 
 describe('doJwtRefresh', () => {
@@ -24,9 +25,19 @@ describe('doJwtRefresh', () => {
 		complete: jest.fn(),
 	};
 
+	let jwtRefreshStateService: JwtRefreshStateService;
+
 	beforeEach(() => {
 		TestBed.configureTestingModule({
 			imports: [HttpClientModule, HttpClientTestingModule],
+			providers: [
+				{
+					provide: JwtRefreshStateService,
+					useValue: {
+						refreshLock$: new BehaviorSubject(false),
+					} as JwtRefreshStateService,
+				},
+			],
 		});
 	});
 
@@ -36,6 +47,7 @@ describe('doJwtRefresh', () => {
 	it('should call onError and continue with the result of that when the request fails', () => {
 		const httpHandler = TestBed.inject(HttpHandler);
 		const httpTestingController = TestBed.inject(HttpTestingController);
+		jwtRefreshStateService = TestBed.inject(JwtRefreshStateService);
 		const fallback = 'fallback';
 		const errorEvent = new ErrorEvent('error');
 
@@ -48,6 +60,7 @@ describe('doJwtRefresh', () => {
 			httpHandler,
 			requestBody,
 			jwtRefreshConfig,
+			jwtRefreshStateService.refreshLock$,
 			mockOnError,
 			mockOriginalAction
 		).subscribe(mockObserver);
@@ -68,6 +81,7 @@ describe('doJwtRefresh', () => {
 	it('should call return with the result of the original action when the refresh succeeds', () => {
 		const httpHandler = TestBed.inject(HttpHandler);
 		const httpTestingController = TestBed.inject(HttpTestingController);
+		jwtRefreshStateService = TestBed.inject(JwtRefreshStateService);
 		const token = 'token';
 		const returnValue = 'returnValue';
 
@@ -78,6 +92,7 @@ describe('doJwtRefresh', () => {
 			httpHandler,
 			requestBody,
 			jwtRefreshConfig,
+			jwtRefreshStateService.refreshLock$,
 			mockOnError,
 			mockOriginalAction
 		).subscribe(mockObserver);
@@ -94,5 +109,34 @@ describe('doJwtRefresh', () => {
 		expect(mockObserver.next).toHaveBeenCalledWith(returnValue);
 		expect(mockObserver.error).toHaveBeenCalledTimes(0);
 		expect(mockObserver.complete).toHaveBeenCalledTimes(1);
+	});
+
+	it('does set the refreshlock when starting and then unsets if when finished', async () => {
+		const httpHandler = TestBed.inject(HttpHandler);
+		const httpTestingController = TestBed.inject(HttpTestingController);
+
+		jwtRefreshStateService = TestBed.inject(JwtRefreshStateService);
+		const token = 'token';
+		const returnValue = 'returnValue';
+
+		mockTransformRefreshResponse.mockReturnValueOnce(token);
+		mockOriginalAction.mockReturnValueOnce(of(returnValue));
+		const lockSpy = spyOn(jwtRefreshStateService.refreshLock$, 'next');
+
+		expect(jwtRefreshStateService.refreshLock$.value).toBe(false);
+		const doJwtRefreshObservable = doJwtRefresh(
+			httpHandler,
+			requestBody,
+			jwtRefreshConfig,
+			jwtRefreshStateService.refreshLock$,
+			mockOnError,
+			mockOriginalAction
+		);
+		expect(lockSpy).toHaveBeenLastCalledWith(true);
+		doJwtRefreshObservable.subscribe();
+		const mockRequest = httpTestingController.expectOne(jwtRefreshConfig.refreshUrl);
+		mockRequest.flush({ token });
+		expect(lockSpy).toHaveBeenCalledTimes(2);
+		expect(lockSpy).toHaveBeenLastCalledWith(false);
 	});
 });

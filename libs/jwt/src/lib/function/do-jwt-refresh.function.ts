@@ -1,6 +1,6 @@
 import { HttpHandler, HttpRequest } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { catchError, filter, map, mergeMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { catchError, filter, finalize, map, mergeMap, tap } from 'rxjs/operators';
 import {
 	JwtRefreshConfiguration,
 	JwtRefreshResponse,
@@ -12,6 +12,7 @@ export const doJwtRefresh = <Req, Res, Ret>(
 	next: HttpHandler,
 	requestBody: Req,
 	jwtRefreshConfiguration: JwtRefreshConfiguration<Req, Res>,
+	refreshLock: BehaviorSubject<boolean>,
 	onError: (refreshError: unknown) => Observable<Ret>,
 	originalAction: (refreshResponse: JwtRefreshResponse) => Observable<Ret>
 ): Observable<Ret> => {
@@ -21,12 +22,13 @@ export const doJwtRefresh = <Req, Res, Ret>(
 		requestBody,
 		callWhenFunction(jwtRefreshConfiguration.refreshRequestInitials)
 	);
-
+	refreshLock.next(true); // Lock on refresh
 	return next.handle(refreshRequest).pipe(
 		filter(isHttpResponse),
 		map((response) => jwtRefreshConfiguration.transformRefreshResponse(response.body)),
 		tap((refreshResponse) => jwtRefreshConfiguration.setRefreshedTokens(refreshResponse)),
 		mergeMap((refreshResponse) => originalAction(refreshResponse)),
+		finalize(() => refreshLock.next(false)), // Unlock on finish
 		catchError(onError)
 	);
 };

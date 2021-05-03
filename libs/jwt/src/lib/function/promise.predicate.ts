@@ -4,5 +4,6 @@
  * in many ways, and it's just a specification.
  */
 export const isPromise = <T>(promiseLike: unknown): promiseLike is Promise<T> =>
-	typeof (promiseLike as Promise<T>)?.then === 'function' &&
-	typeof (promiseLike as Promise<T>)?.catch === 'function';
+	!!promiseLike &&
+	typeof (promiseLike as Promise<T>).then === 'function' &&
+	typeof (promiseLike as Promise<T>).catch === 'function';

@@ -9,6 +9,7 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { BLACKLISTED_DOMAIN, JWT_HEADER, JWT_SCHEME, WHITELISTED_DOMAIN } from './constants';
 import { FakeBackendInterceptor } from './interceptor/fake-backend.interceptor';
+import { RequestCounterInterceptor } from './interceptor/request-counter.interceptor';
 import { RefreshRequest, RefreshResponse } from './model';
 import { DashboardComponent } from './page/dashboard.component';
 import { ProtectedComponent } from './page/protected.component';
@@ -88,6 +89,11 @@ import { AuthService } from './service';
 		),
 	],
 	providers: [
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: RequestCounterInterceptor,
+			multi: true,
+		},
 		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: FakeBackendInterceptor,

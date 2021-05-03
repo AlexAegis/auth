@@ -26,6 +26,9 @@ export const handleJwtError = <RefreshRequest = unknown, RefreshResponse = unkno
 
 	if (error instanceof JwtCannotRefreshError || error instanceof JwtCouldntRefreshError) {
 		if (jwtRefreshConfiguration && isNotNullish(jwtRefreshConfiguration.onFailure)) {
+			// Unset accesstoken
+			// jwtRefreshConfiguration.setRefreshedTokens({ accessToken: undefined });
+
 			handleJwtFailure(
 				jwtRefreshConfiguration.onFailure,
 				error,

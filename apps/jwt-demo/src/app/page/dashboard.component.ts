@@ -1,4 +1,4 @@
-import { JwtTokenService } from '@aegis-auth/jwt';
+import { JwtRefreshStateService, JwtTokenService } from '@aegis-auth/jwt';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { map } from 'rxjs/operators';
 // TODO: Remove this ignore once this lands: https://github.com/typescript-eslint/typescript-eslint/issues/2972
@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import type { Claims } from '../model/claims.interface';
 import { ApiService } from '../service';
 import { AuthService } from '../service/auth.service';
+import { StateService } from '../service/state.service';
 
 @Component({
 	templateUrl: './dashboard.component.html',
@@ -32,6 +33,8 @@ export class DashboardComponent {
 	public constructor(
 		private readonly auth: AuthService,
 		public readonly api: ApiService,
+		public readonly state: StateService,
+		public readonly jwtRefreshState: JwtRefreshStateService,
 		public readonly jwtTokenService: JwtTokenService<Claims>
 	) {}
 

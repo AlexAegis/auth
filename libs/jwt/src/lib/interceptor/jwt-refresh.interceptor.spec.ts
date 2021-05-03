@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
-import { Observer } from 'rxjs';
+import { BehaviorSubject, Observer } from 'rxjs';
 import { JwtCannotRefreshError, JwtCouldntRefreshError } from '../errors/jwt-error.class';
 import {
 	DEFAULT_JWT_CONFIG,
@@ -16,6 +16,7 @@ import {
 	JwtRefreshConfiguration,
 } from '../model/auth-core-configuration.interface';
 import { JwtToken } from '../model/jwt-token.class';
+import { JwtRefreshStateService } from '../service/jwt-refresh-state.service';
 import {
 	DEFAULT_JWT_CONFIGURATION_TOKEN,
 	DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,
@@ -571,6 +572,117 @@ describe('JwtRefreshInterceptor', () => {
 		expect(errorMock).toBeCalledTimes(0); // Has the request returned errored
 		expect(completeMock).toBeCalledTimes(1); // Has the request returned completed
 		expect(setRefreshedTokensMock).toBeCalledTimes(1); // Has actual refresh happened
+
+		httpTestingController.verify();
+	});
+
+	it('should not refresh if a refresh is already happening, but launch the original request with new tokens when it finishes', () => {
+		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
+			useValue: {
+				createRefreshRequestBody: () => ({
+					refreshToken: 'token',
+				}),
+				refreshUrl: TEST_REFRESH_URL,
+				setRefreshedTokens: setRefreshedTokensMock,
+				errorCodeWhitelist: undefined,
+				transformRefreshResponse: (response) => response,
+			} as JwtRefreshConfiguration<TestRefreshRequest, TestRefreshResponse>,
+		});
+
+		// The token that the "fake" refresh set
+		TestBed.overrideProvider(JWT_CONFIGURATION_TOKEN, {
+			useValue: {
+				getToken: () => TEST_VALID_TOKEN,
+				header: TEST_AUTH_HEADER,
+				scheme: '',
+			} as JwtConfiguration,
+		});
+
+		TestBed.overrideProvider(JwtRefreshStateService, {
+			useValue: {
+				refreshLock$: new BehaviorSubject(true), // Start with a locked state
+			} as JwtRefreshStateService,
+		});
+
+		const jwtRefreshStateService = TestBed.inject(JwtRefreshStateService);
+
+		const { httpClient, httpTestingController, refreshInterceptSpy } = injectCommon();
+
+		httpClient
+			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body', headers: validHeaders })
+			.subscribe(requestObserverMock); // Would trigger a reload
+
+		// No request should happen at this point
+		httpTestingController.expectNone(TEST_REFRESH_URL);
+		httpTestingController.expectNone(TEST_REQUEST_DOMAIN);
+
+		jwtRefreshStateService.refreshLock$.next(false); // Unlock, after request started
+
+		// Check if the request have been made...
+		const mockRequest = httpTestingController.expectOne(TEST_REQUEST_DOMAIN);
+		mockRequest.flush({ result: 'okay' });
+		httpTestingController.expectNone(TEST_REFRESH_URL); // ...but no refresh happened
+
+		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor activated
+		expect(nextMock).toBeCalledTimes(1); // Has the request returned something
+		expect(errorMock).toBeCalledTimes(0); // Has the request returned errored
+		expect(completeMock).toBeCalledTimes(1); // Has the request returned completed
+		expect(setRefreshedTokensMock).toBeCalledTimes(0); // Has actual refresh happened
+
+		httpTestingController.verify();
+	});
+
+	it('should not refresh if a refresh is already happening, and not launch the original request with new tokens when that refresh fails', () => {
+		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
+			useValue: {
+				createRefreshRequestBody: () => ({
+					refreshToken: 'token',
+				}),
+				refreshUrl: TEST_REFRESH_URL,
+				setRefreshedTokens: setRefreshedTokensMock,
+				errorCodeWhitelist: undefined,
+				transformRefreshResponse: (response) => response,
+			} as JwtRefreshConfiguration<TestRefreshRequest, TestRefreshResponse>,
+		});
+
+		// Simulating a totally failed refresh where the accessToken was set to undefined
+		TestBed.overrideProvider(JWT_CONFIGURATION_TOKEN, {
+			useValue: {
+				getToken: () => undefined,
+				header: TEST_AUTH_HEADER,
+				scheme: '',
+			} as JwtConfiguration,
+		});
+
+		TestBed.overrideProvider(JwtRefreshStateService, {
+			useValue: {
+				refreshLock$: new BehaviorSubject(true), // Start with a locked state
+			} as JwtRefreshStateService,
+		});
+
+		const jwtRefreshStateService = TestBed.inject(JwtRefreshStateService);
+
+		const { httpClient, httpTestingController, refreshInterceptSpy } = injectCommon();
+
+		httpClient
+			.get<unknown>(TEST_REQUEST_DOMAIN, { observe: 'body', headers: validHeaders })
+			.subscribe(requestObserverMock); // Would trigger a reload
+
+		// No request should happen at this point
+		httpTestingController.expectNone(TEST_REFRESH_URL);
+		httpTestingController.expectNone(TEST_REQUEST_DOMAIN);
+
+		jwtRefreshStateService.refreshLock$.next(false); // Unlock, after request started
+
+		// The request still should not have been made even with the unlock
+		httpTestingController.expectNone(TEST_REQUEST_DOMAIN);
+		httpTestingController.expectNone(TEST_REFRESH_URL); // ...but no refresh happened
+
+		expect(refreshInterceptSpy).toBeCalledTimes(1); // Have the interceptor activated
+		expect(nextMock).toBeCalledTimes(0); // Has the request returned something
+		expect(errorMock).toBeCalledTimes(1); // Has the request returned errored
+		expect(completeMock).toBeCalledTimes(0); // Has the request returned completed
+		expect(setRefreshedTokensMock).toBeCalledTimes(0); // Has actual refresh happened
 
 		httpTestingController.verify();
 	});

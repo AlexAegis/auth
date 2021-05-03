@@ -1,4 +1,5 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { JwtInjectorInterceptor } from './interceptor/jwt-injector.interceptor';
 import { JwtRefreshInterceptor } from './interceptor/jwt-refresh.interceptor';
@@ -26,7 +27,10 @@ describe('JwtModule', () => {
 
 	it('should create with refresh config', async () => {
 		await TestBed.configureTestingModule({
-			imports: [JwtModule.forRoot({ useValue: {} }, { useValue: {} })],
+			imports: [
+				HttpClientTestingModule,
+				JwtModule.forRoot({ useValue: {} }, { useValue: {} }),
+			],
 		}).compileComponents();
 		expect(JwtModule).toBeDefined();
 		const jwtConfig = TestBed.inject(JWT_CONFIGURATION_TOKEN);

@@ -8,9 +8,10 @@ import {
 	UrlSegment,
 	UrlTree,
 } from '@angular/router';
-import { Observer, of, zip } from 'rxjs';
+import { BehaviorSubject, Observer, of, zip } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { intoObservable } from '../function/into-observable.function';
+import { JwtRefreshStateService } from '../service/jwt-refresh-state.service';
 import { JwtTokenService } from '../service/jwt-token.service';
 import { LoginGuard, LoginGuardData } from './login.guard';
 
@@ -39,6 +40,12 @@ describe('LoginGuard', () => {
 					useValue: {
 						snapshot: { paramMap: convertToParamMap({ id: 'one-id' }) },
 					},
+				},
+				{
+					provide: JwtRefreshStateService,
+					useValue: {
+						refreshLock$: new BehaviorSubject(false),
+					} as JwtRefreshStateService,
 				},
 				{ provide: RouterStateSnapshot, useValue: { url: route.path } },
 			],

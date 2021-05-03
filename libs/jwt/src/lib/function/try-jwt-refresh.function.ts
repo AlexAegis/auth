@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpHandler } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 import {
 	JwtRefreshConfiguration,
@@ -13,12 +13,14 @@ export const tryJwtRefresh = <Req, Res, Ret>(
 	next: HttpHandler,
 	originalError: string | HttpErrorResponse,
 	jwtRefreshConfiguration: JwtRefreshConfiguration<Req, Res>,
+	refreshLock: BehaviorSubject<boolean>,
 	onError: (refreshError: unknown) => Observable<Ret>,
 	originalAction: (refreshResponse: JwtRefreshResponse) => Observable<Ret>
 ): Observable<Ret> => {
 	const isRefreshAllowed =
 		typeof originalError === 'string' ||
 		checkAgainstHttpErrorFilter(jwtRefreshConfiguration, originalError);
+
 	if (isRefreshAllowed) {
 		return intoObservable(jwtRefreshConfiguration.createRefreshRequestBody).pipe(
 			take(1),
@@ -28,6 +30,7 @@ export const tryJwtRefresh = <Req, Res, Ret>(
 						next,
 						requestBody,
 						jwtRefreshConfiguration,
+						refreshLock,
 						onError,
 						originalAction
 					);

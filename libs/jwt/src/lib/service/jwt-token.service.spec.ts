@@ -1,7 +1,7 @@
 import { HttpClientModule, HttpRequest } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
-import { of, zip } from 'rxjs';
+import { BehaviorSubject, of, zip } from 'rxjs';
 import { catchError, take, tap } from 'rxjs/operators';
 import { JwtCouldntRefreshError } from '../errors/jwt-error.class';
 import {
@@ -25,6 +25,7 @@ import {
 	JWT_CONFIGURATION_TOKEN,
 	JWT_REFRESH_CONFIGURATION_TOKEN,
 } from '../token/jwt-configuration.token';
+import { JwtRefreshStateService } from './jwt-refresh-state.service';
 import { JwtTokenService } from './jwt-token.service';
 
 describe('JwtTokenService', () => {
@@ -55,6 +56,12 @@ describe('JwtTokenService', () => {
 						getRefreshToken: () => TEST_VALID_TOKEN,
 					},
 				} as JwtRefreshConfigurationProvider<unknown, unknown>,
+				{
+					provide: JwtRefreshStateService,
+					useValue: {
+						refreshLock$: new BehaviorSubject(false),
+					} as JwtRefreshStateService,
+				},
 			],
 		});
 	});
