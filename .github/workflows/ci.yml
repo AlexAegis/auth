@@ -79,7 +79,7 @@ jobs:
       - name: Upload coverage result to codecov
         run: |
           bash <(curl -s https://codecov.io/bash) \
-          -t ${{ secrets.CODECOV_TOKEN }}
+          -s coverage/* -t ${{ secrets.CODECOV_TOKEN }}
   build:
     runs-on: ubuntu-latest
     strategy:
