@@ -2,10 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [11.1.0](https://github.com/AlexAegis/auth/compare/v11.0.0...v11.1.0) (2021-05-03)
+
+### Features
+
+* **jwt:** refresh lock ([#382](https://github.com/AlexAegis/auth/issues/382)) ([8905cc6](https://github.com/AlexAegis/auth/commit/8905cc6cfcf5fb16a06cd5b7ee400e3a2e731600))
+
 ### [11.0.1](https://github.com/AlexAegis/auth/compare/v11.0.0...v11.0.1) (2021-01-02)
 
 ## [11.0.0](https://github.com/AlexAegis/auth/compare/v10.2.2...v11.0.0) (2020-11-21)
-
 
 ### Features
 
@@ -14,13 +19,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [10.2.2](https://github.com/AlexAegis/auth/compare/v10.2.1...v10.2.2) (2020-09-30)
 
-
 ### Bug Fixes
 
 * **jwt:** fallback instead of error ([1a2bc3b](https://github.com/AlexAegis/auth/commit/1a2bc3be892c7c9a768d738db800c202abfffb3f))
 
 ### [10.2.1](https://github.com/AlexAegis/auth/compare/v10.2.0...v10.2.1) (2020-09-30)
-
 
 ### Bug Fixes
 
@@ -28,14 +31,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [10.2.0](https://github.com/AlexAegis/auth/compare/v10.1.0...v10.2.0) (2020-09-27)
 
-
 ### Features
 
 * **core:** combined demo page ([380a3a4](https://github.com/AlexAegis/auth/commit/380a3a4e9aa5d6bfea3510dafa7d2b90dd803ebe))
 * **jwt:** isExpired streams emit on expiration [#205](https://github.com/AlexAegis/auth/issues/205) ([e867fcc](https://github.com/AlexAegis/auth/commit/e867fcc33e044b1aec0de5ae393a95e0d0f212a8))
 
 ## [10.1.0](https://github.com/AlexAegis/auth/compare/v10.0.0...v10.1.0) (2020-09-06)
-
 
 ### Features
 
