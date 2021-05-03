@@ -7,8 +7,8 @@ import {
 } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError, switchMap, take } from 'rxjs/operators';
-import { JwtCannotRefreshError, JwtCouldntRefreshError } from '../errors/jwt-error.class';
+import { catchError, filter, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { JwtCannotRefreshError, JwtCouldntRefreshError, JwtError } from '../errors/jwt-error.class';
 import { checkAgainstUrlFilter } from '../function/check-against-url-filter.function';
 import { intoObservable } from '../function/into-observable.function';
 import { matchAgainst } from '../function/match-against.function';
@@ -19,6 +19,8 @@ import {
 	JwtRefreshConfiguration,
 } from '../model/auth-core-configuration.interface';
 import { JwtToken } from '../model/jwt-token.class';
+import { JwtRefreshStateService } from '../service/jwt-refresh-state.service';
+import { JwtTokenService } from '../service/jwt-token.service';
 import {
 	DEFAULT_JWT_CONFIGURATION_TOKEN,
 	DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,
@@ -35,13 +37,15 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 
 	public constructor(
 		@Inject(JWT_CONFIGURATION_TOKEN)
-		jwtConfig: JwtConfiguration,
+		readonly jwtConfig: JwtConfiguration,
 		@Inject(DEFAULT_JWT_CONFIGURATION_TOKEN)
-		defaultJwtConfig: JwtConfiguration,
+		readonly defaultJwtConfig: JwtConfiguration,
 		@Inject(JWT_REFRESH_CONFIGURATION_TOKEN)
-		refreshConfig: JwtRefreshConfiguration<unknown, unknown>,
+		readonly refreshConfig: JwtRefreshConfiguration<unknown, unknown>,
 		@Inject(DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN)
-		defaultJwtRefreshConfig: JwtRefreshConfiguration<unknown, unknown>
+		readonly defaultJwtRefreshConfig: JwtRefreshConfiguration<unknown, unknown>,
+		private readonly jwtRefreshStateService: JwtRefreshStateService,
+		private readonly jwtTokenService: JwtTokenService
 	) {
 		this.jwtConfiguration = {
 			...defaultJwtConfig,
@@ -58,6 +62,20 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 		);
 
 		this.isRawRefreshTokenGetterAvailable = !!this.jwtRefreshConfiguration.getRefreshToken;
+	}
+
+	private handleWithToken(
+		request: HttpRequest<unknown>,
+		next: HttpHandler,
+		token: string
+	): Observable<HttpEvent<unknown>> {
+		const requestWithUpdatedTokens = request.clone({
+			headers: request.headers.set(
+				this.jwtConfiguration.header,
+				this.jwtConfiguration.scheme + token
+			),
+		});
+		return next.handle(requestWithUpdatedTokens);
 	}
 
 	public intercept(
@@ -78,6 +96,29 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 			!matchAgainst(request.url)(this.jwtRefreshConfiguration.refreshUrl) &&
 			checkAgainstUrlFilter(this.jwtRefreshConfiguration, separatedUrl)
 		) {
+			// If locked, instead of refreshing, wait for it and get the new accessToken
+			if (this.jwtRefreshStateService.refreshLock$.value) {
+				// When the lock unlocks, retry with the new token
+				return this.jwtRefreshStateService.refreshLock$.pipe(
+					filter((lock) => !lock),
+					take(1),
+					withLatestFrom(this.jwtTokenService.rawAccessToken$),
+					switchMap(([, accessToken]) => {
+						// ...but only if there is actually a token
+						if (accessToken) {
+							return this.handleWithToken(request, next, accessToken);
+						} else {
+							return throwError(
+								JwtError.createErrorResponse(
+									request,
+									'No access token available after waiting for a refresh'
+								)
+							);
+						}
+					})
+				);
+			}
+
 			return this.rawRefreshToken$.pipe(
 				take(1),
 				switchMap((rawRefreshToken) => {
@@ -103,7 +144,6 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 							)
 						);
 					}
-
 					// If the conversion would fail, that would handle the same as an expired token
 					return (isAccessTokenExpiredOrInvalid
 						? // If the token is used and is expired, don't even try the request.
@@ -114,11 +154,12 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 						catchError((error: HttpErrorResponse | string) =>
 							// If the request failed, or we failed at the precheck
 							// Acquire a new token, but only if the error is allowing it
-
+							// If a refresh is already happening, wait for it, and use it's results
 							tryJwtRefresh(
 								next,
 								error,
 								this.jwtRefreshConfiguration,
+								this.jwtRefreshStateService.refreshLock$,
 								(refreshError) =>
 									throwError(
 										JwtCouldntRefreshError.createErrorResponse(
@@ -126,16 +167,8 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 											refreshError
 										)
 									),
-								(refreshResponse) => {
-									const requestWithUpdatedTokens = request.clone({
-										headers: request.headers.set(
-											this.jwtConfiguration.header,
-											this.jwtConfiguration.scheme +
-												refreshResponse.accessToken
-										),
-									});
-									return next.handle(requestWithUpdatedTokens);
-								}
+								(refreshResponse) =>
+									this.handleWithToken(request, next, refreshResponse.accessToken)
 							)
 						)
 					);

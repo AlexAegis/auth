@@ -25,14 +25,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 	public constructor(private readonly auth: AuthService) {}
 
 	public respond(request: HttpRequest<unknown>): Observable<HttpResponse<unknown>> | null {
-		console.log('Trying to fake response', request);
 		if (request.url.indexOf(PATH_LOGIN) > 0 && request.method === HttpMethod.POST) {
 			// Unprotected endpoint
 			const timeout = parseInt(request.params.get('tokenTimeout') || '60', 10);
 			return this.makeResponse(this.auth.generateTokenPair(timeout));
 		} else if (request.url.indexOf(PATH_REFRESH) > 0 && request.method === HttpMethod.POST) {
 			const refreshRequest = request.body as RefreshRequest;
-			console.log('Refreshing', refreshRequest);
 			if (refreshRequest.refreshToken) {
 				if (
 					!isUnixTimestampExpired(JwtToken.from(refreshRequest.refreshToken)?.payload.exp)
@@ -85,7 +83,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 		if (response) {
 			return response.pipe(
 				materialize(),
-				delay(500),
+				delay(1000),
 				tap((a) => console.log('Fake Backend Responded: ', a)),
 				dematerialize()
 			);

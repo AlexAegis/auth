@@ -21,6 +21,7 @@ import {
 	JWT_CONFIGURATION_TOKEN,
 	JWT_REFRESH_CONFIGURATION_TOKEN,
 } from '../token/jwt-configuration.token';
+import { JwtRefreshStateService } from './jwt-refresh-state.service';
 
 @Injectable({
 	providedIn: 'root',
@@ -121,6 +122,7 @@ export class JwtTokenService<
 
 	public constructor(
 		private readonly httpHandler: HttpHandler,
+		private readonly jwtRefreshStateService: JwtRefreshStateService,
 		@Inject(JWT_CONFIGURATION_TOKEN)
 		private readonly rawConfig: JwtConfiguration,
 		@Inject(DEFAULT_JWT_CONFIGURATION_TOKEN)
@@ -149,6 +151,7 @@ export class JwtTokenService<
 				this.httpHandler,
 				'Access token not valid on guard activation',
 				this.refreshConfig,
+				this.jwtRefreshStateService.refreshLock$,
 				(refreshError) =>
 					handleJwtError<RefreshRequest, RefreshResponse>(
 						JwtCouldntRefreshError.createErrorResponse(undefined, refreshError),
