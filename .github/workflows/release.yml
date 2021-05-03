@@ -31,8 +31,7 @@ jobs:
           echo "$VERSION"
           echo "$JWT_IS_ON_NPM"
       - name: Install dependencies
-        if: env.JWT_IS_ON_NPM != 'true' && steps.cache-packages.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm install
       - name: Build
         if: env.JWT_IS_ON_NPM != 'true'
         run: |
