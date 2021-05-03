@@ -6,10 +6,10 @@ import { HttpErrorFilter } from '../model/auth-core-configuration.interface';
  * automatically pass. **Empty whitelist rulesets never pass.** Empty blacklist
  * rulesets always pass.
  */
-export function checkAgainstHttpErrorFilter(
+export const checkAgainstHttpErrorFilter = (
 	httpErrorFilter: HttpErrorFilter,
 	error: HttpErrorResponse
-): boolean {
+): boolean => {
 	const statusMatcher = (code: number) => code === error.status;
 	const errorCodeWhitelistRulesPass =
 		httpErrorFilter.errorCodeWhitelist?.some(statusMatcher) ?? true;
@@ -17,4 +17,4 @@ export function checkAgainstHttpErrorFilter(
 	const errorCodeBlacklistRulesPass = !httpErrorFilter.errorCodeBlacklist?.some(statusMatcher);
 
 	return errorCodeWhitelistRulesPass && errorCodeBlacklistRulesPass;
-}
+};

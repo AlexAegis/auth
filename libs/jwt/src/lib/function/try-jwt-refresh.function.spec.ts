@@ -19,12 +19,14 @@ describe('tryJwtRefresh', () => {
 	const error = {} as HttpErrorResponse;
 	const strError = 'error';
 	const body = 'body';
+	const fallback = 'fallback';
 	const refreshResult = {};
-	const onError = jest.fn();
+	const onError = jest.fn(() => of(fallback));
 	const originalAction = jest.fn();
+	const createRefreshRequestBody: jest.Mock<string | undefined | null, []> = jest.fn(() => body);
 
 	const jwtRefreshConfiguration = ({
-		createRefreshRequestBody: jest.fn(() => body),
+		createRefreshRequestBody,
 	} as unknown) as JwtRefreshConfiguration<unknown, unknown>;
 
 	const mockObserver: Observer<unknown> = {
@@ -37,6 +39,7 @@ describe('tryJwtRefresh', () => {
 
 	it('should just rethrow if the original error is not a string and the error filter does not allow the refresh', () => {
 		mockCheckAgainstHttpErrorFilter.mockImplementationOnce(() => false);
+		createRefreshRequestBody.mockImplementation(() => body);
 		tryJwtRefresh(
 			httpHandler,
 			error,
@@ -53,9 +56,30 @@ describe('tryJwtRefresh', () => {
 		expect(mockObserver.complete).toHaveBeenCalledTimes(0);
 	});
 
+	it('should fall back if the body is nullish', () => {
+		mockCheckAgainstHttpErrorFilter.mockImplementationOnce(() => false);
+		createRefreshRequestBody.mockImplementation(() => null);
+		tryJwtRefresh(
+			httpHandler,
+			strError,
+			jwtRefreshConfiguration,
+			onError,
+			originalAction
+		).subscribe(mockObserver);
+
+		expect(onError).toHaveBeenCalledTimes(1);
+		expect(mockDoJwtRefresh).toHaveBeenCalledTimes(0);
+		expect(mockCheckAgainstHttpErrorFilter).toHaveBeenCalledTimes(0);
+		expect(mockObserver.next).toHaveBeenCalledTimes(1);
+		expect(mockObserver.next).toHaveBeenCalledWith(fallback);
+		expect(mockObserver.error).toHaveBeenCalledTimes(0);
+		expect(mockObserver.complete).toHaveBeenCalledTimes(1);
+	});
+
 	it('should call doRefresh if the original error is a string even when the error filter would not allow the refresh', () => {
 		mockDoJwtRefresh.mockImplementationOnce(() => of(refreshResult));
 		mockCheckAgainstHttpErrorFilter.mockImplementationOnce(() => false);
+		createRefreshRequestBody.mockImplementation(() => body);
 		tryJwtRefresh(
 			httpHandler,
 			strError,

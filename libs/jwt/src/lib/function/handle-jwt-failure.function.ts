@@ -8,12 +8,12 @@ import { isString } from '../function/string.predicate';
  *
  * @internal
  */
-export function handleJwtFailure<E>(
-	errorCallbackOrRedirect: string | ((error: E) => void),
+export const handleJwtFailure = <E>(
+	errorCallbackOrRedirect: string | ((e: E) => void),
 	error: E,
 	router?: Router,
-	redirectParameters?: ((error: E) => HttpParams | Params) | HttpParams | Params
-): void {
+	redirectParameters?: ((e: E) => HttpParams | Params) | HttpParams | Params
+): void => {
 	if (isString(errorCallbackOrRedirect)) {
 		if (router) {
 			let queryParams = redirectParameters;
@@ -36,4 +36,4 @@ export function handleJwtFailure<E>(
 	} else {
 		errorCallbackOrRedirect(error);
 	}
-}
+};

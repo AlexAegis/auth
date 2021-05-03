@@ -67,25 +67,30 @@ export interface JwtTokenPair {
 }
 
 export class JwtToken<Claims = Record<string | number, unknown>> {
+	public static readonly JWT_TOKEN_SEPARATOR = '.';
+
 	public constructor(
 		public header: JwtTokenHeader,
 		public payload: JwtTokenPayload & Claims,
 		public signature: string
 	) {}
-	public static JWT_TOKEN_SEPARATOR = '.';
 
-	public static from<Claims = Record<string | number, unknown>>(
+	public static from<FromClaims = Record<string | number, unknown>>(
 		token: JwtTokenString
-	): JwtToken<Claims> | null {
+	): JwtToken<FromClaims> | null {
 		const convertedSegments = JwtToken.splitTokenString(token);
-		if (!convertedSegments) return null;
+		if (!convertedSegments) {
+			return null;
+		}
 
 		const header = decodeJsonLikeBase64<JwtTokenHeader>(convertedSegments[0]);
-		const payload = decodeJsonLikeBase64<JwtTokenPayload & Claims>(convertedSegments[1]);
+		const payload = decodeJsonLikeBase64<JwtTokenPayload & FromClaims>(convertedSegments[1]);
 		const signature = Base64.decode(convertedSegments[2]); // Not used, only for validation
-		if (!header || !payload || !signature) return null;
+		if (!header || !payload || !signature) {
+			return null;
+		}
 
-		return new JwtToken<Claims>(header, payload, signature);
+		return new JwtToken<FromClaims>(header, payload, signature);
 	}
 
 	public static stripScheme(jwtHeaderValue: string, scheme?: string): JwtTokenString {

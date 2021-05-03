@@ -1,5 +1,37 @@
 {
 	"version": 1,
+	"cli": {
+		"defaultCollection": "@nrwl/angular",
+		"analytics": false
+	},
+	"schematics": {
+		"@schematics/angular": {
+			"component": {
+				"changeDetection": "OnPush",
+				"style": "scss",
+				"flat": true
+			}
+		},
+		"@nrwl/angular": {
+			"application": {
+				"linter": "eslint"
+			},
+			"library": {
+				"linter": "eslint"
+			},
+			"storybook-configuration": {
+				"linter": "eslint"
+			}
+		},
+		"@nrwl/angular:application": {
+			"unitTestRunner": "jest",
+			"e2eTestRunner": "cypress"
+		},
+		"@nrwl/angular:library": {
+			"unitTestRunner": "jest"
+		}
+	},
+	"defaultProject": "core",
 	"projects": {
 		"core": {
 			"projectType": "library",
@@ -20,10 +52,9 @@
 					}
 				},
 				"lint": {
-					"builder": "@angular-devkit/build-angular:tslint",
+					"builder": "@angular-eslint/builder:lint",
 					"options": {
-						"tsConfig": ["libs/core/tsconfig.lib.json", "libs/core/tsconfig.spec.json"],
-						"exclude": ["**/node_modules/**", "!libs/core/**"]
+						"lintFilePatterns": ["libs/core/**/*.ts", "libs/core/**/*.html"]
 					}
 				},
 				"test": {
@@ -32,7 +63,8 @@
 						"jestConfig": "libs/core/jest.config.js",
 						"passWithNoTests": true,
 						"codeCoverage": true
-					}
+					},
+					"outputs": ["coverage/libs/core"]
 				}
 			},
 			"schematics": {
@@ -76,7 +108,6 @@
 							"optimization": true,
 							"outputHashing": "all",
 							"sourceMap": false,
-							"extractCss": true,
 							"namedChunks": false,
 							"extractLicenses": true,
 							"vendorChunk": false,
@@ -94,7 +125,8 @@
 								}
 							]
 						}
-					}
+					},
+					"outputs": ["{options.outputPath}"]
 				},
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
@@ -115,13 +147,9 @@
 					}
 				},
 				"lint": {
-					"builder": "@angular-devkit/build-angular:tslint",
+					"builder": "@angular-eslint/builder:lint",
 					"options": {
-						"tsConfig": [
-							"apps/core-demo/tsconfig.app.json",
-							"apps/core-demo/tsconfig.spec.json"
-						],
-						"exclude": ["**/node_modules/**", "!apps/core-demo/**"]
+						"lintFilePatterns": ["apps/core-demo/**/*.ts", "apps/core-demo/**/*.html"]
 					}
 				},
 				"test": {
@@ -130,7 +158,8 @@
 						"jestConfig": "apps/core-demo/jest.config.js",
 						"passWithNoTests": true,
 						"codeCoverage": false
-					}
+					},
+					"outputs": ["coverage/apps/core-demo"]
 				}
 			}
 		},
@@ -153,10 +182,12 @@
 					}
 				},
 				"lint": {
-					"builder": "@angular-devkit/build-angular:tslint",
+					"builder": "@angular-eslint/builder:lint",
 					"options": {
-						"tsConfig": ["apps/core-demo-e2e/tsconfig.e2e.json"],
-						"exclude": ["**/node_modules/**", "!apps/core-demo-e2e/**"]
+						"lintFilePatterns": [
+							"apps/core-demo-e2e/**/*.ts",
+							"apps/core-demo-e2e/**/*.html"
+						]
 					}
 				}
 			}
@@ -180,10 +211,9 @@
 					}
 				},
 				"lint": {
-					"builder": "@angular-devkit/build-angular:tslint",
+					"builder": "@angular-eslint/builder:lint",
 					"options": {
-						"tsConfig": ["libs/ngrx/tsconfig.lib.json", "libs/ngrx/tsconfig.spec.json"],
-						"exclude": ["**/node_modules/**", "!libs/ngrx/**"]
+						"lintFilePatterns": ["libs/ngrx/**/*.ts", "libs/ngrx/**/*.html"]
 					}
 				},
 				"test": {
@@ -192,7 +222,8 @@
 						"jestConfig": "libs/ngrx/jest.config.js",
 						"passWithNoTests": true,
 						"codeCoverage": true
-					}
+					},
+					"outputs": ["coverage/libs/ngrx"]
 				}
 			},
 			"schematics": {}
@@ -216,10 +247,9 @@
 					}
 				},
 				"lint": {
-					"builder": "@angular-devkit/build-angular:tslint",
+					"builder": "@angular-eslint/builder:lint",
 					"options": {
-						"tsConfig": ["libs/jwt/tsconfig.lib.json", "libs/jwt/tsconfig.spec.json"],
-						"exclude": ["**/node_modules/**", "!libs/jwt/**"]
+						"lintFilePatterns": ["libs/jwt/**/*.ts", "libs/jwt/**/*.html"]
 					}
 				},
 				"test": {
@@ -228,7 +258,8 @@
 						"jestConfig": "libs/jwt/jest.config.js",
 						"passWithNoTests": true,
 						"codeCoverage": true
-					}
+					},
+					"outputs": ["coverage/libs/jwt"]
 				}
 			},
 			"schematics": {}
@@ -268,7 +299,6 @@
 							"optimization": true,
 							"outputHashing": "all",
 							"sourceMap": false,
-							"extractCss": true,
 							"namedChunks": false,
 							"extractLicenses": true,
 							"vendorChunk": false,
@@ -286,7 +316,8 @@
 								}
 							]
 						}
-					}
+					},
+					"outputs": ["{options.outputPath}"]
 				},
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
@@ -307,13 +338,9 @@
 					}
 				},
 				"lint": {
-					"builder": "@angular-devkit/build-angular:tslint",
+					"builder": "@angular-eslint/builder:lint",
 					"options": {
-						"tsConfig": [
-							"apps/jwt-demo/tsconfig.app.json",
-							"apps/jwt-demo/tsconfig.spec.json"
-						],
-						"exclude": ["**/node_modules/**", "!apps/jwt-demo/**"]
+						"lintFilePatterns": ["apps/jwt-demo/**/*.ts", "apps/jwt-demo/**/*.html"]
 					}
 				},
 				"test": {
@@ -322,7 +349,8 @@
 						"jestConfig": "apps/jwt-demo/jest.config.js",
 						"passWithNoTests": true,
 						"codeCoverage": false
-					}
+					},
+					"outputs": ["coverage/apps/jwt-demo"]
 				}
 			}
 		},
@@ -345,27 +373,15 @@
 					}
 				},
 				"lint": {
-					"builder": "@angular-devkit/build-angular:tslint",
+					"builder": "@angular-eslint/builder:lint",
 					"options": {
-						"tsConfig": ["apps/jwt-demo-e2e/tsconfig.e2e.json"],
-						"exclude": ["**/node_modules/**", "!apps/jwt-demo-e2e/**"]
+						"lintFilePatterns": [
+							"apps/jwt-demo-e2e/**/*.ts",
+							"apps/jwt-demo-e2e/**/*.html"
+						]
 					}
 				}
 			}
 		}
-	},
-	"cli": {
-		"defaultCollection": "@nrwl/angular",
-		"analytics": false
-	},
-	"schematics": {
-		"@nrwl/angular:application": {
-			"unitTestRunner": "jest",
-			"e2eTestRunner": "cypress"
-		},
-		"@nrwl/angular:library": {
-			"unitTestRunner": "jest"
-		}
-	},
-	"defaultProject": "core"
+	}
 }

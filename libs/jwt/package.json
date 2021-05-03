@@ -1,7 +1,7 @@
 {
 	"name": "@aegis-auth/jwt",
 	"description": "Angular JWT authentication library",
-	"version": "10.1.0",
+	"version": "11.0.1",
 	"license": "MIT",
 	"author": {
 		"email": "alexaegis@gmail.com",
@@ -29,13 +29,13 @@
 		"javascript"
 	],
 	"peerDependencies": {
-		"@angular/common": "10.*.*",
-		"@angular/core": "10.*.*",
-		"@angular/router": "10.*.*",
-		"rxjs": "6.6.*"
+		"@angular/common": "^11.0.0",
+		"@angular/core": "^11.0.0",
+		"@angular/router": "^11.0.0",
+		"rxjs": "^6.0.0"
 	},
 	"dependencies": {
-		"js-base64": "^3.4.5",
-		"tslib": "2.*.*"
+		"js-base64": "^3.6.0",
+		"tslib": "^2.0.0"
 	}
 }

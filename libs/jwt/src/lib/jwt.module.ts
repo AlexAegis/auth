@@ -8,49 +8,14 @@ import {
 	DEFAULT_JWT_CONFIG,
 	DEFAULT_JWT_REFRESH_CONFIG,
 } from './model/auth-core-configuration.interface';
+import { createJwtConfigurationProvider } from './providers/create-jwt-configuration-provider.function';
+import { createJwtRefreshConfigurationProvider } from './providers/create-jwt-refresh-configuration-provider.function';
 import {
 	DEFAULT_JWT_CONFIGURATION_TOKEN,
 	DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,
-	JwtConfigurationProvider,
 	JwtModuleConfigurationProvider,
 	JwtModuleRefreshConfigurationProvider,
-	JwtRefreshConfigurationProvider,
-	JWT_CONFIGURATION_TOKEN,
-	JWT_REFRESH_CONFIGURATION_TOKEN,
 } from './token/jwt-configuration.token';
-
-/**
- * Helps you define a JwtConfigurationProvider
- *
- * @internal
- */
-export function createJwtConfigurationProvider(
-	tokenConfigurationProvider: JwtModuleConfigurationProvider
-): JwtConfigurationProvider {
-	return {
-		provide: JWT_CONFIGURATION_TOKEN,
-		multi: false,
-		...tokenConfigurationProvider,
-	} as JwtConfigurationProvider;
-}
-
-/**
- * Helps you define a JwtConfigurationProvider
- *
- * @internal
- */
-export function createJwtRefreshConfigurationProvider<RefreshRequest, RefreshResponse>(
-	tokenRefreshConfigurationProvider: JwtModuleRefreshConfigurationProvider<
-		RefreshRequest,
-		RefreshResponse
-	>
-): JwtRefreshConfigurationProvider<RefreshRequest, RefreshResponse> {
-	return {
-		provide: JWT_REFRESH_CONFIGURATION_TOKEN,
-		multi: false,
-		...tokenRefreshConfigurationProvider,
-	} as JwtRefreshConfigurationProvider<RefreshRequest, RefreshResponse>;
-}
 
 /**
  * This module needs to be configured to use. See the

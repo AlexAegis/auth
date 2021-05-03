@@ -22,28 +22,27 @@ jobs:
         uses: actions/cache@v2
         with:
           path: node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2-beta
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Ensure NPM 7
+        run: npm install --global npm@7
       - name: Install packages
-        if: steps.cache-packages.outputs.cache-hit != 'true'
-        run: yarn install
+        run: npm install
       - name: Lint packages
-        run: yarn lint
-      - name: Lint using eslint
-        run: yarn run lint:es
+        run: npm run lint
       - name: Lint scss stylesheets
-        run: yarn run lint:scss
+        run: npm run lint:scss
       - name: Lint css stylesheets
-        run: yarn run lint:css
+        run: npm run lint:css
       - name: Lint markdown
-        run: yarn run lint:md
+        run: npm run lint:md
       - name: Lint markdown with remark
-        run: yarn run lint:rmd
+        run: npm run lint:rmd
       - name: Lint format
-        run: yarn run lint:format
+        run: npm run lint:format
   test:
     runs-on: ubuntu-latest
     strategy:
@@ -56,28 +55,29 @@ jobs:
           fetch-depth: 1
       - name: Cache
         id: cache-packages
-        uses: actions/cache@v1.2.0
+        uses: actions/cache@v2
         with:
           path: node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2-beta
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Ensure NPM 7
+        run: npm install --global npm@7
       - name: Install packages
-        if: steps.cache-packages.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfile
+        run: npm install
       - name: Test
-        run: yarn test:skip-cache
+        run: npm run test:skip-cache
       - name: Upload coverage result to codacy
         run: |
           export CODACY_PROJECT_TOKEN=${{ secrets.CODACY_PROJECT_TOKEN }}
           bash <(curl -Ls https://coverage.codacy.com/get.sh) \
-          -- -r cove/**/*coverage.xml
+          -- -r coverage/**/*coverage.xml
       - name: Upload coverage result to codecov
         run: |
           bash <(curl -s https://codecov.io/bash) \
-          -t ${{ secrets.CODECOV_TOKEN }}
+          -s coverage/* -t ${{ secrets.CODECOV_TOKEN }}
   build:
     runs-on: ubuntu-latest
     strategy:
@@ -90,16 +90,17 @@ jobs:
           fetch-depth: 1
       - name: Cache
         id: cache-packages
-        uses: actions/cache@v1.2.0
+        uses: actions/cache@v2
         with:
           path: node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2-beta
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Ensure NPM 7
+        run: npm install --global npm@7
       - name: Install packages
-        if: steps.cache-packages.outputs.cache-hit != 'true'
-        run: yarn install
+        run: npm install
       - name: Build production
-        run: yarn build
+        run: npm run build

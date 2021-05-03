@@ -9,22 +9,34 @@ import { checkAgainstHttpErrorFilter } from './check-against-http-error-filter.f
 import { doJwtRefresh } from './do-jwt-refresh.function';
 import { intoObservable } from './into-observable.function';
 
-export function tryJwtRefresh<Req, Res, Ret>(
+export const tryJwtRefresh = <Req, Res, Ret>(
 	next: HttpHandler,
 	originalError: string | HttpErrorResponse,
 	jwtRefreshConfiguration: JwtRefreshConfiguration<Req, Res>,
 	onError: (refreshError: unknown) => Observable<Ret>,
 	originalAction: (refreshResponse: JwtRefreshResponse) => Observable<Ret>
-): Observable<Ret> {
+): Observable<Ret> => {
 	const isRefreshAllowed =
 		typeof originalError === 'string' ||
 		checkAgainstHttpErrorFilter(jwtRefreshConfiguration, originalError);
 	if (isRefreshAllowed) {
 		return intoObservable(jwtRefreshConfiguration.createRefreshRequestBody).pipe(
 			take(1),
-			switchMap((requestBody) =>
-				doJwtRefresh(next, requestBody, jwtRefreshConfiguration, onError, originalAction)
-			)
+			switchMap((requestBody) => {
+				if (requestBody) {
+					return doJwtRefresh(
+						next,
+						requestBody,
+						jwtRefreshConfiguration,
+						onError,
+						originalAction
+					);
+				} else {
+					return onError(originalError);
+				}
+			})
 		);
-	} else return throwError(originalError);
-}
+	} else {
+		return throwError(originalError);
+	}
+};

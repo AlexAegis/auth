@@ -1,11 +1,8 @@
 {
-	"mode": "file",
 	"out": "typedocs",
-	"exclude": ["**/*spec.ts"],
+	"exclude": ["**/*spec.ts", "apps"],
+	"entryPoints": ["libs/core/src/index.ts", "libs/jwt/src/index.ts"],
 	"theme": "default",
-	"ignoreCompilerErrors": false,
-	"stripInternal": false,
 	"excludeExternals": true,
-	"excludeNotExported": true,
 	"externalPattern": ["@angular/**"]
 }

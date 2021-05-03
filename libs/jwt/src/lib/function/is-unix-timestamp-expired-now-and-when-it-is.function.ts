@@ -9,8 +9,5 @@ import { isTimestampExpiredNowAndWhenItIs } from './is-timestamp-expired-now-and
  * @param unixTimestamp seconds from the unix epoch 1970-01-01T00:00:00Z
  * if not supplied it will always be expired
  */
-export const isUnixTimestampExpiredNowAndWhenItIs = (
-	unixTimestamp: number
-): Observable<boolean> => {
-	return isTimestampExpiredNowAndWhenItIs(Math.floor(unixTimestamp * 1000));
-};
+export const isUnixTimestampExpiredNowAndWhenItIs = (unixTimestamp: number): Observable<boolean> =>
+	isTimestampExpiredNowAndWhenItIs(Math.floor(unixTimestamp * 1000));

@@ -73,7 +73,8 @@ describe('handleJwtError', () => {
 		expect(mockObserver.complete).toBeCalledTimes(0);
 	});
 
-	it('should call handleJwtError with the values from the jwtRefreshConfig using a JwtCannotRefreshError and rethrow the unwrapped error', () => {
+	it('should call handleJwtError with the values from the jwtRefreshConfig\
+	using a JwtCannotRefreshError and rethrow the unwrapped error', () => {
 		handleJwtError(wrappedJwtCannotRefreshError, jwtConfig, jwtRefreshConfig, router).subscribe(
 			mockObserver
 		);
@@ -91,7 +92,8 @@ describe('handleJwtError', () => {
 		expect(mockObserver.complete).toBeCalledTimes(0);
 	});
 
-	it('should call handleJwtError with the values from the jwtRefreshConfig using a JwtCouldntRefreshError and rethrow the unwrapped error', () => {
+	it('should call handleJwtError with the values from the jwtRefreshConfig\
+	using a JwtCouldntRefreshError and rethrow the unwrapped error', () => {
 		handleJwtError(
 			wrappedJwtCouldntRefreshError,
 			jwtConfig,

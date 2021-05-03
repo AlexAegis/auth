@@ -89,6 +89,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 				tap((a) => console.log('Fake Backend Responded: ', a)),
 				dematerialize()
 			);
-		} else return next.handle(request);
+		} else {
+			return next.handle(request);
+		}
 	}
 }

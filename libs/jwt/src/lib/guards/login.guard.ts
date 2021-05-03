@@ -33,22 +33,6 @@ export class LoginGuard implements CanActivate, CanActivateChild, CanLoad {
 
 	public constructor(private readonly jwtTokenService: JwtTokenService) {}
 
-	private isValid(isRefreshAllowed: boolean | undefined): Observable<boolean> {
-		const allowed =
-			isRefreshAllowed ??
-			this.jwtTokenService.refreshConfig?.isAutoRefreshAllowedInLoginGuardByDefault ??
-			DEFAULT_JWT_REFRESH_CONFIG_DEFAULT_AUTO_IN_GUARD;
-		return this.isAccessTokenValidOnce$.pipe(
-			switchMap((isValid) => {
-				if (!isValid && allowed) {
-					return this.jwtTokenService.manualRefresh();
-				} else {
-					return of(isValid);
-				}
-			})
-		);
-	}
-
 	public canActivate(
 		route: ActivatedRouteSnapshot,
 		_state: RouterStateSnapshot
@@ -71,5 +55,21 @@ export class LoginGuard implements CanActivate, CanActivateChild, CanLoad {
 	): Observable<boolean> | Promise<boolean> | boolean {
 		const data = route.data as LoginGuardData | undefined;
 		return this.isValid(data?.isRefreshAllowed);
+	}
+
+	private isValid(isRefreshAllowed: boolean | undefined): Observable<boolean> {
+		const allowed =
+			isRefreshAllowed ??
+			this.jwtTokenService.refreshConfig?.isAutoRefreshAllowedInLoginGuardByDefault ??
+			DEFAULT_JWT_REFRESH_CONFIG_DEFAULT_AUTO_IN_GUARD;
+		return this.isAccessTokenValidOnce$.pipe(
+			switchMap((isValid) => {
+				if (!isValid && allowed) {
+					return this.jwtTokenService.manualRefresh();
+				} else {
+					return of(isValid);
+				}
+			})
+		);
 	}
 }
