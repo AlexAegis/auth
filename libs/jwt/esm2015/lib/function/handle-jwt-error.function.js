@@ -7,6 +7,8 @@ export const handleJwtError = (wrappedError, jwtConfiguration, jwtRefreshConfigu
     const error = (_a = wrappedError.error) === null || _a === void 0 ? void 0 : _a.error;
     if (error instanceof JwtCannotRefreshError || error instanceof JwtCouldntRefreshError) {
         if (jwtRefreshConfiguration && isNotNullish(jwtRefreshConfiguration.onFailure)) {
+            // Unset accesstoken
+            // jwtRefreshConfiguration.setRefreshedTokens({ accessToken: undefined });
             handleJwtFailure(jwtRefreshConfiguration.onFailure, error, router, jwtRefreshConfiguration.onFailureRedirectParameters);
         }
         // Rethrow the inner error, so observers of the user can see it

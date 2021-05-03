@@ -81,6 +81,8 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse> extend
      * that if the interceptor calls `getToken` again, it will get the token
      * saved with this method.
      *
+     * On a failed refresh it will set the access token as undefined.
+     *
      * @example using `localStorage`
      * 		setToken: (response) => localStorage.setItem('accessToken', response.accessToken)
      * @example using a service.
@@ -99,7 +101,7 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse> extend
      * ```
      *
      */
-    setRefreshedTokens: (response: JwtRefreshResponse) => void;
+    setRefreshedTokens: (response: Partial<JwtRefreshResponse>) => void;
     /**
      * The method for the request, usually it's a POST so that's the default
      *

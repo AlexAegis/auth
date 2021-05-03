@@ -2,7 +2,31 @@
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('rxjs'), require('rxjs/operators'), require('@angular/common/http'), require('@angular/router'), require('js-base64'), require('@angular/common')) :
     typeof define === 'function' && define.amd ? define('@aegis-auth/jwt', ['exports', '@angular/core', 'rxjs', 'rxjs/operators', '@angular/common/http', '@angular/router', 'js-base64', '@angular/common'], factory) :
     (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['aegis-auth'] = global['aegis-auth'] || {}, global['aegis-auth'].jwt = {}), global.ng.core, global.rxjs, global.rxjs.operators, global.ng.common.http, global.ng.router, global.jsBase64, global.ng.common));
-}(this, (function (exports, i0, rxjs, operators, i1, i3, jsBase64, common) { 'use strict';
+}(this, (function (exports, i0, rxjs, operators, i1, i4, jsBase64, common) { 'use strict';
+
+    function _interopNamespace(e) {
+        if (e && e.__esModule) return e;
+        var n = Object.create(null);
+        if (e) {
+            Object.keys(e).forEach(function (k) {
+                if (k !== 'default') {
+                    var d = Object.getOwnPropertyDescriptor(e, k);
+                    Object.defineProperty(n, k, d.get ? d : {
+                        enumerable: true,
+                        get: function () {
+                            return e[k];
+                        }
+                    });
+                }
+            });
+        }
+        n['default'] = e;
+        return Object.freeze(n);
+    }
+
+    var i0__namespace = /*#__PURE__*/_interopNamespace(i0);
+    var i1__namespace = /*#__PURE__*/_interopNamespace(i1);
+    var i4__namespace = /*#__PURE__*/_interopNamespace(i4);
 
     /**
      *
@@ -323,18 +347,21 @@
     function __importDefault(mod) {
         return (mod && mod.__esModule) ? mod : { default: mod };
     }
-    function __classPrivateFieldGet(receiver, privateMap) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to get private field on non-instance");
-        }
-        return privateMap.get(receiver);
+    function __classPrivateFieldGet(receiver, state, kind, f) {
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a getter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot read private member from an object whose class did not declare it");
+        return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
     }
-    function __classPrivateFieldSet(receiver, privateMap, value) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to set private field on non-instance");
-        }
-        privateMap.set(receiver, value);
-        return value;
+    function __classPrivateFieldSet(receiver, state, value, kind, f) {
+        if (kind === "m")
+            throw new TypeError("Private method is not writable");
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a setter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot write private member to an object whose class did not declare it");
+        return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
     }
 
     var JwtError = /** @class */ (function (_super) {
@@ -447,6 +474,8 @@
         var error = (_a = wrappedError.error) === null || _a === void 0 ? void 0 : _a.error;
         if (error instanceof JwtCannotRefreshError || error instanceof JwtCouldntRefreshError) {
             if (jwtRefreshConfiguration && isNotNullish(jwtRefreshConfiguration.onFailure)) {
+                // Unset accesstoken
+                // jwtRefreshConfiguration.setRefreshedTokens({ accessToken: undefined });
                 handleJwtFailure(jwtRefreshConfiguration.onFailure, error, router, jwtRefreshConfiguration.onFailureRedirectParameters);
             }
             // Rethrow the inner error, so observers of the user can see it
@@ -471,7 +500,7 @@
      * Using `instanceof` would not be sufficient as Promises can be contructed
      * in many ways, and it's just a specification.
      */
-    var isPromise = function (promiseLike) { return promiseLike &&
+    var isPromise = function (promiseLike) { return !!promiseLike &&
         typeof promiseLike.then === 'function' &&
         typeof promiseLike.catch === 'function'; };
 
@@ -559,19 +588,21 @@
 
     var isHttpResponse = function (httpEvent) { return httpEvent.type === i1.HttpEventType.Response; };
 
-    var doJwtRefresh = function (next, requestBody, jwtRefreshConfiguration, onError, originalAction) {
+    var doJwtRefresh = function (next, requestBody, jwtRefreshConfiguration, refreshLock, onError, originalAction) {
         var _a;
         var refreshRequest = new i1.HttpRequest((_a = jwtRefreshConfiguration.method) !== null && _a !== void 0 ? _a : 'POST', jwtRefreshConfiguration.refreshUrl, requestBody, callWhenFunction(jwtRefreshConfiguration.refreshRequestInitials));
-        return next.handle(refreshRequest).pipe(operators.filter(isHttpResponse), operators.map(function (response) { return jwtRefreshConfiguration.transformRefreshResponse(response.body); }), operators.tap(function (refreshResponse) { return jwtRefreshConfiguration.setRefreshedTokens(refreshResponse); }), operators.mergeMap(function (refreshResponse) { return originalAction(refreshResponse); }), operators.catchError(onError));
+        refreshLock.next(true); // Lock on refresh
+        return next.handle(refreshRequest).pipe(operators.filter(isHttpResponse), operators.map(function (response) { return jwtRefreshConfiguration.transformRefreshResponse(response.body); }), operators.tap(function (refreshResponse) { return jwtRefreshConfiguration.setRefreshedTokens(refreshResponse); }), operators.mergeMap(function (refreshResponse) { return originalAction(refreshResponse); }), operators.finalize(function () { return refreshLock.next(false); }), // Unlock on finish
+        operators.catchError(onError));
     };
 
-    var tryJwtRefresh = function (next, originalError, jwtRefreshConfiguration, onError, originalAction) {
+    var tryJwtRefresh = function (next, originalError, jwtRefreshConfiguration, refreshLock, onError, originalAction) {
         var isRefreshAllowed = typeof originalError === 'string' ||
             checkAgainstHttpErrorFilter(jwtRefreshConfiguration, originalError);
         if (isRefreshAllowed) {
             return intoObservable(jwtRefreshConfiguration.createRefreshRequestBody).pipe(operators.take(1), operators.switchMap(function (requestBody) {
                 if (requestBody) {
-                    return doJwtRefresh(next, requestBody, jwtRefreshConfiguration, onError, originalAction);
+                    return doJwtRefresh(next, requestBody, jwtRefreshConfiguration, refreshLock, onError, originalAction);
                 }
                 else {
                     return onError(originalError);
@@ -639,10 +670,24 @@
     var JWT_REFRESH_CONFIGURATION_TOKEN = new i0.InjectionToken('AegisJwtRefreshConfiguration');
     var DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN = new i0.InjectionToken('DefaultAegisJwtRefreshConfiguration');
 
+    var JwtRefreshStateService = /** @class */ (function () {
+        function JwtRefreshStateService() {
+            this.refreshLock$ = new rxjs.BehaviorSubject(false);
+        }
+        return JwtRefreshStateService;
+    }());
+    JwtRefreshStateService.ɵprov = i0__namespace.ɵɵdefineInjectable({ factory: function JwtRefreshStateService_Factory() { return new JwtRefreshStateService(); }, token: JwtRefreshStateService, providedIn: "root" });
+    JwtRefreshStateService.decorators = [
+        { type: i0.Injectable, args: [{
+                    providedIn: 'root',
+                },] }
+    ];
+
     var JwtTokenService = /** @class */ (function () {
-        function JwtTokenService(httpHandler, rawConfig, rawDefaultConfig, rawDefaultRefreshConfig, rawRefreshConfig, router) {
+        function JwtTokenService(httpHandler, jwtRefreshStateService, rawConfig, rawDefaultConfig, rawDefaultRefreshConfig, rawRefreshConfig, router) {
             var _a;
             this.httpHandler = httpHandler;
+            this.jwtRefreshStateService = jwtRefreshStateService;
             this.rawConfig = rawConfig;
             this.rawDefaultConfig = rawDefaultConfig;
             this.rawDefaultRefreshConfig = rawDefaultRefreshConfig;
@@ -700,7 +745,7 @@
         JwtTokenService.prototype.manualRefresh = function () {
             var _this = this;
             if (this.refreshConfig) {
-                return tryJwtRefresh(this.httpHandler, 'Access token not valid on guard activation', this.refreshConfig, function (refreshError) { return handleJwtError(JwtCouldntRefreshError.createErrorResponse(undefined, refreshError), _this.config, _this.refreshConfig, _this.router).pipe(operators.catchError(function () { return rxjs.of(false); })); }, function () { return rxjs.of(true); });
+                return tryJwtRefresh(this.httpHandler, 'Access token not valid on guard activation', this.refreshConfig, this.jwtRefreshStateService.refreshLock$, function (refreshError) { return handleJwtError(JwtCouldntRefreshError.createErrorResponse(undefined, refreshError), _this.config, _this.refreshConfig, _this.router).pipe(operators.catchError(function () { return rxjs.of(false); })); }, function () { return rxjs.of(true); });
             }
             else {
                 return rxjs.of(false);
@@ -708,7 +753,7 @@
         };
         return JwtTokenService;
     }());
-    JwtTokenService.ɵprov = i0.ɵɵdefineInjectable({ factory: function JwtTokenService_Factory() { return new JwtTokenService(i0.ɵɵinject(i1.HttpHandler), i0.ɵɵinject(JWT_CONFIGURATION_TOKEN), i0.ɵɵinject(DEFAULT_JWT_CONFIGURATION_TOKEN), i0.ɵɵinject(DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN, 8), i0.ɵɵinject(JWT_REFRESH_CONFIGURATION_TOKEN, 8), i0.ɵɵinject(i3.Router, 8)); }, token: JwtTokenService, providedIn: "root" });
+    JwtTokenService.ɵprov = i0__namespace.ɵɵdefineInjectable({ factory: function JwtTokenService_Factory() { return new JwtTokenService(i0__namespace.ɵɵinject(i1__namespace.HttpHandler), i0__namespace.ɵɵinject(JwtRefreshStateService), i0__namespace.ɵɵinject(JWT_CONFIGURATION_TOKEN), i0__namespace.ɵɵinject(DEFAULT_JWT_CONFIGURATION_TOKEN), i0__namespace.ɵɵinject(DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN, 8), i0__namespace.ɵɵinject(JWT_REFRESH_CONFIGURATION_TOKEN, 8), i0__namespace.ɵɵinject(i4__namespace.Router, 8)); }, token: JwtTokenService, providedIn: "root" });
     JwtTokenService.decorators = [
         { type: i0.Injectable, args: [{
                     providedIn: 'root',
@@ -716,11 +761,12 @@
     ];
     JwtTokenService.ctorParameters = function () { return [
         { type: i1.HttpHandler },
+        { type: JwtRefreshStateService },
         { type: undefined, decorators: [{ type: i0.Inject, args: [JWT_CONFIGURATION_TOKEN,] }] },
         { type: undefined, decorators: [{ type: i0.Inject, args: [DEFAULT_JWT_CONFIGURATION_TOKEN,] }] },
         { type: undefined, decorators: [{ type: i0.Inject, args: [DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,] }, { type: i0.Optional }] },
         { type: undefined, decorators: [{ type: i0.Inject, args: [JWT_REFRESH_CONFIGURATION_TOKEN,] }, { type: i0.Optional }] },
-        { type: i3.Router, decorators: [{ type: i0.Optional }] }
+        { type: i4.Router, decorators: [{ type: i0.Optional }] }
     ]; };
 
     var LoginGuard = /** @class */ (function () {
@@ -755,7 +801,7 @@
         };
         return LoginGuard;
     }());
-    LoginGuard.ɵprov = i0.ɵɵdefineInjectable({ factory: function LoginGuard_Factory() { return new LoginGuard(i0.ɵɵinject(JwtTokenService)); }, token: LoginGuard, providedIn: "root" });
+    LoginGuard.ɵprov = i0__namespace.ɵɵdefineInjectable({ factory: function LoginGuard_Factory() { return new LoginGuard(i0__namespace.ɵɵinject(JwtTokenService)); }, token: LoginGuard, providedIn: "root" });
     LoginGuard.decorators = [
         { type: i0.Injectable, args: [{
                     providedIn: 'root',
@@ -793,7 +839,7 @@
         { type: undefined, decorators: [{ type: i0.Inject, args: [DEFAULT_JWT_CONFIGURATION_TOKEN,] }] },
         { type: undefined, decorators: [{ type: i0.Optional }, { type: i0.Inject, args: [JWT_REFRESH_CONFIGURATION_TOKEN,] }] },
         { type: undefined, decorators: [{ type: i0.Optional }, { type: i0.Inject, args: [DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,] }] },
-        { type: i3.Router, decorators: [{ type: i0.Optional }] }
+        { type: i4.Router, decorators: [{ type: i0.Optional }] }
     ]; };
 
     var matchRule = function (rule, against) {
@@ -905,13 +951,25 @@
     ]; };
 
     var JwtRefreshInterceptor = /** @class */ (function () {
-        function JwtRefreshInterceptor(jwtConfig, defaultJwtConfig, refreshConfig, defaultJwtRefreshConfig) {
+        function JwtRefreshInterceptor(jwtConfig, defaultJwtConfig, refreshConfig, defaultJwtRefreshConfig, jwtRefreshStateService, jwtTokenService) {
             var _a;
+            this.jwtConfig = jwtConfig;
+            this.defaultJwtConfig = defaultJwtConfig;
+            this.refreshConfig = refreshConfig;
+            this.defaultJwtRefreshConfig = defaultJwtRefreshConfig;
+            this.jwtRefreshStateService = jwtRefreshStateService;
+            this.jwtTokenService = jwtTokenService;
             this.jwtConfiguration = Object.assign(Object.assign({}, defaultJwtConfig), jwtConfig);
             this.jwtRefreshConfiguration = Object.assign(Object.assign({}, defaultJwtRefreshConfig), refreshConfig);
             this.rawRefreshToken$ = intoObservable((_a = this.jwtRefreshConfiguration.getRefreshToken) !== null && _a !== void 0 ? _a : (function () { return null; }));
             this.isRawRefreshTokenGetterAvailable = !!this.jwtRefreshConfiguration.getRefreshToken;
         }
+        JwtRefreshInterceptor.prototype.handleWithToken = function (request, next, token) {
+            var requestWithUpdatedTokens = request.clone({
+                headers: request.headers.set(this.jwtConfiguration.header, this.jwtConfiguration.scheme + token),
+            });
+            return next.handle(requestWithUpdatedTokens);
+        };
         JwtRefreshInterceptor.prototype.intercept = function (request, next) {
             var _this = this;
             var separatedUrl = separateUrl(request.url);
@@ -925,6 +983,20 @@
             if (jwtHeaderValue &&
                 !matchAgainst(request.url)(this.jwtRefreshConfiguration.refreshUrl) &&
                 checkAgainstUrlFilter(this.jwtRefreshConfiguration, separatedUrl)) {
+                // If locked, instead of refreshing, wait for it and get the new accessToken
+                if (this.jwtRefreshStateService.refreshLock$.value) {
+                    // When the lock unlocks, retry with the new token
+                    return this.jwtRefreshStateService.refreshLock$.pipe(operators.filter(function (lock) { return !lock; }), operators.take(1), operators.withLatestFrom(this.jwtTokenService.rawAccessToken$), operators.switchMap(function (_b) {
+                        var _c = __read(_b, 2), accessToken = _c[1];
+                        // ...but only if there is actually a token
+                        if (accessToken) {
+                            return _this.handleWithToken(request, next, accessToken);
+                        }
+                        else {
+                            return rxjs.throwError(JwtError.createErrorResponse(request, 'No access token available after waiting for a refresh'));
+                        }
+                    }));
+                }
                 return this.rawRefreshToken$.pipe(operators.take(1), operators.switchMap(function (rawRefreshToken) {
                     var rawToken = JwtToken.stripScheme(jwtHeaderValue, _this.jwtConfiguration.scheme);
                     var token = JwtToken.from(rawToken);
@@ -945,13 +1017,8 @@
                             next.handle(request)).pipe(operators.catchError(function (error) {
                         // If the request failed, or we failed at the precheck
                         // Acquire a new token, but only if the error is allowing it
-                        return tryJwtRefresh(next, error, _this.jwtRefreshConfiguration, function (refreshError) { return rxjs.throwError(JwtCouldntRefreshError.createErrorResponse(request, refreshError)); }, function (refreshResponse) {
-                            var requestWithUpdatedTokens = request.clone({
-                                headers: request.headers.set(_this.jwtConfiguration.header, _this.jwtConfiguration.scheme +
-                                    refreshResponse.accessToken),
-                            });
-                            return next.handle(requestWithUpdatedTokens);
-                        });
+                        // If a refresh is already happening, wait for it, and use it's results
+                        return tryJwtRefresh(next, error, _this.jwtRefreshConfiguration, _this.jwtRefreshStateService.refreshLock$, function (refreshError) { return rxjs.throwError(JwtCouldntRefreshError.createErrorResponse(request, refreshError)); }, function (refreshResponse) { return _this.handleWithToken(request, next, refreshResponse.accessToken); });
                     }));
                 }));
             }
@@ -968,7 +1035,9 @@
         { type: undefined, decorators: [{ type: i0.Inject, args: [JWT_CONFIGURATION_TOKEN,] }] },
         { type: undefined, decorators: [{ type: i0.Inject, args: [DEFAULT_JWT_CONFIGURATION_TOKEN,] }] },
         { type: undefined, decorators: [{ type: i0.Inject, args: [JWT_REFRESH_CONFIGURATION_TOKEN,] }] },
-        { type: undefined, decorators: [{ type: i0.Inject, args: [DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,] }] }
+        { type: undefined, decorators: [{ type: i0.Inject, args: [DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,] }] },
+        { type: JwtRefreshStateService },
+        { type: JwtTokenService }
     ]; };
 
     /**
@@ -1063,19 +1132,22 @@
     exports.DEFAULT_JWT_REFRESH_CONFIG_DEFAULT_AUTO_IN_GUARD = DEFAULT_JWT_REFRESH_CONFIG_DEFAULT_AUTO_IN_GUARD;
     exports.DEFAULT_JWT_SCHEME = DEFAULT_JWT_SCHEME;
     exports.JwtModule = JwtModule;
+    exports.JwtRefreshStateService = JwtRefreshStateService;
     exports.JwtToken = JwtToken;
     exports.JwtTokenService = JwtTokenService;
     exports.LoginGuard = LoginGuard;
     exports.createJwtConfigurationProvider = createJwtConfigurationProvider;
     exports.createJwtRefreshConfigurationProvider = createJwtRefreshConfigurationProvider;
     exports.isUnixTimestampExpired = isUnixTimestampExpired;
-    exports.ɵa = JWT_CONFIGURATION_TOKEN;
-    exports.ɵb = DEFAULT_JWT_CONFIGURATION_TOKEN;
-    exports.ɵc = JWT_REFRESH_CONFIGURATION_TOKEN;
-    exports.ɵd = DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN;
-    exports.ɵe = JwtErrorHandlingInterceptor;
-    exports.ɵf = JwtInjectorInterceptor;
-    exports.ɵg = JwtRefreshInterceptor;
+    exports.ɵa = JwtTokenService;
+    exports.ɵb = JWT_CONFIGURATION_TOKEN;
+    exports.ɵc = DEFAULT_JWT_CONFIGURATION_TOKEN;
+    exports.ɵd = JWT_REFRESH_CONFIGURATION_TOKEN;
+    exports.ɵe = DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN;
+    exports.ɵf = JwtRefreshStateService;
+    exports.ɵg = JwtErrorHandlingInterceptor;
+    exports.ɵh = JwtInjectorInterceptor;
+    exports.ɵi = JwtRefreshInterceptor;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

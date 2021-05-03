@@ -1,7 +1,10 @@
-import { InjectionToken, ɵɵdefineInjectable, ɵɵinject, Injectable, Inject, Optional, NgModule } from '@angular/core';
+import * as i0 from '@angular/core';
+import { InjectionToken, Injectable, Inject, Optional, NgModule } from '@angular/core';
 import { BehaviorSubject, throwError, isObservable, of, from, merge, timer } from 'rxjs';
-import { switchMap, mapTo, filter, map, tap, mergeMap, catchError, take } from 'rxjs/operators';
+import { switchMap, mapTo, filter, map, tap, mergeMap, finalize, catchError, take, withLatestFrom } from 'rxjs/operators';
+import * as i1 from '@angular/common/http';
 import { HttpErrorResponse, HttpEventType, HttpRequest, HttpHandler, HTTP_INTERCEPTORS } from '@angular/common/http';
+import * as i4 from '@angular/router';
 import { Router } from '@angular/router';
 import { Base64 } from 'js-base64';
 import { CommonModule } from '@angular/common';
@@ -127,6 +130,8 @@ const handleJwtError = (wrappedError, jwtConfiguration, jwtRefreshConfiguration,
     const error = (_a = wrappedError.error) === null || _a === void 0 ? void 0 : _a.error;
     if (error instanceof JwtCannotRefreshError || error instanceof JwtCouldntRefreshError) {
         if (jwtRefreshConfiguration && isNotNullish(jwtRefreshConfiguration.onFailure)) {
+            // Unset accesstoken
+            // jwtRefreshConfiguration.setRefreshedTokens({ accessToken: undefined });
             handleJwtFailure(jwtRefreshConfiguration.onFailure, error, router, jwtRefreshConfiguration.onFailureRedirectParameters);
         }
         // Rethrow the inner error, so observers of the user can see it
@@ -151,7 +156,7 @@ const isFunction = (funlike) => typeof funlike === 'function';
  * Using `instanceof` would not be sufficient as Promises can be contructed
  * in many ways, and it's just a specification.
  */
-const isPromise = (promiseLike) => promiseLike &&
+const isPromise = (promiseLike) => !!promiseLike &&
     typeof promiseLike.then === 'function' &&
     typeof promiseLike.catch === 'function';
 
@@ -239,19 +244,21 @@ const callWhenFunction = (functionLike) => {
 
 const isHttpResponse = (httpEvent) => httpEvent.type === HttpEventType.Response;
 
-const doJwtRefresh = (next, requestBody, jwtRefreshConfiguration, onError, originalAction) => {
+const doJwtRefresh = (next, requestBody, jwtRefreshConfiguration, refreshLock, onError, originalAction) => {
     var _a;
     const refreshRequest = new HttpRequest((_a = jwtRefreshConfiguration.method) !== null && _a !== void 0 ? _a : 'POST', jwtRefreshConfiguration.refreshUrl, requestBody, callWhenFunction(jwtRefreshConfiguration.refreshRequestInitials));
-    return next.handle(refreshRequest).pipe(filter(isHttpResponse), map((response) => jwtRefreshConfiguration.transformRefreshResponse(response.body)), tap((refreshResponse) => jwtRefreshConfiguration.setRefreshedTokens(refreshResponse)), mergeMap((refreshResponse) => originalAction(refreshResponse)), catchError(onError));
+    refreshLock.next(true); // Lock on refresh
+    return next.handle(refreshRequest).pipe(filter(isHttpResponse), map((response) => jwtRefreshConfiguration.transformRefreshResponse(response.body)), tap((refreshResponse) => jwtRefreshConfiguration.setRefreshedTokens(refreshResponse)), mergeMap((refreshResponse) => originalAction(refreshResponse)), finalize(() => refreshLock.next(false)), // Unlock on finish
+    catchError(onError));
 };
 
-const tryJwtRefresh = (next, originalError, jwtRefreshConfiguration, onError, originalAction) => {
+const tryJwtRefresh = (next, originalError, jwtRefreshConfiguration, refreshLock, onError, originalAction) => {
     const isRefreshAllowed = typeof originalError === 'string' ||
         checkAgainstHttpErrorFilter(jwtRefreshConfiguration, originalError);
     if (isRefreshAllowed) {
         return intoObservable(jwtRefreshConfiguration.createRefreshRequestBody).pipe(take(1), switchMap((requestBody) => {
             if (requestBody) {
-                return doJwtRefresh(next, requestBody, jwtRefreshConfiguration, onError, originalAction);
+                return doJwtRefresh(next, requestBody, jwtRefreshConfiguration, refreshLock, onError, originalAction);
             }
             else {
                 return onError(originalError);
@@ -317,10 +324,23 @@ const DEFAULT_JWT_CONFIGURATION_TOKEN = new InjectionToken('DefaultAegisJwtConfi
 const JWT_REFRESH_CONFIGURATION_TOKEN = new InjectionToken('AegisJwtRefreshConfiguration');
 const DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN = new InjectionToken('DefaultAegisJwtRefreshConfiguration');
 
+class JwtRefreshStateService {
+    constructor() {
+        this.refreshLock$ = new BehaviorSubject(false);
+    }
+}
+JwtRefreshStateService.ɵprov = i0.ɵɵdefineInjectable({ factory: function JwtRefreshStateService_Factory() { return new JwtRefreshStateService(); }, token: JwtRefreshStateService, providedIn: "root" });
+JwtRefreshStateService.decorators = [
+    { type: Injectable, args: [{
+                providedIn: 'root',
+            },] }
+];
+
 class JwtTokenService {
-    constructor(httpHandler, rawConfig, rawDefaultConfig, rawDefaultRefreshConfig, rawRefreshConfig, router) {
+    constructor(httpHandler, jwtRefreshStateService, rawConfig, rawDefaultConfig, rawDefaultRefreshConfig, rawRefreshConfig, router) {
         var _a;
         this.httpHandler = httpHandler;
+        this.jwtRefreshStateService = jwtRefreshStateService;
         this.rawConfig = rawConfig;
         this.rawDefaultConfig = rawDefaultConfig;
         this.rawDefaultRefreshConfig = rawDefaultRefreshConfig;
@@ -377,14 +397,14 @@ class JwtTokenService {
      */
     manualRefresh() {
         if (this.refreshConfig) {
-            return tryJwtRefresh(this.httpHandler, 'Access token not valid on guard activation', this.refreshConfig, (refreshError) => handleJwtError(JwtCouldntRefreshError.createErrorResponse(undefined, refreshError), this.config, this.refreshConfig, this.router).pipe(catchError(() => of(false))), () => of(true));
+            return tryJwtRefresh(this.httpHandler, 'Access token not valid on guard activation', this.refreshConfig, this.jwtRefreshStateService.refreshLock$, (refreshError) => handleJwtError(JwtCouldntRefreshError.createErrorResponse(undefined, refreshError), this.config, this.refreshConfig, this.router).pipe(catchError(() => of(false))), () => of(true));
         }
         else {
             return of(false);
         }
     }
 }
-JwtTokenService.ɵprov = ɵɵdefineInjectable({ factory: function JwtTokenService_Factory() { return new JwtTokenService(ɵɵinject(HttpHandler), ɵɵinject(JWT_CONFIGURATION_TOKEN), ɵɵinject(DEFAULT_JWT_CONFIGURATION_TOKEN), ɵɵinject(DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN, 8), ɵɵinject(JWT_REFRESH_CONFIGURATION_TOKEN, 8), ɵɵinject(Router, 8)); }, token: JwtTokenService, providedIn: "root" });
+JwtTokenService.ɵprov = i0.ɵɵdefineInjectable({ factory: function JwtTokenService_Factory() { return new JwtTokenService(i0.ɵɵinject(i1.HttpHandler), i0.ɵɵinject(JwtRefreshStateService), i0.ɵɵinject(JWT_CONFIGURATION_TOKEN), i0.ɵɵinject(DEFAULT_JWT_CONFIGURATION_TOKEN), i0.ɵɵinject(DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN, 8), i0.ɵɵinject(JWT_REFRESH_CONFIGURATION_TOKEN, 8), i0.ɵɵinject(i4.Router, 8)); }, token: JwtTokenService, providedIn: "root" });
 JwtTokenService.decorators = [
     { type: Injectable, args: [{
                 providedIn: 'root',
@@ -392,6 +412,7 @@ JwtTokenService.decorators = [
 ];
 JwtTokenService.ctorParameters = () => [
     { type: HttpHandler },
+    { type: JwtRefreshStateService },
     { type: undefined, decorators: [{ type: Inject, args: [JWT_CONFIGURATION_TOKEN,] }] },
     { type: undefined, decorators: [{ type: Inject, args: [DEFAULT_JWT_CONFIGURATION_TOKEN,] }] },
     { type: undefined, decorators: [{ type: Inject, args: [DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,] }, { type: Optional }] },
@@ -429,7 +450,7 @@ class LoginGuard {
         }));
     }
 }
-LoginGuard.ɵprov = ɵɵdefineInjectable({ factory: function LoginGuard_Factory() { return new LoginGuard(ɵɵinject(JwtTokenService)); }, token: LoginGuard, providedIn: "root" });
+LoginGuard.ɵprov = i0.ɵɵdefineInjectable({ factory: function LoginGuard_Factory() { return new LoginGuard(i0.ɵɵinject(JwtTokenService)); }, token: LoginGuard, providedIn: "root" });
 LoginGuard.decorators = [
     { type: Injectable, args: [{
                 providedIn: 'root',
@@ -571,12 +592,24 @@ JwtInjectorInterceptor.ctorParameters = () => [
 ];
 
 class JwtRefreshInterceptor {
-    constructor(jwtConfig, defaultJwtConfig, refreshConfig, defaultJwtRefreshConfig) {
+    constructor(jwtConfig, defaultJwtConfig, refreshConfig, defaultJwtRefreshConfig, jwtRefreshStateService, jwtTokenService) {
         var _a;
+        this.jwtConfig = jwtConfig;
+        this.defaultJwtConfig = defaultJwtConfig;
+        this.refreshConfig = refreshConfig;
+        this.defaultJwtRefreshConfig = defaultJwtRefreshConfig;
+        this.jwtRefreshStateService = jwtRefreshStateService;
+        this.jwtTokenService = jwtTokenService;
         this.jwtConfiguration = Object.assign(Object.assign({}, defaultJwtConfig), jwtConfig);
         this.jwtRefreshConfiguration = Object.assign(Object.assign({}, defaultJwtRefreshConfig), refreshConfig);
         this.rawRefreshToken$ = intoObservable((_a = this.jwtRefreshConfiguration.getRefreshToken) !== null && _a !== void 0 ? _a : (() => null));
         this.isRawRefreshTokenGetterAvailable = !!this.jwtRefreshConfiguration.getRefreshToken;
+    }
+    handleWithToken(request, next, token) {
+        const requestWithUpdatedTokens = request.clone({
+            headers: request.headers.set(this.jwtConfiguration.header, this.jwtConfiguration.scheme + token),
+        });
+        return next.handle(requestWithUpdatedTokens);
     }
     intercept(request, next) {
         const separatedUrl = separateUrl(request.url);
@@ -590,6 +623,19 @@ class JwtRefreshInterceptor {
         if (jwtHeaderValue &&
             !matchAgainst(request.url)(this.jwtRefreshConfiguration.refreshUrl) &&
             checkAgainstUrlFilter(this.jwtRefreshConfiguration, separatedUrl)) {
+            // If locked, instead of refreshing, wait for it and get the new accessToken
+            if (this.jwtRefreshStateService.refreshLock$.value) {
+                // When the lock unlocks, retry with the new token
+                return this.jwtRefreshStateService.refreshLock$.pipe(filter((lock) => !lock), take(1), withLatestFrom(this.jwtTokenService.rawAccessToken$), switchMap(([, accessToken]) => {
+                    // ...but only if there is actually a token
+                    if (accessToken) {
+                        return this.handleWithToken(request, next, accessToken);
+                    }
+                    else {
+                        return throwError(JwtError.createErrorResponse(request, 'No access token available after waiting for a refresh'));
+                    }
+                }));
+            }
             return this.rawRefreshToken$.pipe(take(1), switchMap((rawRefreshToken) => {
                 const rawToken = JwtToken.stripScheme(jwtHeaderValue, this.jwtConfiguration.scheme);
                 const token = JwtToken.from(rawToken);
@@ -610,13 +656,8 @@ class JwtRefreshInterceptor {
                         next.handle(request)).pipe(catchError((error) => 
                 // If the request failed, or we failed at the precheck
                 // Acquire a new token, but only if the error is allowing it
-                tryJwtRefresh(next, error, this.jwtRefreshConfiguration, (refreshError) => throwError(JwtCouldntRefreshError.createErrorResponse(request, refreshError)), (refreshResponse) => {
-                    const requestWithUpdatedTokens = request.clone({
-                        headers: request.headers.set(this.jwtConfiguration.header, this.jwtConfiguration.scheme +
-                            refreshResponse.accessToken),
-                    });
-                    return next.handle(requestWithUpdatedTokens);
-                })));
+                // If a refresh is already happening, wait for it, and use it's results
+                tryJwtRefresh(next, error, this.jwtRefreshConfiguration, this.jwtRefreshStateService.refreshLock$, (refreshError) => throwError(JwtCouldntRefreshError.createErrorResponse(request, refreshError)), (refreshResponse) => this.handleWithToken(request, next, refreshResponse.accessToken))));
             }));
         }
         else {
@@ -631,7 +672,9 @@ JwtRefreshInterceptor.ctorParameters = () => [
     { type: undefined, decorators: [{ type: Inject, args: [JWT_CONFIGURATION_TOKEN,] }] },
     { type: undefined, decorators: [{ type: Inject, args: [DEFAULT_JWT_CONFIGURATION_TOKEN,] }] },
     { type: undefined, decorators: [{ type: Inject, args: [JWT_REFRESH_CONFIGURATION_TOKEN,] }] },
-    { type: undefined, decorators: [{ type: Inject, args: [DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,] }] }
+    { type: undefined, decorators: [{ type: Inject, args: [DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,] }] },
+    { type: JwtRefreshStateService },
+    { type: JwtTokenService }
 ];
 
 /**
@@ -717,5 +760,5 @@ var HttpMethod;
  * Generated bundle index. Do not edit.
  */
 
-export { DEFAULT_HEADER_CONFIG, DEFAULT_JWT_CONFIG, DEFAULT_JWT_HEADER, DEFAULT_JWT_REFRESH_CONFIG, DEFAULT_JWT_REFRESH_CONFIG_DEFAULT_AUTO_IN_GUARD, DEFAULT_JWT_SCHEME, HttpMethod, JwtModule, JwtToken, JwtTokenService, LoginGuard, createJwtConfigurationProvider, createJwtRefreshConfigurationProvider, isUnixTimestampExpired, JWT_CONFIGURATION_TOKEN as ɵa, DEFAULT_JWT_CONFIGURATION_TOKEN as ɵb, JWT_REFRESH_CONFIGURATION_TOKEN as ɵc, DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN as ɵd, JwtErrorHandlingInterceptor as ɵe, JwtInjectorInterceptor as ɵf, JwtRefreshInterceptor as ɵg };
+export { DEFAULT_HEADER_CONFIG, DEFAULT_JWT_CONFIG, DEFAULT_JWT_HEADER, DEFAULT_JWT_REFRESH_CONFIG, DEFAULT_JWT_REFRESH_CONFIG_DEFAULT_AUTO_IN_GUARD, DEFAULT_JWT_SCHEME, HttpMethod, JwtModule, JwtRefreshStateService, JwtToken, JwtTokenService, LoginGuard, createJwtConfigurationProvider, createJwtRefreshConfigurationProvider, isUnixTimestampExpired, JwtTokenService as ɵa, JWT_CONFIGURATION_TOKEN as ɵb, DEFAULT_JWT_CONFIGURATION_TOKEN as ɵc, JWT_REFRESH_CONFIGURATION_TOKEN as ɵd, DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN as ɵe, JwtRefreshStateService as ɵf, JwtErrorHandlingInterceptor as ɵg, JwtInjectorInterceptor as ɵh, JwtRefreshInterceptor as ɵi };
 //# sourceMappingURL=aegis-auth-jwt.js.map

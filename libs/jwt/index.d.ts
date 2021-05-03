@@ -7,4 +7,4 @@ export { HttpMethod } from './lib/model/http-method.enum';
 export { JwtToken, JwtTokenPair, JwtTokenPayload } from './lib/model/jwt-token.class';
 export * from './lib/providers/create-jwt-configuration-provider.function';
 export * from './lib/providers/create-jwt-refresh-configuration-provider.function';
-export { JwtTokenService } from './lib/service/jwt-token.service';
+export * from './lib/service';

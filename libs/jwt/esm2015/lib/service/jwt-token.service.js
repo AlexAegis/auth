@@ -12,14 +12,17 @@ import { isString } from '../function/string.predicate';
 import { tryJwtRefresh } from '../function/try-jwt-refresh.function';
 import { JwtToken } from '../model/jwt-token.class';
 import { DEFAULT_JWT_CONFIGURATION_TOKEN, DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN, JWT_CONFIGURATION_TOKEN, JWT_REFRESH_CONFIGURATION_TOKEN, } from '../token/jwt-configuration.token';
+import { JwtRefreshStateService } from './jwt-refresh-state.service';
 import * as i0 from "@angular/core";
 import * as i1 from "@angular/common/http";
-import * as i2 from "../token/jwt-configuration.token";
-import * as i3 from "@angular/router";
+import * as i2 from "./jwt-refresh-state.service";
+import * as i3 from "../token/jwt-configuration.token";
+import * as i4 from "@angular/router";
 export class JwtTokenService {
-    constructor(httpHandler, rawConfig, rawDefaultConfig, rawDefaultRefreshConfig, rawRefreshConfig, router) {
+    constructor(httpHandler, jwtRefreshStateService, rawConfig, rawDefaultConfig, rawDefaultRefreshConfig, rawRefreshConfig, router) {
         var _a;
         this.httpHandler = httpHandler;
+        this.jwtRefreshStateService = jwtRefreshStateService;
         this.rawConfig = rawConfig;
         this.rawDefaultConfig = rawDefaultConfig;
         this.rawDefaultRefreshConfig = rawDefaultRefreshConfig;
@@ -76,14 +79,14 @@ export class JwtTokenService {
      */
     manualRefresh() {
         if (this.refreshConfig) {
-            return tryJwtRefresh(this.httpHandler, 'Access token not valid on guard activation', this.refreshConfig, (refreshError) => handleJwtError(JwtCouldntRefreshError.createErrorResponse(undefined, refreshError), this.config, this.refreshConfig, this.router).pipe(catchError(() => of(false))), () => of(true));
+            return tryJwtRefresh(this.httpHandler, 'Access token not valid on guard activation', this.refreshConfig, this.jwtRefreshStateService.refreshLock$, (refreshError) => handleJwtError(JwtCouldntRefreshError.createErrorResponse(undefined, refreshError), this.config, this.refreshConfig, this.router).pipe(catchError(() => of(false))), () => of(true));
         }
         else {
             return of(false);
         }
     }
 }
-JwtTokenService.ɵprov = i0.ɵɵdefineInjectable({ factory: function JwtTokenService_Factory() { return new JwtTokenService(i0.ɵɵinject(i1.HttpHandler), i0.ɵɵinject(i2.JWT_CONFIGURATION_TOKEN), i0.ɵɵinject(i2.DEFAULT_JWT_CONFIGURATION_TOKEN), i0.ɵɵinject(i2.DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN, 8), i0.ɵɵinject(i2.JWT_REFRESH_CONFIGURATION_TOKEN, 8), i0.ɵɵinject(i3.Router, 8)); }, token: JwtTokenService, providedIn: "root" });
+JwtTokenService.ɵprov = i0.ɵɵdefineInjectable({ factory: function JwtTokenService_Factory() { return new JwtTokenService(i0.ɵɵinject(i1.HttpHandler), i0.ɵɵinject(i2.JwtRefreshStateService), i0.ɵɵinject(i3.JWT_CONFIGURATION_TOKEN), i0.ɵɵinject(i3.DEFAULT_JWT_CONFIGURATION_TOKEN), i0.ɵɵinject(i3.DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN, 8), i0.ɵɵinject(i3.JWT_REFRESH_CONFIGURATION_TOKEN, 8), i0.ɵɵinject(i4.Router, 8)); }, token: JwtTokenService, providedIn: "root" });
 JwtTokenService.decorators = [
     { type: Injectable, args: [{
                 providedIn: 'root',
@@ -91,6 +94,7 @@ JwtTokenService.decorators = [
 ];
 JwtTokenService.ctorParameters = () => [
     { type: HttpHandler },
+    { type: JwtRefreshStateService },
     { type: undefined, decorators: [{ type: Inject, args: [JWT_CONFIGURATION_TOKEN,] }] },
     { type: undefined, decorators: [{ type: Inject, args: [DEFAULT_JWT_CONFIGURATION_TOKEN,] }] },
     { type: undefined, decorators: [{ type: Inject, args: [DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN,] }, { type: Optional }] },
