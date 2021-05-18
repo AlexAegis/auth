@@ -85,8 +85,14 @@
 			"prefix": "aegis-auth",
 			"architect": {
 				"build": {
-					"builder": "@angular-devkit/build-angular:browser",
+					"builder": "@angular-builders/custom-webpack:browser",
 					"options": {
+						"customWebpackConfig": {
+							"path": "./webpack.config.js",
+							"mergeStrategies": {
+								"externals": "replace"
+							}
+						},
 						"outputPath": "dist/apps/core-demo",
 						"index": "apps/core-demo/src/index.html",
 						"main": "apps/core-demo/src/main.ts",
