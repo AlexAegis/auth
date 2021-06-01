@@ -110,7 +110,7 @@
 		"@fortawesome/free-solid-svg-icons": "^5.15.3",
 		"@nrwl/angular": "12.1.0",
 		"core-js": "~3.11.2",
-		"rxjs": "~6.5.3",
+		"rxjs": "~6.6.6",
 		"tslib": "^2.2.0",
 		"zone.js": "~0.11.4"
 	},
