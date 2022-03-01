@@ -125,7 +125,7 @@
 		"@angular/compiler-cli": "11.2.12",
 		"@angular/language-service": "11.2.12",
 		"@commitlint/cli": "~12.1.1",
-		"@commitlint/config-conventional": "~12.1.2",
+		"@commitlint/config-conventional": "~16.2.1",
 		"@nrwl/cypress": "12.1.0",
 		"@nrwl/eslint-plugin-nx": "12.1.0",
 		"@nrwl/jest": "12.0.8",
