@@ -17,37 +17,13 @@
 	},
 	"tasksRunnerOptions": {
 		"default": {
-			"runner": "@nrwl/workspace/tasks-runners/default",
+			"runner": "nx/tasks-runners/default",
 			"options": {
 				"cacheableOperations": ["build", "lint", "test", "e2e"],
 				"runtimeCacheInputs": ["node -v"],
-				"cacheDirectory": ".cache/nx"
+				"cacheDirectory": ".cache/nx",
+				"parallel": 1
 			}
-		}
-	},
-	"projects": {
-		"core": {
-			"tags": ["lib"]
-		},
-		"core-demo": {
-			"tags": ["app"]
-		},
-		"core-demo-e2e": {
-			"tags": [],
-			"implicitDependencies": ["core-demo"]
-		},
-		"jwt": {
-			"tags": []
-		},
-		"jwt-demo": {
-			"tags": []
-		},
-		"jwt-demo-e2e": {
-			"tags": [],
-			"implicitDependencies": ["jwt-demo"]
-		},
-		"ngrx": {
-			"tags": []
 		}
 	},
 	"targetDependencies": {

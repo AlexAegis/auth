@@ -1,7 +1,7 @@
 module.exports = {
-	name: 'ngrx',
-	preset: '../../jest.preset.js',
-	coverageDirectory: '../../coverage/libs/ngrx',
+	name: 'jwt-demo',
+
+	coverageDirectory: '../../coverage/apps/jwt-demo',
 
 	setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
 	globals: {
@@ -15,5 +15,9 @@ module.exports = {
 		'jest-preset-angular/build/serializers/ng-snapshot',
 		'jest-preset-angular/build/serializers/html-comment',
 	],
-	transform: { '^.+\\.(ts|js|html)$': 'jest-preset-angular' },
+	transform: {
+		'^.+.(ts|mjs|js|html)$': 'jest-preset-angular',
+	},
+	transformIgnorePatterns: ['node_modules/(?!.*.mjs$)'],
+	preset: '../../jest.preset.ts',
 };

@@ -28,7 +28,7 @@
 				"test": {
 					"builder": "@nrwl/jest:jest",
 					"options": {
-						"jestConfig": "libs/core/jest.config.js",
+						"jestConfig": "libs/core/jest.config.ts",
 						"passWithNoTests": true,
 						"codeCoverage": true
 					},
@@ -39,7 +39,8 @@
 				"@nrwl/angular:component": {
 					"style": "scss"
 				}
-			}
+			},
+			"tags": ["lib"]
 		},
 		"core-demo": {
 			"projectType": "application",
@@ -129,13 +130,14 @@
 				"test": {
 					"builder": "@nrwl/jest:jest",
 					"options": {
-						"jestConfig": "apps/core-demo/jest.config.js",
+						"jestConfig": "apps/core-demo/jest.config.ts",
 						"passWithNoTests": true,
 						"codeCoverage": false
 					},
 					"outputs": ["coverage/apps/core-demo"]
 				}
-			}
+			},
+			"tags": ["app"]
 		},
 		"core-demo-e2e": {
 			"root": "apps/core-demo-e2e",
@@ -164,7 +166,9 @@
 						]
 					}
 				}
-			}
+			},
+			"tags": [],
+			"implicitDependencies": ["core-demo"]
 		},
 		"jwt": {
 			"projectType": "library",
@@ -193,14 +197,15 @@
 				"test": {
 					"builder": "@nrwl/jest:jest",
 					"options": {
-						"jestConfig": "libs/jwt/jest.config.js",
+						"jestConfig": "libs/jwt/jest.config.ts",
 						"passWithNoTests": true,
 						"codeCoverage": true
 					},
 					"outputs": ["coverage/libs/jwt"]
 				}
 			},
-			"schematics": {}
+			"schematics": {},
+			"tags": []
 		},
 		"jwt-demo": {
 			"projectType": "application",
@@ -290,13 +295,14 @@
 				"test": {
 					"builder": "@nrwl/jest:jest",
 					"options": {
-						"jestConfig": "apps/jwt-demo/jest.config.js",
+						"jestConfig": "apps/jwt-demo/jest.config.ts",
 						"passWithNoTests": true,
 						"codeCoverage": false
 					},
 					"outputs": ["coverage/apps/jwt-demo"]
 				}
-			}
+			},
+			"tags": []
 		},
 		"jwt-demo-e2e": {
 			"root": "apps/jwt-demo-e2e",
@@ -325,7 +331,9 @@
 						]
 					}
 				}
-			}
+			},
+			"tags": [],
+			"implicitDependencies": ["jwt-demo"]
 		},
 		"ngrx": {
 			"projectType": "library",
@@ -354,14 +362,15 @@
 				"test": {
 					"builder": "@nrwl/jest:jest",
 					"options": {
-						"jestConfig": "libs/ngrx/jest.config.js",
+						"jestConfig": "libs/ngrx/jest.config.ts",
 						"passWithNoTests": true,
 						"codeCoverage": true
 					},
 					"outputs": ["coverage/libs/ngrx"]
 				}
 			},
-			"schematics": {}
+			"schematics": {},
+			"tags": []
 		}
 	}
 }
