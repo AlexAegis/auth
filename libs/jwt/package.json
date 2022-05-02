@@ -29,9 +29,9 @@
 		"javascript"
 	],
 	"peerDependencies": {
-		"@angular/common": "^12.*.*",
-		"@angular/core": "^12.*.*",
-		"@angular/router": "^12.*.*",
+		"@angular/common": "13.*.*",
+		"@angular/core": "13.*.*",
+		"@angular/router": "13.*.*",
 		"rxjs": "7.*.*"
 	},
 	"dependencies": {
