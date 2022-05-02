@@ -52,7 +52,7 @@
         isAutoRefreshAllowedInLoginGuardByDefault: DEFAULT_JWT_REFRESH_CONFIG_DEFAULT_AUTO_IN_GUARD,
     };
 
-    /*! *****************************************************************************
+    /******************************************************************************
     Copyright (c) Microsoft Corporation.
 
     Permission to use, copy, modify, and/or distribute this software for any
@@ -214,7 +214,11 @@
     var __createBinding = Object.create ? (function (o, m, k, k2) {
         if (k2 === undefined)
             k2 = k;
-        Object.defineProperty(o, k2, { enumerable: true, get: function () { return m[k]; } });
+        var desc = Object.getOwnPropertyDescriptor(m, k);
+        if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+            desc = { enumerable: true, get: function () { return m[k]; } };
+        }
+        Object.defineProperty(o, k2, desc);
     }) : (function (o, m, k, k2) {
         if (k2 === undefined)
             k2 = k;
@@ -278,10 +282,16 @@
                 r[k] = a[j];
         return r;
     }
-    function __spreadArray(to, from) {
-        for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-            to[j] = from[i];
-        return to;
+    function __spreadArray(to, from, pack) {
+        if (pack || arguments.length === 2)
+            for (var i = 0, l = from.length, ar; i < l; i++) {
+                if (ar || !(i in from)) {
+                    if (!ar)
+                        ar = Array.prototype.slice.call(from, 0, i);
+                    ar[i] = from[i];
+                }
+            }
+        return to.concat(ar || Array.prototype.slice.call(from));
     }
     function __await(v) {
         return this instanceof __await ? (this.v = v, this) : new __await(v);
@@ -362,6 +372,11 @@
         if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
             throw new TypeError("Cannot write private member to an object whose class did not declare it");
         return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
+    }
+    function __classPrivateFieldIn(state, receiver) {
+        if (receiver === null || (typeof receiver !== "object" && typeof receiver !== "function"))
+            throw new TypeError("Cannot use 'in' operator on non-object");
+        return typeof state === "function" ? receiver === state : state.has(receiver);
     }
 
     var JwtError = /** @class */ (function (_super) {
@@ -700,7 +715,8 @@
              * Consider restricting getToken to observables only so things can be cached
              */
             this.rawAccessToken$ = intoObservable(this.config.getToken);
-            this.rawRefreshToken$ = ((_a = this.refreshConfig) === null || _a === void 0 ? void 0 : _a.getRefreshToken) ? intoObservable(this.refreshConfig.getRefreshToken)
+            this.rawRefreshToken$ = ((_a = this.refreshConfig) === null || _a === void 0 ? void 0 : _a.getRefreshToken)
+                ? intoObservable(this.refreshConfig.getRefreshToken)
                 : rxjs.of(null);
             this.accessToken$ = this.rawAccessToken$.pipe(operators.map(function (token) {
                 if (isString(token)) {
@@ -859,7 +875,7 @@
      */
     var matchAgainst = function (against, inverse) {
         if (inverse === void 0) { inverse = false; }
-        return function (rule) { return (inverse ? !matchRule(rule, against) : matchRule(rule, against)); };
+        return function (rule) { return inverse ? !matchRule(rule, against) : matchRule(rule, against); };
     };
 
     /**
@@ -1067,7 +1083,7 @@
         JwtModule.forRoot = function (jwtModuleConfigurationProvider, jwtRefreshConfigurationProvider) {
             return {
                 ngModule: JwtModule,
-                providers: __spread([
+                providers: __spreadArray([
                     {
                         provide: i1.HTTP_INTERCEPTORS,
                         useClass: JwtErrorHandlingInterceptor,
@@ -1083,7 +1099,7 @@
                         useValue: DEFAULT_JWT_CONFIG,
                     },
                     createJwtConfigurationProvider(jwtModuleConfigurationProvider)
-                ], (jwtRefreshConfigurationProvider
+                ], __read((jwtRefreshConfigurationProvider
                     ? [
                         {
                             provide: i1.HTTP_INTERCEPTORS,
@@ -1096,7 +1112,7 @@
                         },
                         createJwtRefreshConfigurationProvider(jwtRefreshConfigurationProvider),
                     ]
-                    : [])),
+                    : []))),
             };
         };
         return JwtModule;

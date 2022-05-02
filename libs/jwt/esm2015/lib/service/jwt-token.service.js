@@ -35,7 +35,8 @@ export class JwtTokenService {
          * Consider restricting getToken to observables only so things can be cached
          */
         this.rawAccessToken$ = intoObservable(this.config.getToken);
-        this.rawRefreshToken$ = ((_a = this.refreshConfig) === null || _a === void 0 ? void 0 : _a.getRefreshToken) ? intoObservable(this.refreshConfig.getRefreshToken)
+        this.rawRefreshToken$ = ((_a = this.refreshConfig) === null || _a === void 0 ? void 0 : _a.getRefreshToken)
+            ? intoObservable(this.refreshConfig.getRefreshToken)
             : of(null);
         this.accessToken$ = this.rawAccessToken$.pipe(map((token) => {
             if (isString(token)) {

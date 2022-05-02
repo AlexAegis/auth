@@ -14,5 +14,5 @@ export const matchRule = (rule, against) => {
  *
  * @param inverse easy negating when composing
  */
-export const matchAgainst = (against, inverse = false) => (rule) => (inverse ? !matchRule(rule, against) : matchRule(rule, against));
+export const matchAgainst = (against, inverse = false) => (rule) => inverse ? !matchRule(rule, against) : matchRule(rule, against);
 //# sourceMappingURL=match-against.function.js.map
