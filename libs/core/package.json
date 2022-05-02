@@ -1,7 +1,7 @@
 {
 	"name": "@aegis-auth/core",
 	"description": "Angular authentication libraries",
-	"version": "11.1.0",
+	"version": "12.0.0",
 	"license": "MIT",
 	"author": {
 		"email": "alexaegis@gmail.com",
@@ -30,7 +30,7 @@
 		"tslib": "2.*.*"
 	},
 	"peerDependencies": {
-		"@angular/common": "11.*.*",
-		"@angular/core": "11.*.*"
+		"@angular/common": "12.*.*",
+		"@angular/core": "12.*.*"
 	}
 }
