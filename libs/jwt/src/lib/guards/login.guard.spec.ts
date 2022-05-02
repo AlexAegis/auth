@@ -198,10 +198,10 @@ describe('LoginGuard', () => {
 		guard = TestBed.inject(LoginGuard);
 
 		activatedRoute = TestBed.inject(ActivatedRoute);
-		activatedRoute = ({
+		activatedRoute = {
 			...activatedRoute,
 			snapshot: { ...activatedRoute.snapshot, data },
-		} as unknown) as ActivatedRoute;
+		} as unknown as ActivatedRoute;
 
 		routerStateSnapshot = TestBed.inject(RouterStateSnapshot);
 

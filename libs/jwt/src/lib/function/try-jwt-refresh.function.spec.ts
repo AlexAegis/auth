@@ -27,9 +27,9 @@ describe('tryJwtRefresh', () => {
 	const originalAction = jest.fn();
 	const createRefreshRequestBody: jest.Mock<string | undefined | null, []> = jest.fn(() => body);
 
-	const jwtRefreshConfiguration = ({
+	const jwtRefreshConfiguration = {
 		createRefreshRequestBody,
-	} as unknown) as JwtRefreshConfiguration<unknown, unknown>;
+	} as unknown as JwtRefreshConfiguration<unknown, unknown>;
 
 	const mockObserver: Observer<unknown> = {
 		next: jest.fn(),

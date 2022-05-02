@@ -14,6 +14,7 @@ export const matchRule = (rule: string | RegExp, against?: string | null): boole
  *
  * @param inverse easy negating when composing
  */
-export const matchAgainst = (against?: string | null, inverse = false) => (
-	rule: string | RegExp
-): boolean => (inverse ? !matchRule(rule, against) : matchRule(rule, against));
+export const matchAgainst =
+	(against?: string | null, inverse = false) =>
+	(rule: string | RegExp): boolean =>
+		inverse ? !matchRule(rule, against) : matchRule(rule, against);

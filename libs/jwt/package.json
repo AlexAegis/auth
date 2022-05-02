@@ -29,13 +29,13 @@
 		"javascript"
 	],
 	"peerDependencies": {
-		"@angular/common": "^11.0.0",
-		"@angular/core": "^11.0.0",
-		"@angular/router": "^11.0.0",
-		"rxjs": "^6.0.0"
+		"@angular/common": "^12.*.*",
+		"@angular/core": "^12.*.*",
+		"@angular/router": "^12.*.*",
+		"rxjs": "7.*.*"
 	},
 	"dependencies": {
-		"js-base64": "^3.6.0",
-		"tslib": "^2.0.0"
+		"js-base64": "^3.7.0",
+		"tslib": "2.*.*"
 	}
 }
