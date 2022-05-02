@@ -46,3 +46,7 @@ dependencies:
 ```sh
 apt install -y xvfb libgtk-3-0 libgbm-dev
 ```
+
+## Angular
+
+> [Compatibility Matrix](https://gist.github.com/LayZeeDK/c822cc812f75bb07b7c55d07ba2719b3)
