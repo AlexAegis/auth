@@ -282,7 +282,7 @@ describe('JwtErrorHandlingInterceptor', () => {
 		expect(routerMock.navigate).toBeCalledTimes(0);
 	});
 
-	it('should panic when it have to navigate, but the router is not available', () => {
+	it('should panic when it has to navigate, but the router is not available', () => {
 		TestBed.overrideProvider(JWT_CONFIGURATION_TOKEN, {
 			useValue: {
 				onFailure: FALSY_STRING,
@@ -290,7 +290,7 @@ describe('JwtErrorHandlingInterceptor', () => {
 		});
 
 		TestBed.overrideProvider(Router, {
-			useValue: undefined,
+			useValue: null,
 		});
 
 		const specificErrorMock = jest.fn<void, [HttpErrorResponse]>((error) => {

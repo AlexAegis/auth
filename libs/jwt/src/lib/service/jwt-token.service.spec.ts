@@ -326,7 +326,7 @@ describe('JwtTokenService', () => {
 		} as JwtConfigurationProvider);
 
 		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
-			useValue: undefined,
+			useValue: null,
 		});
 
 		service = TestBed.inject(JwtTokenService);
@@ -361,7 +361,7 @@ describe('JwtTokenService', () => {
 
 		it('should return false if there is no refreshConfig', () => {
 			TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {
-				useValue: undefined,
+				useValue: null,
 			});
 
 			service = TestBed.inject(JwtTokenService);

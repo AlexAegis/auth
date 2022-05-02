@@ -1,4 +1,5 @@
 {
+	"deno.enable": false,
 	"editor.formatOnSave": true,
 	"editor.autoIndent": "full",
 	"editor.tabCompletion": "off",
