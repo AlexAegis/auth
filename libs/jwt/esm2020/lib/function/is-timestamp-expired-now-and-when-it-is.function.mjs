@@ -1,0 +1,20 @@
+import { merge, of, timer } from 'rxjs';
+import { mapTo } from 'rxjs/operators';
+/**
+ * It returns an observable which emits instantly a boolean describing if the
+ * timestamp is expired or not. If not, it will emit a second time when it
+ * will expire.
+ *
+ * @param timestamp milliseconds
+ */
+export const isTimestampExpiredNowAndWhenItIs = (timestamp) => {
+    // If already expired, just return that
+    if (timestamp - new Date().getTime() < 0) {
+        return of(true);
+    }
+    else {
+        // If not, return that is not and a timer that will emit when it does
+        return merge(of(false), timer(new Date(timestamp)).pipe(mapTo(true)));
+    }
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaXMtdGltZXN0YW1wLWV4cGlyZWQtbm93LWFuZC13aGVuLWl0LWlzLmZ1bmN0aW9uLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vbGlicy9qd3Qvc3JjL2xpYi9mdW5jdGlvbi9pcy10aW1lc3RhbXAtZXhwaXJlZC1ub3ctYW5kLXdoZW4taXQtaXMuZnVuY3Rpb24udHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLEtBQUssRUFBYyxFQUFFLEVBQUUsS0FBSyxFQUFFLE1BQU0sTUFBTSxDQUFDO0FBQ3BELE9BQU8sRUFBRSxLQUFLLEVBQUUsTUFBTSxnQkFBZ0IsQ0FBQztBQUV2Qzs7Ozs7O0dBTUc7QUFDSCxNQUFNLENBQUMsTUFBTSxnQ0FBZ0MsR0FBRyxDQUFDLFNBQWlCLEVBQXVCLEVBQUU7SUFDMUYsdUNBQXVDO0lBQ3ZDLElBQUksU0FBUyxHQUFHLElBQUksSUFBSSxFQUFFLENBQUMsT0FBTyxFQUFFLEdBQUcsQ0FBQyxFQUFFO1FBQ3pDLE9BQU8sRUFBRSxDQUFDLElBQUksQ0FBQyxDQUFDO0tBQ2hCO1NBQU07UUFDTixxRUFBcUU7UUFDckUsT0FBTyxLQUFLLENBQUMsRUFBRSxDQUFDLEtBQUssQ0FBQyxFQUFFLEtBQUssQ0FBQyxJQUFJLElBQUksQ0FBQyxTQUFTLENBQUMsQ0FBQyxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsSUFBSSxDQUFDLENBQUMsQ0FBQyxDQUFDO0tBQ3RFO0FBQ0YsQ0FBQyxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgbWVyZ2UsIE9ic2VydmFibGUsIG9mLCB0aW1lciB9IGZyb20gJ3J4anMnO1xuaW1wb3J0IHsgbWFwVG8gfSBmcm9tICdyeGpzL29wZXJhdG9ycyc7XG5cbi8qKlxuICogSXQgcmV0dXJucyBhbiBvYnNlcnZhYmxlIHdoaWNoIGVtaXRzIGluc3RhbnRseSBhIGJvb2xlYW4gZGVzY3JpYmluZyBpZiB0aGVcbiAqIHRpbWVzdGFtcCBpcyBleHBpcmVkIG9yIG5vdC4gSWYgbm90LCBpdCB3aWxsIGVtaXQgYSBzZWNvbmQgdGltZSB3aGVuIGl0XG4gKiB3aWxsIGV4cGlyZS5cbiAqXG4gKiBAcGFyYW0gdGltZXN0YW1wIG1pbGxpc2Vjb25kc1xuICovXG5leHBvcnQgY29uc3QgaXNUaW1lc3RhbXBFeHBpcmVkTm93QW5kV2hlbkl0SXMgPSAodGltZXN0YW1wOiBudW1iZXIpOiBPYnNlcnZhYmxlPGJvb2xlYW4+ID0+IHtcblx0Ly8gSWYgYWxyZWFkeSBleHBpcmVkLCBqdXN0IHJldHVybiB0aGF0XG5cdGlmICh0aW1lc3RhbXAgLSBuZXcgRGF0ZSgpLmdldFRpbWUoKSA8IDApIHtcblx0XHRyZXR1cm4gb2YodHJ1ZSk7XG5cdH0gZWxzZSB7XG5cdFx0Ly8gSWYgbm90LCByZXR1cm4gdGhhdCBpcyBub3QgYW5kIGEgdGltZXIgdGhhdCB3aWxsIGVtaXQgd2hlbiBpdCBkb2VzXG5cdFx0cmV0dXJuIG1lcmdlKG9mKGZhbHNlKSwgdGltZXIobmV3IERhdGUodGltZXN0YW1wKSkucGlwZShtYXBUbyh0cnVlKSkpO1xuXHR9XG59O1xuIl19

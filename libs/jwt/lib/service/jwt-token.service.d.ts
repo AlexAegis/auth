@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { JwtConfiguration, JwtRefreshConfiguration } from '../model/auth-core-configuration.interface';
 import { JwtToken } from '../model/jwt-token.class';
 import { JwtRefreshStateService } from './jwt-refresh-state.service';
+import * as i0 from "@angular/core";
 export declare class JwtTokenService<Claims = Record<string | number, unknown>, RefreshClaims = Record<string | number, unknown>, RefreshRequest = Record<string | number, unknown>, RefreshResponse = Record<string | number, unknown>> {
     private readonly httpHandler;
     private readonly jwtRefreshStateService;
@@ -34,4 +35,6 @@ export declare class JwtTokenService<Claims = Record<string | number, unknown>, 
      * Does a token refresh. Emits false if it failed, or true if succeeded.
      */
     manualRefresh(): Observable<boolean>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<JwtTokenService<any, any, any, any>, [null, null, null, null, { optional: true; }, { optional: true; }, { optional: true; }]>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<JwtTokenService<any, any, any, any>>;
 }

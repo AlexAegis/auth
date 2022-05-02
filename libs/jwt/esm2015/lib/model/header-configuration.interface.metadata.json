@@ -1,1 +1,0 @@
-[{"__symbolic":"module","version":4,"metadata":{"DEFAULT_HEADER_CONFIG":{"getValue":{"__symbolic":"new","expression":{"__symbolic":"reference","module":"rxjs","name":"BehaviorSubject","line":3,"character":15},"arguments":[null]}},"NormalizedHeaderConfiguration":{"__symbolic":"interface"},"HeaderConfiguration":{"__symbolic":"interface"},"UrlFilter":{"__symbolic":"interface"}}}]

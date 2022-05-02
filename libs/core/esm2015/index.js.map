@@ -1,1 +1,0 @@
-{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../../libs/core/src/index.ts"],"names":[],"mappings":"AAAA,cAAc,wBAAwB,CAAC","sourcesContent":["export * from './lib/auth-core.module';\n"]}

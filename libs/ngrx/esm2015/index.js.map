@@ -1,1 +1,0 @@
-{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../../libs/ngrx/src/index.ts"],"names":[],"mappings":"AAAA,cAAc,mBAAmB,CAAC","sourcesContent":["export * from './lib/ngrx.module';\n"]}

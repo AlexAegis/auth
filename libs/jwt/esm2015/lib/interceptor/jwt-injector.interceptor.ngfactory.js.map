@@ -1,1 +1,0 @@
-{"version":3,"file":"jwt-injector.interceptor.ngfactory.js","sourceRoot":"","sources":["../../../../../../libs/jwt/src/lib/interceptor/jwt-injector.interceptor.ngfactory.ts"],"names":[],"mappings":"","sourcesContent":["import * as i0 from '@angular/core';\ni0.ComponentFactory;\n"]}

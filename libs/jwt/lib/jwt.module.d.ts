@@ -1,5 +1,7 @@
 import { ModuleWithProviders } from '@angular/core';
 import { JwtModuleConfigurationProvider, JwtModuleRefreshConfigurationProvider } from './token/jwt-configuration.token';
+import * as i0 from "@angular/core";
+import * as i1 from "@angular/common";
 /**
  * This module needs to be configured to use. See the
  * {@link JwtModule#forRoot | forRoot} method for more information.
@@ -29,4 +31,7 @@ export declare class JwtModule {
      */
     static forRoot(jwtModuleConfigurationProvider: JwtModuleConfigurationProvider): ModuleWithProviders<JwtModule>;
     static forRoot<RefreshRequest, RefreshResponse>(jwtModuleConfigurationProvider: JwtModuleConfigurationProvider, jwtRefreshConfigurationProvider: JwtModuleRefreshConfigurationProvider<RefreshRequest, RefreshResponse>): ModuleWithProviders<JwtModule>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<JwtModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<JwtModule, never, [typeof i1.CommonModule], never>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<JwtModule>;
 }

@@ -1,0 +1,12 @@
+import { isFunction } from './function.predicate';
+export const callWhenFunction = (functionLike) => {
+    let result;
+    if (isFunction(functionLike)) {
+        result = functionLike();
+    }
+    else {
+        result = functionLike;
+    }
+    return result;
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2FsbC13aGVuLWZ1bmN0aW9uLmZ1bmN0aW9uLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vbGlicy9qd3Qvc3JjL2xpYi9mdW5jdGlvbi9jYWxsLXdoZW4tZnVuY3Rpb24uZnVuY3Rpb24udHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLFVBQVUsRUFBRSxNQUFNLHNCQUFzQixDQUFDO0FBRWxELE1BQU0sQ0FBQyxNQUFNLGdCQUFnQixHQUFHLENBQWMsWUFBMkIsRUFBSyxFQUFFO0lBQy9FLElBQUksTUFBTSxDQUFDO0lBQ1gsSUFBSSxVQUFVLENBQUksWUFBWSxDQUFDLEVBQUU7UUFDaEMsTUFBTSxHQUFHLFlBQVksRUFBRSxDQUFDO0tBQ3hCO1NBQU07UUFDTixNQUFNLEdBQUcsWUFBWSxDQUFDO0tBQ3RCO0lBQ0QsT0FBTyxNQUFNLENBQUM7QUFDZixDQUFDLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBpc0Z1bmN0aW9uIH0gZnJvbSAnLi9mdW5jdGlvbi5wcmVkaWNhdGUnO1xuXG5leHBvcnQgY29uc3QgY2FsbFdoZW5GdW5jdGlvbiA9IDxUID0gdW5rbm93bj4oZnVuY3Rpb25MaWtlOiAoKCkgPT4gVCkgfCBUKTogVCA9PiB7XG5cdGxldCByZXN1bHQ7XG5cdGlmIChpc0Z1bmN0aW9uPFQ+KGZ1bmN0aW9uTGlrZSkpIHtcblx0XHRyZXN1bHQgPSBmdW5jdGlvbkxpa2UoKTtcblx0fSBlbHNlIHtcblx0XHRyZXN1bHQgPSBmdW5jdGlvbkxpa2U7XG5cdH1cblx0cmV0dXJuIHJlc3VsdDtcbn07XG4iXX0=
