@@ -9,11 +9,11 @@ import { doJwtRefresh } from './do-jwt-refresh.function';
 describe('doJwtRefresh', () => {
 	const mockTransformRefreshResponse = jest.fn();
 	const mockSetRefreshedTokens = jest.fn();
-	const jwtRefreshConfig = ({
+	const jwtRefreshConfig = {
 		refreshUrl: 'refresh',
 		transformRefreshResponse: mockTransformRefreshResponse,
 		setRefreshedTokens: mockSetRefreshedTokens,
-	} as unknown) as JwtRefreshConfiguration<unknown, unknown>;
+	} as unknown as JwtRefreshConfiguration<unknown, unknown>;
 
 	const mockOriginalAction = jest.fn();
 	const mockOnError = jest.fn();
@@ -121,7 +121,7 @@ describe('doJwtRefresh', () => {
 
 		mockTransformRefreshResponse.mockReturnValueOnce(token);
 		mockOriginalAction.mockReturnValueOnce(of(returnValue));
-		const lockSpy = spyOn(jwtRefreshStateService.refreshLock$, 'next');
+		const lockSpy = jest.spyOn(jwtRefreshStateService.refreshLock$, 'next');
 
 		expect(jwtRefreshStateService.refreshLock$.value).toBe(false);
 		const doJwtRefreshObservable = doJwtRefresh(

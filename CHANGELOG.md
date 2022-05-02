@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [12.0.0](https://github.com/AlexAegis/auth/compare/v11.1.0...v12.0.0) (2022-05-02)
+
+
+### Bug Fixes
+
+* fix migration errors ([769cca6](https://github.com/AlexAegis/auth/commit/769cca6064fdce0259d6d6388d4923678595c52b))
+
 ## [11.1.0](https://github.com/AlexAegis/auth/compare/v11.0.0...v11.1.0) (2021-05-03)
 
 ### Features

@@ -20,8 +20,8 @@
 		"baseUrl": ".",
 		"paths": {
 			"@aegis-auth/core": ["libs/core/src/index.ts"],
-			"@aegis-auth/ngrx": ["libs/ngrx/src/index.ts"],
-			"@aegis-auth/jwt": ["libs/jwt/src/index.ts"]
+			"@aegis-auth/jwt": ["libs/jwt/src/index.ts"],
+			"@aegis-auth/ngrx": ["libs/ngrx/src/index.ts"]
 		}
 	},
 	"angularCompilerOptions": {

@@ -1,37 +1,5 @@
 {
 	"version": 1,
-	"cli": {
-		"defaultCollection": "@nrwl/angular",
-		"analytics": false
-	},
-	"schematics": {
-		"@schematics/angular": {
-			"component": {
-				"changeDetection": "OnPush",
-				"style": "scss",
-				"flat": true
-			}
-		},
-		"@nrwl/angular": {
-			"application": {
-				"linter": "eslint"
-			},
-			"library": {
-				"linter": "eslint"
-			},
-			"storybook-configuration": {
-				"linter": "eslint"
-			}
-		},
-		"@nrwl/angular:application": {
-			"unitTestRunner": "jest",
-			"e2eTestRunner": "cypress"
-		},
-		"@nrwl/angular:library": {
-			"unitTestRunner": "jest"
-		}
-	},
-	"defaultProject": "core",
 	"projects": {
 		"core": {
 			"projectType": "library",
@@ -92,10 +60,15 @@
 						"main": "apps/core-demo/src/main.ts",
 						"polyfills": "apps/core-demo/src/polyfills.ts",
 						"tsConfig": "apps/core-demo/tsconfig.app.json",
-						"aot": true,
 						"assets": ["apps/core-demo/src/favicon.ico", "apps/core-demo/src/assets"],
 						"styles": ["apps/core-demo/src/styles.scss"],
-						"scripts": []
+						"scripts": [],
+						"vendorChunk": true,
+						"extractLicenses": false,
+						"buildOptimizer": false,
+						"sourceMap": true,
+						"optimization": false,
+						"namedChunks": true
 					},
 					"configurations": {
 						"production": {
@@ -126,7 +99,8 @@
 							]
 						}
 					},
-					"outputs": ["{options.outputPath}"]
+					"outputs": ["{options.outputPath}"],
+					"defaultConfiguration": ""
 				},
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
@@ -192,42 +166,6 @@
 				}
 			}
 		},
-		"ngrx": {
-			"projectType": "library",
-			"root": "libs/ngrx",
-			"sourceRoot": "libs/ngrx/src",
-			"prefix": "aegis-auth",
-			"architect": {
-				"build": {
-					"builder": "@nrwl/angular:package",
-					"options": {
-						"tsConfig": "libs/ngrx/tsconfig.lib.json",
-						"project": "libs/ngrx/ng-package.json"
-					},
-					"configurations": {
-						"production": {
-							"tsConfig": "libs/ngrx/tsconfig.lib.prod.json"
-						}
-					}
-				},
-				"lint": {
-					"builder": "@angular-eslint/builder:lint",
-					"options": {
-						"lintFilePatterns": ["libs/ngrx/**/*.ts", "libs/ngrx/**/*.html"]
-					}
-				},
-				"test": {
-					"builder": "@nrwl/jest:jest",
-					"options": {
-						"jestConfig": "libs/ngrx/jest.config.js",
-						"passWithNoTests": true,
-						"codeCoverage": true
-					},
-					"outputs": ["coverage/libs/ngrx"]
-				}
-			},
-			"schematics": {}
-		},
 		"jwt": {
 			"projectType": "library",
 			"root": "libs/jwt",
@@ -283,10 +221,15 @@
 						"main": "apps/jwt-demo/src/main.ts",
 						"polyfills": "apps/jwt-demo/src/polyfills.ts",
 						"tsConfig": "apps/jwt-demo/tsconfig.app.json",
-						"aot": true,
 						"assets": ["apps/jwt-demo/src/favicon.ico", "apps/jwt-demo/src/assets"],
 						"styles": ["apps/jwt-demo/src/styles.css"],
-						"scripts": []
+						"scripts": [],
+						"vendorChunk": true,
+						"extractLicenses": false,
+						"buildOptimizer": false,
+						"sourceMap": true,
+						"optimization": false,
+						"namedChunks": true
 					},
 					"configurations": {
 						"production": {
@@ -317,7 +260,8 @@
 							]
 						}
 					},
-					"outputs": ["{options.outputPath}"]
+					"outputs": ["{options.outputPath}"],
+					"defaultConfiguration": ""
 				},
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
@@ -382,6 +326,42 @@
 					}
 				}
 			}
+		},
+		"ngrx": {
+			"projectType": "library",
+			"root": "libs/ngrx",
+			"sourceRoot": "libs/ngrx/src",
+			"prefix": "aegis-auth",
+			"architect": {
+				"build": {
+					"builder": "@nrwl/angular:package",
+					"options": {
+						"tsConfig": "libs/ngrx/tsconfig.lib.json",
+						"project": "libs/ngrx/ng-package.json"
+					},
+					"configurations": {
+						"production": {
+							"tsConfig": "libs/ngrx/tsconfig.lib.prod.json"
+						}
+					}
+				},
+				"lint": {
+					"builder": "@angular-eslint/builder:lint",
+					"options": {
+						"lintFilePatterns": ["libs/ngrx/**/*.ts", "libs/ngrx/**/*.html"]
+					}
+				},
+				"test": {
+					"builder": "@nrwl/jest:jest",
+					"options": {
+						"jestConfig": "libs/ngrx/jest.config.js",
+						"passWithNoTests": true,
+						"codeCoverage": true
+					},
+					"outputs": ["coverage/libs/ngrx"]
+				}
+			},
+			"schematics": {}
 		}
 	}
 }

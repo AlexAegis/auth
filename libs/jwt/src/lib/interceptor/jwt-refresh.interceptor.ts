@@ -145,11 +145,12 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 						);
 					}
 					// If the conversion would fail, that would handle the same as an expired token
-					return (isAccessTokenExpiredOrInvalid
-						? // If the token is used and is expired, don't even try the request.
-						  throwError('Expired token, refresh first')
-						: // If it seems okay, try the request
-						  next.handle(request)
+					return (
+						isAccessTokenExpiredOrInvalid
+							? // If the token is used and is expired, don't even try the request.
+							  throwError('Expired token, refresh first')
+							: // If it seems okay, try the request
+							  next.handle(request)
 					).pipe(
 						catchError((error: HttpErrorResponse | string) =>
 							// If the request failed, or we failed at the precheck

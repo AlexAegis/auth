@@ -20,9 +20,9 @@ describe('handleJwtFailure', () => {
 	});
 
 	it('should call the navigate function on the router passed with the arguments', () => {
-		const router = ({
+		const router = {
 			navigate: jest.fn<void, [string[], { queryParams?: Record<string, unknown> }]>(),
-		} as unknown) as Router;
+		} as unknown as Router;
 
 		const redirectParameters = {};
 

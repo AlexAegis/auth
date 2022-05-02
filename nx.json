@@ -36,9 +36,6 @@
 			"tags": [],
 			"implicitDependencies": ["core-demo"]
 		},
-		"ngrx": {
-			"tags": []
-		},
 		"jwt": {
 			"tags": []
 		},
@@ -48,6 +45,49 @@
 		"jwt-demo-e2e": {
 			"tags": [],
 			"implicitDependencies": ["jwt-demo"]
+		},
+		"ngrx": {
+			"tags": []
+		}
+	},
+	"targetDependencies": {
+		"build": [
+			{
+				"target": "build",
+				"projects": "dependencies"
+			}
+		]
+	},
+	"cli": {
+		"defaultCollection": "@nrwl/angular",
+		"analytics": false
+	},
+	"defaultProject": "core",
+	"generators": {
+		"@schematics/angular": {
+			"component": {
+				"changeDetection": "OnPush",
+				"style": "scss",
+				"flat": true
+			}
+		},
+		"@nrwl/angular": {
+			"application": {
+				"linter": "eslint"
+			},
+			"library": {
+				"linter": "eslint"
+			},
+			"storybook-configuration": {
+				"linter": "eslint"
+			}
+		},
+		"@nrwl/angular:application": {
+			"unitTestRunner": "jest",
+			"e2eTestRunner": "cypress"
+		},
+		"@nrwl/angular:library": {
+			"unitTestRunner": "jest"
 		}
 	}
 }
