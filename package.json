@@ -51,10 +51,10 @@
 		"start:core": "nx serve core-demo",
 		"start:jwt": "nx serve jwt-demo",
 		"start:ngrx": "nx serve ngrx-demo",
-		"build": "nx affected:build --all --prod",
-		"build:core": "nx build core-demo --prod --stats-json",
-		"build:jwt": "nx build jwt-demo --prod --stats-json",
-		"build:ngrx": "nx build ngrx-demo --prod --stats-json",
+		"build": "nx affected:build --all --configuration production",
+		"build:core": "nx build core-demo --configuration production --stats-json",
+		"build:jwt": "nx build jwt-demo --configuration production --stats-json",
+		"build:ngrx": "nx build ngrx-demo --configuration production --stats-json",
 		"hoist:core": "cpy ./dist/apps/core-demo/* ./dist",
 		"clean": "rimraf ./dist ./coverage ./.codacy-coverage ./cache",
 		"self-destruct": "rimraf ./dist ./coverage ./.codacy-coverage ./cache ./node-modules ./package-lock.json ./yarn.lock ./pnpm-lock.yaml",
@@ -70,7 +70,7 @@
 		"analyze:jwt": "webpack-bundle-analyzer dist/apps/jwt-demo/stats.json",
 		"affected:apps": "nx affected:apps",
 		"affected:libs": "nx affected:libs",
-		"affected:build": "nx affected:build --prod",
+		"affected:build": "nx affected:build --configuration production",
 		"affected:e2e": "nx affected:e2e",
 		"affected:test": "nx affected:test",
 		"affected:lint": "nx affected:lint",
@@ -112,7 +112,7 @@
 		"core-js": "~3.11.2",
 		"rxjs": "~6.5.3",
 		"tslib": "^2.2.0",
-		"zone.js": "0.11.5"
+		"zone.js": "~0.11.4"
 	},
 	"devDependencies": {
 		"@angular-devkit/build-angular": "12.2.17",

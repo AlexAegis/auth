@@ -8,14 +8,30 @@
 		{
 			"files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
 			"rules": {
-				"no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
-				"quotes": ["error", "single", { "avoidEscape": true }],
+				"no-unused-vars": [
+					"error",
+					{
+						"argsIgnorePattern": "^_"
+					}
+				],
+				"quotes": [
+					"error",
+					"single",
+					{
+						"avoidEscape": true
+					}
+				],
 				"@nrwl/nx/enforce-module-boundaries": [
 					"error",
 					{
 						"enforceBuildableLibDependency": true,
 						"allow": [],
-						"depConstraints": [{ "sourceTag": "*", "onlyDependOnLibsWithTags": ["*"] }]
+						"depConstraints": [
+							{
+								"sourceTag": "*",
+								"onlyDependOnLibsWithTags": ["*"]
+							}
+						]
 					}
 				]
 			}
@@ -23,10 +39,23 @@
 		{
 			"files": ["*.ts", "*.tsx"],
 			"extends": ["plugin:@nrwl/nx/typescript"],
-			"parserOptions": { "project": "./tsconfig.*?.json" },
+			"parserOptions": {
+				"project": "./tsconfig.*?.json"
+			},
 			"rules": {
-				"@typescript-eslint/quotes": ["error", "single", { "avoidEscape": true }],
-				"@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+				"@typescript-eslint/quotes": [
+					"error",
+					"single",
+					{
+						"avoidEscape": true
+					}
+				],
+				"@typescript-eslint/no-unused-vars": [
+					"error",
+					{
+						"argsIgnorePattern": "^_"
+					}
+				],
 				"@typescript-eslint/explicit-member-accessibility": "off",
 				"@typescript-eslint/explicit-function-return-type": "off",
 				"@typescript-eslint/no-parameter-properties": "off",
@@ -46,7 +75,18 @@
 		}
 	],
 	"rules": {
-		"no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
-		"quotes": ["error", "single", { "avoidEscape": true }]
+		"no-unused-vars": [
+			"error",
+			{
+				"argsIgnorePattern": "^_"
+			}
+		],
+		"quotes": [
+			"error",
+			"single",
+			{
+				"avoidEscape": true
+			}
+		]
 	}
 }
