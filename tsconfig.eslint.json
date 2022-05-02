@@ -1,0 +1,5 @@
+{
+	"extends": "./tsconfig.base.json",
+	"include": [".remarkrc.ts", "jest.preset.ts", "jest.config.ts"],
+	"files": []
+}

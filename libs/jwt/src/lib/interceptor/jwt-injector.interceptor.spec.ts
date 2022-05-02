@@ -86,7 +86,7 @@ describe('JwtInjectorInterceptor', () => {
 				},
 				{
 					provide: JWT_REFRESH_CONFIGURATION_TOKEN,
-					useValue: undefined,
+					useValue: null,
 				},
 			],
 		});

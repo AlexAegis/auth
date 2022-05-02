@@ -3,10 +3,7 @@
 	"dest": "../../dist/libs/jwt",
 	"assets": ["readme.md"],
 	"lib": {
-		"entryFile": "src/index.ts",
-		"umdModuleIds": {
-			"js-base64": "jsBase64"
-		}
+		"entryFile": "src/index.ts"
 	},
 	"allowedNonPeerDependencies": ["tslib", "js-base64"]
 }

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [13.0.0](https://github.com/AlexAegis/auth/compare/v12.0.0...v13.0.0) (2022-05-02)
+
+
+### Bug Fixes
+
+* fixed tests ([1f90b7f](https://github.com/AlexAegis/auth/commit/1f90b7ff70ef076195f58a68e77a9df9b0795b5c))
+* stylelint migration ([0cad5e4](https://github.com/AlexAegis/auth/commit/0cad5e4587eab8285c656370329454fc0a6f96bc))
+
 ## [12.0.0](https://github.com/AlexAegis/auth/compare/v11.1.0...v12.0.0) (2022-05-02)
 
 

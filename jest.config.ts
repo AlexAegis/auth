@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { getJestProjects } = require('@nrwl/jest');
 
 module.exports = {

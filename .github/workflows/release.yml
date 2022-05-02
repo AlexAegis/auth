@@ -9,19 +9,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
       - name: Cache Packages
         id: cache-packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 14
-      - name: Ensure NPM 7
-        run: npm install --global npm@7
+      - name: Ensure NPM 8
+        run: npm install --global npm@8
       - name: Check if @aegis-auth/jwt is already deployed
         run: |
           VERSION=$(cat ".github/version.txt")
