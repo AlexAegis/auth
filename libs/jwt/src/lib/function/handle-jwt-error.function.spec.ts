@@ -27,14 +27,14 @@ describe('handleJwtError', () => {
 	);
 	const jwtCouldntRefreshError = wrappedJwtCouldntRefreshError.error.error;
 	const router = {} as Router;
-	const jwtConfig = ({
+	const jwtConfig = {
 		onFailure: 'target',
 		onFailureRedirectParameters: {},
-	} as unknown) as JwtConfiguration;
-	const jwtRefreshConfig = ({
+	} as unknown as JwtConfiguration;
+	const jwtRefreshConfig = {
 		onFailure: 'refreshTarget',
 		onFailureRedirectParameters: {},
-	} as unknown) as JwtRefreshConfiguration<unknown, unknown>;
+	} as unknown as JwtRefreshConfiguration<unknown, unknown>;
 
 	const mockObserver: Observer<unknown> = {
 		next: jest.fn(),
