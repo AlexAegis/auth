@@ -55,7 +55,7 @@
 		"build:core": "nx build core-demo --configuration production --stats-json",
 		"build:jwt": "nx build jwt-demo --configuration production --stats-json",
 		"build:ngrx": "nx build ngrx-demo --configuration production --stats-json",
-		"hoist:core": "cpy ./dist/apps/core-demo/* ./dist",
+		"hoist:core": "cpy 'dist/apps/core-demo/*' 'dist'",
 		"clean": "rimraf ./dist ./coverage ./.codacy-coverage ./cache",
 		"nuke": "rimraf ./dist ./coverage ./.codacy-coverage ./cache ./node-modules ./package-lock.json ./yarn.lock ./pnpm-lock.yaml",
 		"test": "nx run-many --all --target test",
