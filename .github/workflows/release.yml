@@ -33,7 +33,6 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Build
-        if: env.JWT_IS_ON_NPM != 'true'
         run: |
           npm run build
           npm run hoist:core
@@ -46,7 +45,6 @@ jobs:
           npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
           npm publish ./dist/libs/jwt --access public
       - name: Deploy Github Pages
-        if: env.JWT_IS_ON_NPM != 'true'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
