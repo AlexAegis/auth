@@ -4,18 +4,15 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [13.0.0](https://github.com/AlexAegis/auth/compare/v12.0.0...v13.0.0) (2022-05-02)
 
+### Features
 
-### Bug Fixes
-
-* fixed tests ([1f90b7f](https://github.com/AlexAegis/auth/commit/1f90b7ff70ef076195f58a68e77a9df9b0795b5c))
-* stylelint migration ([0cad5e4](https://github.com/AlexAegis/auth/commit/0cad5e4587eab8285c656370329454fc0a6f96bc))
+* upgrade to ng13 ([34c9ce2](https://github.com/AlexAegis/auth/commit/34c9ce27075515fd39a9bf2718f72413dd934c6e))
 
 ## [12.0.0](https://github.com/AlexAegis/auth/compare/v11.1.0...v12.0.0) (2022-05-02)
 
+### Features
 
-### Bug Fixes
-
-* fix migration errors ([769cca6](https://github.com/AlexAegis/auth/commit/769cca6064fdce0259d6d6388d4923678595c52b))
+* upgrade to ng12 ([9d82813](https://github.com/AlexAegis/auth/commit/9d8281384fad5f086a98d03e21bfeff73e371ed5))
 
 ## [11.1.0](https://github.com/AlexAegis/auth/compare/v11.0.0...v11.1.0) (2021-05-03)
 
