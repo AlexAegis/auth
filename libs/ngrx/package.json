@@ -31,9 +31,9 @@
 		"javascript"
 	],
 	"peerDependencies": {
-		"@angular/common": "13.*.*",
-		"@angular/core": "13.*.*",
-		"@ngrx/store": "13.*.*"
+		"@angular/common": "14.*.*",
+		"@angular/core": "14.*.*",
+		"@ngrx/store": "14.*.*"
 	},
 	"dependencies": {
 		"tslib": "2.*.*"

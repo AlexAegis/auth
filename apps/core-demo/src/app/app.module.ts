@@ -29,7 +29,7 @@ import { TypedocPageComponent } from './pages/typedoc-page.component';
 					component: JwtDemoPageComponent,
 				},
 			],
-			{ initialNavigation: 'enabled', relativeLinkResolution: 'legacy' }
+			{ initialNavigation: 'enabledBlocking', relativeLinkResolution: 'legacy' }
 		),
 	],
 	providers: [],

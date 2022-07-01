@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { getJestProjects } = require('@nrwl/jest');
 
-module.exports = {
+export default {
 	testMatch: ['**/+(*.)+(spec|test).+(ts|js)?(x)'],
 	transform: {
 		'^.+\\.(ts|js|html)$': 'ts-jest',
