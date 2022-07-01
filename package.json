@@ -133,7 +133,7 @@
 		"@nrwl/linter": "14.0.5",
 		"@nrwl/node": "14.1.9",
 		"@nrwl/web": "14.0.5",
-		"@nrwl/workspace": "14.0.5",
+		"@nrwl/workspace": "14.3.6",
 		"@types/jest": "27.4.1",
 		"@types/js-base64": "~3.0.0",
 		"@types/node": "17.0.31",
