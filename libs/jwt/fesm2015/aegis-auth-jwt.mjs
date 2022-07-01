@@ -328,9 +328,9 @@ class JwtRefreshStateService {
         this.refreshLock$ = new BehaviorSubject(false);
     }
 }
-JwtRefreshStateService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: JwtRefreshStateService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-JwtRefreshStateService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: JwtRefreshStateService, providedIn: 'root' });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: JwtRefreshStateService, decorators: [{
+JwtRefreshStateService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: JwtRefreshStateService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+JwtRefreshStateService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: JwtRefreshStateService, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: JwtRefreshStateService, decorators: [{
             type: Injectable,
             args: [{
                     providedIn: 'root',
@@ -406,9 +406,9 @@ class JwtTokenService {
         }
     }
 }
-JwtTokenService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: JwtTokenService, deps: [{ token: i1.HttpHandler }, { token: JwtRefreshStateService }, { token: JWT_CONFIGURATION_TOKEN }, { token: DEFAULT_JWT_CONFIGURATION_TOKEN }, { token: DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN, optional: true }, { token: JWT_REFRESH_CONFIGURATION_TOKEN, optional: true }, { token: i3.Router, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
-JwtTokenService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: JwtTokenService, providedIn: 'root' });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: JwtTokenService, decorators: [{
+JwtTokenService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: JwtTokenService, deps: [{ token: i1.HttpHandler }, { token: JwtRefreshStateService }, { token: JWT_CONFIGURATION_TOKEN }, { token: DEFAULT_JWT_CONFIGURATION_TOKEN }, { token: DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN, optional: true }, { token: JWT_REFRESH_CONFIGURATION_TOKEN, optional: true }, { token: i3.Router, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
+JwtTokenService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: JwtTokenService, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: JwtTokenService, decorators: [{
             type: Injectable,
             args: [{
                     providedIn: 'root',
@@ -465,9 +465,9 @@ class LoginGuard {
         }));
     }
 }
-LoginGuard.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: LoginGuard, deps: [{ token: JwtTokenService }], target: i0.ɵɵFactoryTarget.Injectable });
-LoginGuard.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: LoginGuard, providedIn: 'root' });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: LoginGuard, decorators: [{
+LoginGuard.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: LoginGuard, deps: [{ token: JwtTokenService }], target: i0.ɵɵFactoryTarget.Injectable });
+LoginGuard.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: LoginGuard, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: LoginGuard, decorators: [{
             type: Injectable,
             args: [{
                     providedIn: 'root',
@@ -492,9 +492,9 @@ class JwtErrorHandlingInterceptor {
             .pipe(catchError((errorResponse) => handleJwtError(errorResponse, this.jwtConfiguration, this.jwtRefreshConfiguration, this.router)));
     }
 }
-JwtErrorHandlingInterceptor.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: JwtErrorHandlingInterceptor, deps: [{ token: JWT_CONFIGURATION_TOKEN }, { token: DEFAULT_JWT_CONFIGURATION_TOKEN }, { token: JWT_REFRESH_CONFIGURATION_TOKEN, optional: true }, { token: DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN, optional: true }, { token: i3.Router, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
-JwtErrorHandlingInterceptor.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: JwtErrorHandlingInterceptor });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: JwtErrorHandlingInterceptor, decorators: [{
+JwtErrorHandlingInterceptor.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: JwtErrorHandlingInterceptor, deps: [{ token: JWT_CONFIGURATION_TOKEN }, { token: DEFAULT_JWT_CONFIGURATION_TOKEN }, { token: JWT_REFRESH_CONFIGURATION_TOKEN, optional: true }, { token: DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN, optional: true }, { token: i3.Router, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
+JwtErrorHandlingInterceptor.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: JwtErrorHandlingInterceptor });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: JwtErrorHandlingInterceptor, decorators: [{
             type: Injectable
         }], ctorParameters: function () {
         return [{ type: undefined, decorators: [{
@@ -610,9 +610,9 @@ class JwtInjectorInterceptor {
         }));
     }
 }
-JwtInjectorInterceptor.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: JwtInjectorInterceptor, deps: [{ token: JWT_CONFIGURATION_TOKEN }, { token: DEFAULT_JWT_CONFIGURATION_TOKEN }, { token: JWT_REFRESH_CONFIGURATION_TOKEN, optional: true }, { token: DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
-JwtInjectorInterceptor.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: JwtInjectorInterceptor });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: JwtInjectorInterceptor, decorators: [{
+JwtInjectorInterceptor.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: JwtInjectorInterceptor, deps: [{ token: JWT_CONFIGURATION_TOKEN }, { token: DEFAULT_JWT_CONFIGURATION_TOKEN }, { token: JWT_REFRESH_CONFIGURATION_TOKEN, optional: true }, { token: DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
+JwtInjectorInterceptor.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: JwtInjectorInterceptor });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: JwtInjectorInterceptor, decorators: [{
             type: Injectable
         }], ctorParameters: function () {
         return [{ type: undefined, decorators: [{
@@ -708,9 +708,9 @@ class JwtRefreshInterceptor {
         }
     }
 }
-JwtRefreshInterceptor.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: JwtRefreshInterceptor, deps: [{ token: JWT_CONFIGURATION_TOKEN }, { token: DEFAULT_JWT_CONFIGURATION_TOKEN }, { token: JWT_REFRESH_CONFIGURATION_TOKEN }, { token: DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN }, { token: JwtRefreshStateService }, { token: JwtTokenService }], target: i0.ɵɵFactoryTarget.Injectable });
-JwtRefreshInterceptor.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: JwtRefreshInterceptor });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: JwtRefreshInterceptor, decorators: [{
+JwtRefreshInterceptor.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: JwtRefreshInterceptor, deps: [{ token: JWT_CONFIGURATION_TOKEN }, { token: DEFAULT_JWT_CONFIGURATION_TOKEN }, { token: JWT_REFRESH_CONFIGURATION_TOKEN }, { token: DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN }, { token: JwtRefreshStateService }, { token: JwtTokenService }], target: i0.ɵɵFactoryTarget.Injectable });
+JwtRefreshInterceptor.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: JwtRefreshInterceptor });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: JwtRefreshInterceptor, decorators: [{
             type: Injectable
         }], ctorParameters: function () {
         return [{ type: undefined, decorators: [{
@@ -787,10 +787,10 @@ class JwtModule {
         };
     }
 }
-JwtModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: JwtModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-JwtModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: JwtModule, imports: [CommonModule] });
-JwtModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: JwtModule, imports: [[CommonModule]] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: JwtModule, decorators: [{
+JwtModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: JwtModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+JwtModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "14.0.4", ngImport: i0, type: JwtModule, imports: [CommonModule] });
+JwtModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: JwtModule, imports: [CommonModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: JwtModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],

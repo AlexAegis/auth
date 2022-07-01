@@ -4,10 +4,10 @@ import { CommonModule } from '@angular/common';
 
 class NgrxModule {
 }
-NgrxModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: NgrxModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-NgrxModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: NgrxModule, imports: [CommonModule] });
-NgrxModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: NgrxModule, imports: [[CommonModule]] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.3.5", ngImport: i0, type: NgrxModule, decorators: [{
+NgrxModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: NgrxModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+NgrxModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "14.0.4", ngImport: i0, type: NgrxModule, imports: [CommonModule] });
+NgrxModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: NgrxModule, imports: [CommonModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: NgrxModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],

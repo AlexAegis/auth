@@ -25,4 +25,4 @@ export interface SeparatedUrl {
  * Separator between protocol and domain is `://`, and between domain
  * and path is `/`.
  */
-export declare const separateUrl: (url?: string | undefined) => SeparatedUrl;
+export declare const separateUrl: (url?: string) => SeparatedUrl;

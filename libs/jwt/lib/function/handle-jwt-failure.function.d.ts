@@ -6,4 +6,4 @@ import { Params, Router } from '@angular/router';
  *
  * @internal
  */
-export declare const handleJwtFailure: <E>(errorCallbackOrRedirect: string | ((e: E) => void), error: E, router?: Router | undefined, redirectParameters?: HttpParams | Params | ((e: E) => HttpParams | Params) | undefined) => void;
+export declare const handleJwtFailure: <E>(errorCallbackOrRedirect: string | ((e: E) => void), error: E, router?: Router, redirectParameters?: HttpParams | Params | ((e: E) => HttpParams | Params) | undefined) => void;

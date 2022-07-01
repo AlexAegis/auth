@@ -11,4 +11,4 @@ export declare const handleJwtError: <RefreshRequest = unknown, RefreshResponse 
     error?: {
         error: JwtError | JwtCannotRefreshError | JwtCouldntRefreshError;
     };
-}, jwtConfiguration: JwtConfiguration, jwtRefreshConfiguration?: JwtRefreshConfiguration<RefreshRequest, RefreshResponse> | undefined, router?: Router | undefined) => Observable<never>;
+}, jwtConfiguration: JwtConfiguration, jwtRefreshConfiguration?: JwtRefreshConfiguration<RefreshRequest, RefreshResponse> | undefined, router?: Router) => Observable<never>;
