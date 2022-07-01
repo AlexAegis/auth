@@ -2,6 +2,7 @@
 	"version": 1,
 	"projects": {
 		"core": {
+			"$schema": "../../node_modules/nx/schemas/project-schema.json",
 			"projectType": "library",
 			"root": "libs/core",
 			"sourceRoot": "libs/core/src",
@@ -43,6 +44,7 @@
 			"tags": ["lib"]
 		},
 		"core-demo": {
+			"$schema": "../../node_modules/nx/schemas/project-schema.json",
 			"projectType": "application",
 			"schematics": {
 				"@nrwl/angular:component": {
@@ -140,6 +142,7 @@
 			"tags": ["app"]
 		},
 		"core-demo-e2e": {
+			"$schema": "../../node_modules/nx/schemas/project-schema.json",
 			"root": "apps/core-demo-e2e",
 			"sourceRoot": "apps/core-demo-e2e/src",
 			"projectType": "application",
@@ -171,6 +174,7 @@
 			"implicitDependencies": ["core-demo"]
 		},
 		"jwt": {
+			"$schema": "../../node_modules/nx/schemas/project-schema.json",
 			"projectType": "library",
 			"root": "libs/jwt",
 			"sourceRoot": "libs/jwt/src",
@@ -208,6 +212,7 @@
 			"tags": []
 		},
 		"jwt-demo": {
+			"$schema": "../../node_modules/nx/schemas/project-schema.json",
 			"projectType": "application",
 			"schematics": {
 				"@nrwl/angular:service": {
@@ -305,6 +310,7 @@
 			"tags": []
 		},
 		"jwt-demo-e2e": {
+			"$schema": "../../node_modules/nx/schemas/project-schema.json",
 			"root": "apps/jwt-demo-e2e",
 			"sourceRoot": "apps/jwt-demo-e2e/src",
 			"projectType": "application",
@@ -336,6 +342,7 @@
 			"implicitDependencies": ["jwt-demo"]
 		},
 		"ngrx": {
+			"$schema": "../../node_modules/nx/schemas/project-schema.json",
 			"projectType": "library",
 			"root": "libs/ngrx",
 			"sourceRoot": "libs/ngrx/src",
