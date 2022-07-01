@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [14.0.0](https://github.com/AlexAegis/auth/compare/v13.0.0...v14.0.0) (2022-07-01)
+
+### Features
+
+* updated to ng14 ([732761c](https://github.com/AlexAegis/auth/commit/732761c5e2b50e95cf7d59c9713b177a77b982a1))
+
 ## [13.0.0](https://github.com/AlexAegis/auth/compare/v12.0.0...v13.0.0) (2022-05-02)
 
 ### Features
