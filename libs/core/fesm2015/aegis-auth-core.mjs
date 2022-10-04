@@ -4,10 +4,10 @@ import { NgModule } from '@angular/core';
 
 class AuthCoreModule {
 }
-AuthCoreModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: AuthCoreModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-AuthCoreModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "14.0.4", ngImport: i0, type: AuthCoreModule, imports: [CommonModule] });
-AuthCoreModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: AuthCoreModule, imports: [CommonModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: AuthCoreModule, decorators: [{
+AuthCoreModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.2.4", ngImport: i0, type: AuthCoreModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+AuthCoreModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "14.2.4", ngImport: i0, type: AuthCoreModule, imports: [CommonModule] });
+AuthCoreModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "14.2.4", ngImport: i0, type: AuthCoreModule, imports: [CommonModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.2.4", ngImport: i0, type: AuthCoreModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],

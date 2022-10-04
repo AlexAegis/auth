@@ -33,7 +33,7 @@
     "@angular/core": "14.*.*",
     "@angular/router": "14.*.*",
     "rxjs": "7.*.*",
-    "@angular/platform-browser-dynamic": "14.0.4"
+    "@angular/platform-browser-dynamic": "^14.2.4"
   },
   "dependencies": {
     "js-base64": "^3.7.0",

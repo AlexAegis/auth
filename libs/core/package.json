@@ -32,7 +32,7 @@
   "peerDependencies": {
     "@angular/common": "14.*.*",
     "@angular/core": "14.*.*",
-    "@angular/platform-browser-dynamic": "14.0.4"
+    "@angular/platform-browser-dynamic": "^14.2.4"
   },
   "module": "fesm2015/aegis-auth-core.mjs",
   "es2020": "fesm2020/aegis-auth-core.mjs",

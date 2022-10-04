@@ -23,9 +23,9 @@ export declare class JwtTokenService<Claims = Record<string | number, unknown>, 
     readonly accessToken$: Observable<JwtToken<Claims> | null>;
     readonly refreshToken$: Observable<JwtToken<RefreshClaims> | null>;
     readonly accessTokenHeader$: Observable<import("../model/jwt-token.class").JwtTokenHeader | null>;
-    readonly accessTokenPayload$: Observable<NonNullable<import("../model/jwt-token.class").JwtTokenPayload & Claims> | null>;
+    readonly accessTokenPayload$: Observable<(import("../model/jwt-token.class").JwtTokenPayload & Claims) | null>;
     readonly refreshTokenHeader$: Observable<import("../model/jwt-token.class").JwtTokenHeader | null>;
-    readonly refreshTokenPayload$: Observable<NonNullable<import("../model/jwt-token.class").JwtTokenPayload & RefreshClaims> | null>;
+    readonly refreshTokenPayload$: Observable<(import("../model/jwt-token.class").JwtTokenPayload & RefreshClaims) | null>;
     readonly isAccessTokenExpired$: Observable<boolean | null>;
     readonly isRefreshTokenExpired$: Observable<boolean | null>;
     readonly isAccessTokenValid$: Observable<boolean>;

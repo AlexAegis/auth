@@ -34,7 +34,7 @@
     "@angular/common": "14.*.*",
     "@angular/core": "14.*.*",
     "@ngrx/store": "14.*.*",
-    "@angular/platform-browser-dynamic": "14.0.4"
+    "@angular/platform-browser-dynamic": "^14.2.4"
   },
   "dependencies": {
     "tslib": "2.*.*"
