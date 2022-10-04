@@ -68,7 +68,7 @@ jobs:
       - name: Install packages
         run: npm install
       - name: Test
-        run: npm run test:skip-cache
+        run: npm run test
       - name: Upload coverage result to codacy
         run: |
           export CODACY_PROJECT_TOKEN=${{ secrets.CODACY_PROJECT_TOKEN }}

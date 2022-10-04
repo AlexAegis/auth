@@ -83,7 +83,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 		if (response) {
 			return response.pipe(
 				materialize(),
-				delay(1000),
+				delay(100),
 				tap((a) => console.log('Fake Backend Responded: ', a)),
 				dematerialize()
 			);
