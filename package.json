@@ -129,7 +129,7 @@
 		"@nrwl/eslint-plugin-nx": "14.8.2",
 		"@nrwl/jest": "14.8.2",
 		"@nrwl/linter": "14.8.2",
-		"@nrwl/node": "14.8.2",
+		"@nrwl/node": "15.0.4",
 		"@nrwl/web": "14.8.2",
 		"@nrwl/workspace": "14.8.2",
 		"@types/jest": "29.1.1",
