@@ -37,7 +37,7 @@ import { AuthService } from './service';
 					canActivate: [LoginGuard],
 				},
 			],
-			{ initialNavigation: 'enabledBlocking', relativeLinkResolution: 'legacy' }
+			{ initialNavigation: 'enabledBlocking' }
 		),
 		JwtModule.forRoot<RefreshRequest, RefreshResponse>(
 			{
