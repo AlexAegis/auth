@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [15.0.0](https://github.com/AlexAegis/auth/compare/v14.0.0...v15.0.0) (2022-12-01)
+
+
+### Features
+
+* run ng15 migrations ([b848967](https://github.com/AlexAegis/auth/commit/b848967971740c487893d6257aec4737183121d1))
+
 ## [14.0.0](https://github.com/AlexAegis/auth/compare/v13.0.0...v14.0.0) (2022-07-01)
 
 ### Features
