@@ -36,9 +36,9 @@ export class LoginGuard {
         }));
     }
 }
-LoginGuard.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.2.4", ngImport: i0, type: LoginGuard, deps: [{ token: i1.JwtTokenService }], target: i0.ɵɵFactoryTarget.Injectable });
-LoginGuard.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.2.4", ngImport: i0, type: LoginGuard, providedIn: 'root' });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.2.4", ngImport: i0, type: LoginGuard, decorators: [{
+LoginGuard.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.0.2", ngImport: i0, type: LoginGuard, deps: [{ token: i1.JwtTokenService }], target: i0.ɵɵFactoryTarget.Injectable });
+LoginGuard.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.0.2", ngImport: i0, type: LoginGuard, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.0.2", ngImport: i0, type: LoginGuard, decorators: [{
             type: Injectable,
             args: [{
                     providedIn: 'root',

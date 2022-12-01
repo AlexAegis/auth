@@ -6,9 +6,9 @@ export class JwtRefreshStateService {
         this.refreshLock$ = new BehaviorSubject(false);
     }
 }
-JwtRefreshStateService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.2.4", ngImport: i0, type: JwtRefreshStateService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-JwtRefreshStateService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.2.4", ngImport: i0, type: JwtRefreshStateService, providedIn: 'root' });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.2.4", ngImport: i0, type: JwtRefreshStateService, decorators: [{
+JwtRefreshStateService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.0.2", ngImport: i0, type: JwtRefreshStateService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+JwtRefreshStateService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.0.2", ngImport: i0, type: JwtRefreshStateService, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.0.2", ngImport: i0, type: JwtRefreshStateService, decorators: [{
             type: Injectable,
             args: [{
                     providedIn: 'root',

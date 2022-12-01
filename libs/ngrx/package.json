@@ -1,7 +1,7 @@
 {
   "name": "@aegis-auth/ngrx",
   "description": "Angular JWT authentication library for NGRX",
-  "version": "14.0.0",
+  "version": "15.0.0",
   "license": "MIT",
   "author": {
     "email": "alexaegis@gmail.com",
@@ -34,7 +34,7 @@
     "@angular/common": "14.*.*",
     "@angular/core": "14.*.*",
     "@ngrx/store": "14.*.*",
-    "@angular/platform-browser-dynamic": "^14.2.4"
+    "@angular/platform-browser-dynamic": "15.0.2"
   },
   "dependencies": {
     "tslib": "2.*.*"
