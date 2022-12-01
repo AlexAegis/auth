@@ -33,7 +33,7 @@
 						"passWithNoTests": true,
 						"codeCoverage": true
 					},
-					"outputs": ["coverage/libs/core"]
+					"outputs": ["{workspaceRoot}/coverage/libs/core"]
 				}
 			},
 			"schematics": {
@@ -136,7 +136,7 @@
 						"passWithNoTests": true,
 						"codeCoverage": false
 					},
-					"outputs": ["coverage/apps/core-demo"]
+					"outputs": ["{workspaceRoot}/coverage/apps/core-demo"]
 				}
 			},
 			"tags": ["app"]
@@ -205,7 +205,7 @@
 						"passWithNoTests": true,
 						"codeCoverage": true
 					},
-					"outputs": ["coverage/libs/jwt"]
+					"outputs": ["{workspaceRoot}/coverage/libs/jwt"]
 				}
 			},
 			"schematics": {},
@@ -304,7 +304,7 @@
 						"passWithNoTests": true,
 						"codeCoverage": false
 					},
-					"outputs": ["coverage/apps/jwt-demo"]
+					"outputs": ["{workspaceRoot}/coverage/apps/jwt-demo"]
 				}
 			},
 			"tags": []
@@ -373,7 +373,7 @@
 						"passWithNoTests": true,
 						"codeCoverage": true
 					},
-					"outputs": ["coverage/libs/ngrx"]
+					"outputs": ["{workspaceRoot}/coverage/libs/ngrx"]
 				}
 			},
 			"schematics": {},
