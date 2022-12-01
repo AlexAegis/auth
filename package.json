@@ -125,7 +125,7 @@
 		"@angular/language-service": "14.2.4",
 		"@commitlint/cli": "~17.1.2",
 		"@commitlint/config-conventional": "~17.1.0",
-		"@nrwl/cypress": "14.8.2",
+		"@nrwl/cypress": "15.2.4",
 		"@nrwl/eslint-plugin-nx": "14.8.2",
 		"@nrwl/jest": "14.8.2",
 		"@nrwl/linter": "14.8.2",
