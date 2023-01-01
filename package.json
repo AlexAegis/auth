@@ -92,7 +92,7 @@
 		"workspace-generator": "nx workspace-generator"
 	},
 	"dependencies": {
-		"@angular/animations": "15.0.2",
+		"@angular/animations": "15.0.4",
 		"@angular/cdk": "15.0.1",
 		"@angular/common": "15.0.2",
 		"@angular/compiler": "15.0.2",
