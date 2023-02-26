@@ -1,0 +1,42 @@
+{
+	"name": "core",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "libs/core/src",
+	"prefix": "aegis-auth",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/angular:package",
+			"options": {
+				"tsConfig": "libs/core/tsconfig.lib.json",
+				"project": "libs/core/ng-package.json"
+			},
+			"configurations": {
+				"production": {
+					"tsConfig": "libs/core/tsconfig.lib.prod.json"
+				}
+			}
+		},
+		"lint": {
+			"executor": "@angular-eslint/builder:lint",
+			"options": {
+				"lintFilePatterns": ["libs/core/**/*.ts", "libs/core/**/*.html"]
+			}
+		},
+		"test": {
+			"executor": "@nrwl/jest:jest",
+			"options": {
+				"jestConfig": "libs/core/jest.config.ts",
+				"passWithNoTests": true,
+				"codeCoverage": true
+			},
+			"outputs": ["{workspaceRoot}/coverage/libs/core"]
+		}
+	},
+	"generators": {
+		"@nrwl/angular:component": {
+			"style": "scss"
+		}
+	},
+	"tags": ["lib"]
+}
