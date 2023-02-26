@@ -3,10 +3,10 @@ import { NgModule } from '@angular/core';
 import * as i0 from "@angular/core";
 export class AuthCoreModule {
 }
-AuthCoreModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.0.2", ngImport: i0, type: AuthCoreModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-AuthCoreModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.0.2", ngImport: i0, type: AuthCoreModule, imports: [CommonModule] });
-AuthCoreModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.0.2", ngImport: i0, type: AuthCoreModule, imports: [CommonModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.0.2", ngImport: i0, type: AuthCoreModule, decorators: [{
+AuthCoreModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.0", ngImport: i0, type: AuthCoreModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+AuthCoreModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.0", ngImport: i0, type: AuthCoreModule, imports: [CommonModule] });
+AuthCoreModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.0", ngImport: i0, type: AuthCoreModule, imports: [CommonModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.0", ngImport: i0, type: AuthCoreModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
