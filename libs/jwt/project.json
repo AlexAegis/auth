@@ -1,0 +1,38 @@
+{
+	"name": "jwt",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "libs/jwt/src",
+	"prefix": "aegis-auth",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/angular:package",
+			"options": {
+				"tsConfig": "libs/jwt/tsconfig.lib.json",
+				"project": "libs/jwt/ng-package.json"
+			},
+			"configurations": {
+				"production": {
+					"tsConfig": "libs/jwt/tsconfig.lib.prod.json"
+				}
+			}
+		},
+		"lint": {
+			"executor": "@angular-eslint/builder:lint",
+			"options": {
+				"lintFilePatterns": ["libs/jwt/**/*.ts", "libs/jwt/**/*.html"]
+			}
+		},
+		"test": {
+			"executor": "@nrwl/jest:jest",
+			"options": {
+				"jestConfig": "libs/jwt/jest.config.ts",
+				"passWithNoTests": true,
+				"codeCoverage": true
+			},
+			"outputs": ["{workspaceRoot}/coverage/libs/jwt"]
+		}
+	},
+	"generators": {},
+	"tags": []
+}
