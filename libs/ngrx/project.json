@@ -1,0 +1,38 @@
+{
+	"name": "ngrx",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "libs/ngrx/src",
+	"prefix": "aegis-auth",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/angular:package",
+			"options": {
+				"tsConfig": "libs/ngrx/tsconfig.lib.json",
+				"project": "libs/ngrx/ng-package.json"
+			},
+			"configurations": {
+				"production": {
+					"tsConfig": "libs/ngrx/tsconfig.lib.prod.json"
+				}
+			}
+		},
+		"lint": {
+			"executor": "@angular-eslint/builder:lint",
+			"options": {
+				"lintFilePatterns": ["libs/ngrx/**/*.ts", "libs/ngrx/**/*.html"]
+			}
+		},
+		"test": {
+			"executor": "@nrwl/jest:jest",
+			"options": {
+				"jestConfig": "libs/ngrx/jest.config.ts",
+				"passWithNoTests": true,
+				"codeCoverage": true
+			},
+			"outputs": ["{workspaceRoot}/coverage/libs/ngrx"]
+		}
+	},
+	"generators": {},
+	"tags": []
+}

@@ -1,0 +1,98 @@
+{
+	"name": "jwt-demo",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "application",
+	"generators": {
+		"@nrwl/angular:service": {
+			"flat": true
+		}
+	},
+	"sourceRoot": "apps/jwt-demo/src",
+	"prefix": "aegis-auth",
+	"targets": {
+		"build": {
+			"executor": "@angular-devkit/build-angular:browser",
+			"options": {
+				"outputPath": "dist/apps/jwt-demo",
+				"index": "apps/jwt-demo/src/index.html",
+				"main": "apps/jwt-demo/src/main.ts",
+				"polyfills": "apps/jwt-demo/src/polyfills.ts",
+				"tsConfig": "apps/jwt-demo/tsconfig.app.json",
+				"assets": ["apps/jwt-demo/src/favicon.ico", "apps/jwt-demo/src/assets"],
+				"styles": ["apps/jwt-demo/src/styles.css"],
+				"scripts": [],
+				"vendorChunk": true,
+				"extractLicenses": false,
+				"buildOptimizer": false,
+				"sourceMap": true,
+				"optimization": false,
+				"namedChunks": true
+			},
+			"configurations": {
+				"production": {
+					"fileReplacements": [
+						{
+							"replace": "apps/jwt-demo/src/environments/environment.ts",
+							"with": "apps/jwt-demo/src/environments/environment.prod.ts"
+						}
+					],
+					"optimization": true,
+					"outputHashing": "all",
+					"sourceMap": false,
+					"namedChunks": false,
+					"extractLicenses": true,
+					"vendorChunk": false,
+					"buildOptimizer": true,
+					"budgets": [
+						{
+							"type": "initial",
+							"maximumWarning": "2mb",
+							"maximumError": "5mb"
+						},
+						{
+							"type": "anyComponentStyle",
+							"maximumWarning": "6kb",
+							"maximumError": "10kb"
+						}
+					]
+				}
+			},
+			"outputs": ["{options.outputPath}"],
+			"defaultConfiguration": ""
+		},
+		"serve": {
+			"executor": "@angular-devkit/build-angular:dev-server",
+			"options": {
+				"browserTarget": "jwt-demo:build",
+				"port": 4802
+			},
+			"configurations": {
+				"production": {
+					"browserTarget": "jwt-demo:build:production"
+				}
+			}
+		},
+		"extract-i18n": {
+			"executor": "@angular-devkit/build-angular:extract-i18n",
+			"options": {
+				"browserTarget": "jwt-demo:build"
+			}
+		},
+		"lint": {
+			"executor": "@angular-eslint/builder:lint",
+			"options": {
+				"lintFilePatterns": ["apps/jwt-demo/**/*.ts", "apps/jwt-demo/**/*.html"]
+			}
+		},
+		"test": {
+			"executor": "@nrwl/jest:jest",
+			"options": {
+				"jestConfig": "apps/jwt-demo/jest.config.ts",
+				"passWithNoTests": true,
+				"codeCoverage": false
+			},
+			"outputs": ["{workspaceRoot}/coverage/apps/jwt-demo"]
+		}
+	},
+	"tags": []
+}
