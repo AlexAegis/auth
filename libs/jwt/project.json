@@ -6,10 +6,11 @@
 	"prefix": "aegis-auth",
 	"targets": {
 		"build": {
-			"executor": "@nrwl/angular:package",
+			"executor": "@nx/angular:package",
 			"options": {
 				"tsConfig": "libs/jwt/tsconfig.lib.json",
-				"project": "libs/jwt/ng-package.json"
+				"project": "libs/jwt/ng-package.json",
+				"updateBuildableProjectDepsInPackageJson": true
 			},
 			"configurations": {
 				"production": {
@@ -24,7 +25,7 @@
 			}
 		},
 		"test": {
-			"executor": "@nrwl/jest:jest",
+			"executor": "@nx/jest:jest",
 			"options": {
 				"jestConfig": "libs/jwt/jest.config.ts",
 				"passWithNoTests": true,

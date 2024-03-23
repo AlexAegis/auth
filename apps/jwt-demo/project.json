@@ -3,7 +3,7 @@
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"projectType": "application",
 	"generators": {
-		"@nrwl/angular:service": {
+		"@nx/angular:service": {
 			"flat": true
 		}
 	},
@@ -85,7 +85,7 @@
 			}
 		},
 		"test": {
-			"executor": "@nrwl/jest:jest",
+			"executor": "@nx/jest:jest",
 			"options": {
 				"jestConfig": "apps/jwt-demo/jest.config.ts",
 				"passWithNoTests": true,

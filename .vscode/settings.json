@@ -19,16 +19,14 @@
 		"comments": false,
 		"strings": false
 	},
-	"editor.wordBasedSuggestions": true,
+	"editor.wordBasedSuggestions": "matchingDocuments",
 	"editor.suggest.localityBonus": true,
 	"editor.snippetSuggestions": "bottom",
 	"editor.codeActionsOnSave": {
-		"source.fixAll": true,
-		"source.organizeImports": true,
-		// For ESLint
-		"source.fixAll.eslint": true,
-		// For Stylelint
-		"source.fixAll.stylelint": true
+		"source.fixAll": "explicit",
+		"source.organizeImports": "explicit",
+		"source.fixAll.eslint": "explicit",
+		"source.fixAll.stylelint": "explicit"
 	},
 	"editor.fontLigatures": true,
 	"editor.mouseWheelZoom": true,
