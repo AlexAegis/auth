@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [16.0.0](https://github.com/AlexAegis/auth/compare/v15.0.0...v16.0.0) (2024-03-23)
+
+
+### Features
+
+* ng16 ([4541be4](https://github.com/AlexAegis/auth/commit/4541be4bc480aabee7c9799286483d8608ffae54))
+
 ## [15.0.0](https://github.com/AlexAegis/auth/compare/v14.0.0...v15.0.0) (2022-12-01)
 
 
