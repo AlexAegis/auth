@@ -1,5 +1,5 @@
-export type Base64String = string;
-export type JsonString = string;
+export declare type Base64String = string;
+export declare type JsonString = string;
 /**
  *
  * @param str json encoded in Base64

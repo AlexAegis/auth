@@ -1,10 +1,10 @@
 {
   "name": "@aegis-auth/ngrx",
   "description": "Angular JWT authentication library for NGRX",
-  "version": "16.0.0",
+  "version": "15.0.1",
   "license": "MIT",
   "author": {
-    "email": "alexaegis@pm.me",
+    "email": "alexaegis@gmail.com",
     "name": "AlexAegis",
     "url": "https://www.github.com/AlexAegis"
   },
@@ -31,15 +31,19 @@
     "javascript"
   ],
   "peerDependencies": {
-    "@angular/common": "14.*.*",
-    "@angular/core": "14.*.*",
-    "@ngrx/store": "14.*.*",
-    "@angular/platform-browser-dynamic": "16.2.12"
+    "@angular/common": "15.*.*",
+    "@angular/core": "15.*.*",
+    "@ngrx/store": "15.*.*",
+    "@angular/platform-browser-dynamic": "15.0.2"
   },
   "dependencies": {
     "tslib": "2.*.*"
   },
-  "module": "fesm2022/aegis-auth-ngrx.mjs",
+  "module": "fesm2015/aegis-auth-ngrx.mjs",
+  "es2020": "fesm2020/aegis-auth-ngrx.mjs",
+  "esm2020": "esm2020/aegis-auth-ngrx.mjs",
+  "fesm2020": "fesm2020/aegis-auth-ngrx.mjs",
+  "fesm2015": "fesm2015/aegis-auth-ngrx.mjs",
   "typings": "index.d.ts",
   "exports": {
     "./package.json": {
@@ -47,9 +51,11 @@
     },
     ".": {
       "types": "./index.d.ts",
-      "esm2022": "./esm2022/aegis-auth-ngrx.mjs",
-      "esm": "./esm2022/aegis-auth-ngrx.mjs",
-      "default": "./fesm2022/aegis-auth-ngrx.mjs"
+      "esm2020": "./esm2020/aegis-auth-ngrx.mjs",
+      "es2020": "./fesm2020/aegis-auth-ngrx.mjs",
+      "es2015": "./fesm2015/aegis-auth-ngrx.mjs",
+      "node": "./fesm2015/aegis-auth-ngrx.mjs",
+      "default": "./fesm2020/aegis-auth-ngrx.mjs"
     }
   },
   "sideEffects": false

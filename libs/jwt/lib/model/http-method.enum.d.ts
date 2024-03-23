@@ -9,4 +9,4 @@ export declare enum HttpMethod {
     TRACE = "TRACE",
     PATCH = "PATCH"
 }
-export type HttpMethodType = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'OPTIONS' | 'TRACE' | 'PATCH';
+export declare type HttpMethodType = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'OPTIONS' | 'TRACE' | 'PATCH';
