@@ -1,4 +1,4 @@
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, CanLoad, Route, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Route, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { JwtTokenService } from '../service/jwt-token.service';
 import * as i0 from "@angular/core";
@@ -12,7 +12,7 @@ export interface LoginGuardData {
      */
     isRefreshAllowed: boolean;
 }
-export declare class LoginGuard implements CanActivate, CanActivateChild, CanLoad {
+export declare class LoginGuard {
     private readonly jwtTokenService;
     private isAccessTokenValidOnce$;
     constructor(jwtTokenService: JwtTokenService);

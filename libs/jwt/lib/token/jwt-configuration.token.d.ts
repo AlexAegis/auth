@@ -8,16 +8,16 @@ export declare const DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN: InjectionToken<Par
 /**
  * To provide an {@link AuthTokenConfiguration |  AuthTokenConfiguration}
  */
-export declare type JwtConfigurationProvider = TypedProvider<JwtConfiguration>;
+export type JwtConfigurationProvider = TypedProvider<JwtConfiguration>;
 /**
  * To provide an {@link AuthTokenConfiguration |  AuthTokenConfiguration}
  */
-export declare type JwtRefreshConfigurationProvider<RefreshRequest, RefreshResponse> = TypedProvider<JwtRefreshConfiguration<RefreshRequest, RefreshResponse>>;
+export type JwtRefreshConfigurationProvider<RefreshRequest, RefreshResponse> = TypedProvider<JwtRefreshConfiguration<RefreshRequest, RefreshResponse>>;
 /**
  * This type describes a providerlike object that doesn't have a provide field
  * because that will be defaulted by the
  * {@link createRefreshableAuthTokenProvider | createRefreshableAuthTokenProvider }
  * function
  */
-export declare type JwtModuleConfigurationProvider = Partial<Omit<TypedProvider<Partial<JwtConfiguration>>, 'provide' | 'multi'>>;
-export declare type JwtModuleRefreshConfigurationProvider<RefreshRequest, RefreshResponse> = Partial<Omit<TypedProvider<Partial<JwtRefreshConfiguration<RefreshRequest, RefreshResponse>>>, 'provide' | 'multi'>>;
+export type JwtModuleConfigurationProvider = Partial<Omit<TypedProvider<Partial<JwtConfiguration>>, 'provide' | 'multi'>>;
+export type JwtModuleRefreshConfigurationProvider<RefreshRequest, RefreshResponse> = Partial<Omit<TypedProvider<Partial<JwtRefreshConfiguration<RefreshRequest, RefreshResponse>>>, 'provide' | 'multi'>>;
