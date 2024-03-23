@@ -1,7 +1,7 @@
 {
 	"name": "@aegis-auth/ngrx",
 	"description": "Angular JWT authentication library for NGRX",
-	"version": "15.0.1",
+	"version": "16.0.0",
 	"license": "MIT",
 	"author": {
 		"email": "alexaegis@pm.me",

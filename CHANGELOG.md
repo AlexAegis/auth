@@ -9,6 +9,13 @@ All notable changes to this project will be documented in this file. See [standa
 
 * peerDeps to 15 ([5357656](https://github.com/AlexAegis/auth/commit/5357656a90336083ae8769c5b1f2ca76bc4b6a76))
 
+## [16.0.0](https://github.com/AlexAegis/auth/compare/v15.0.0...v16.0.0) (2024-03-23)
+
+
+### Features
+
+* ng16 ([4541be4](https://github.com/AlexAegis/auth/commit/4541be4bc480aabee7c9799286483d8608ffae54))
+
 ## [15.0.0](https://github.com/AlexAegis/auth/compare/v14.0.0...v15.0.0) (2022-12-01)
 
 
