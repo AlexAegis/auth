@@ -1,6 +1,6 @@
-export declare type UrlProtocol = string;
-export declare type UrlDomain = string;
-export declare type UrlPath = string;
+export type UrlProtocol = string;
+export type UrlDomain = string;
+export type UrlPath = string;
 /**
  * An url separated into optional parts, the separators are not included.
  * Separator between protocol and domain is `://`, and between domain

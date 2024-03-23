@@ -1,10 +1,10 @@
 {
   "name": "@aegis-auth/core",
   "description": "Angular authentication libraries",
-  "version": "15.0.0",
+  "version": "16.0.0",
   "license": "MIT",
   "author": {
-    "email": "alexaegis@gmail.com",
+    "email": "alexaegis@pm.me",
     "name": "AlexAegis",
     "url": "https://www.github.com/AlexAegis"
   },
@@ -32,13 +32,9 @@
   "peerDependencies": {
     "@angular/common": "14.*.*",
     "@angular/core": "14.*.*",
-    "@angular/platform-browser-dynamic": "15.2.0"
+    "@angular/platform-browser-dynamic": "16.2.12"
   },
-  "module": "fesm2015/aegis-auth-core.mjs",
-  "es2020": "fesm2020/aegis-auth-core.mjs",
-  "esm2020": "esm2020/aegis-auth-core.mjs",
-  "fesm2020": "fesm2020/aegis-auth-core.mjs",
-  "fesm2015": "fesm2015/aegis-auth-core.mjs",
+  "module": "fesm2022/aegis-auth-core.mjs",
   "typings": "index.d.ts",
   "exports": {
     "./package.json": {
@@ -46,11 +42,9 @@
     },
     ".": {
       "types": "./index.d.ts",
-      "esm2020": "./esm2020/aegis-auth-core.mjs",
-      "es2020": "./fesm2020/aegis-auth-core.mjs",
-      "es2015": "./fesm2015/aegis-auth-core.mjs",
-      "node": "./fesm2015/aegis-auth-core.mjs",
-      "default": "./fesm2020/aegis-auth-core.mjs"
+      "esm2022": "./esm2022/aegis-auth-core.mjs",
+      "esm": "./esm2022/aegis-auth-core.mjs",
+      "default": "./fesm2022/aegis-auth-core.mjs"
     }
   },
   "sideEffects": false

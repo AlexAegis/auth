@@ -1,6 +1,6 @@
 import { Base64String } from '../function/base64-decoder.function';
-export declare type JwtTokenString = string;
-export declare type UnixTime = number;
+export type JwtTokenString = string;
+export type UnixTime = number;
 export interface JwtTokenHeader {
     /**
      * Media type
