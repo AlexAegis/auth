@@ -49,3 +49,5 @@ typedocs
 # NX
 
 .cache
+
+.nx/cache

@@ -1,16 +1,11 @@
 {
-	"npmScope": "aegis-auth",
 	"affected": {
 		"defaultBase": "master"
 	},
 	"tasksRunnerOptions": {
 		"default": {
-			"runner": "nx/tasks-runners/default",
 			"options": {
-				"cacheableOperations": ["build", "lint", "test", "e2e"],
-				"runtimeCacheInputs": ["node -v"],
-				"cacheDirectory": ".cache/nx",
-				"parallel": 1
+				"runtimeCacheInputs": ["node -v"]
 			}
 		}
 	},
@@ -49,13 +44,19 @@
 	"targetDefaults": {
 		"build": {
 			"dependsOn": ["^build"],
-			"inputs": ["production", "^production"]
+			"inputs": ["production", "^production"],
+			"cache": true
 		},
 		"e2e": {
-			"inputs": ["default", "^production"]
+			"inputs": ["default", "^production"],
+			"cache": true
 		},
 		"test": {
-			"inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
+			"inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
+			"cache": true
+		},
+		"lint": {
+			"cache": true
 		}
 	},
 	"namedInputs": {
@@ -75,5 +76,7 @@
 			"!{projectRoot}/.eslintrc.json",
 			"!{projectRoot}/src/test-setup.[jt]s"
 		]
-	}
+	},
+	"parallel": 1,
+	"cacheDirectory": ".cache/nx"
 }
