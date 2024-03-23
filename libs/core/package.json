@@ -1,7 +1,7 @@
 {
   "name": "@aegis-auth/core",
   "description": "Angular authentication libraries",
-  "version": "16.0.1",
+  "version": "17.0.0",
   "license": "MIT",
   "author": {
     "email": "alexaegis@pm.me",
@@ -30,9 +30,8 @@
     "tslib": "2.*.*"
   },
   "peerDependencies": {
-    "@angular/common": "16.*.*",
-    "@angular/core": "16.*.*",
-    "@angular/platform-browser-dynamic": "16.2.12"
+    "@angular/common": "17.*.*",
+    "@angular/core": "17.*.*"
   },
   "module": "fesm2022/aegis-auth-core.mjs",
   "typings": "index.d.ts",

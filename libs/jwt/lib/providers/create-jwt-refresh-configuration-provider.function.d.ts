@@ -4,4 +4,4 @@ import { JwtModuleRefreshConfigurationProvider, JwtRefreshConfigurationProvider 
  *
  * @internal
  */
-export declare const createJwtRefreshConfigurationProvider: <RefreshRequest, RefreshResponse>(tokenRefreshConfigurationProvider: Partial<Omit<import("../model/typed-providers.interface").TypedProvider<Partial<import("@aegis-auth/jwt").JwtRefreshConfiguration<RefreshRequest, RefreshResponse>>>, "provide" | "multi">>) => JwtRefreshConfigurationProvider<RefreshRequest, RefreshResponse>;
+export declare const createJwtRefreshConfigurationProvider: <RefreshRequest, RefreshResponse>(tokenRefreshConfigurationProvider: JwtModuleRefreshConfigurationProvider<RefreshRequest, RefreshResponse>) => JwtRefreshConfigurationProvider<RefreshRequest, RefreshResponse>;
