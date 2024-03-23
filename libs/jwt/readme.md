@@ -348,7 +348,7 @@ export interface JwtRefreshConfiguration<RefreshRequest, RefreshResponse>
 
   onFailureRedirectParameters?:
     | ((
-        error: JwtCouldntRefreshError | JwtCannotRefreshError
+        error: JwtCouldntRefreshError | JwtCannotRefreshError,
       ) => HttpParams | Params)
     | HttpParams
     | Params;
@@ -473,7 +473,7 @@ export interface MyClaims {
 export class MyService {
   constructor(private readonly jwtTokenService: JwtTokenService<MyClaims>) {
     this.jwtTokenService.accessToken$.pipe(
-      map((token) => token?.payload.username) // Here, `username` is a string
+      map((token) => token?.payload.username), // Here, `username` is a string
     );
   }
 }
