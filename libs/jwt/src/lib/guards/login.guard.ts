@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
 	ActivatedRouteSnapshot,
-	CanActivate,
-	CanActivateChild,
-	CanLoad,
 	Route,
 	RouterStateSnapshot,
 	UrlSegment,
@@ -28,7 +25,7 @@ export interface LoginGuardData {
 @Injectable({
 	providedIn: 'root',
 })
-export class LoginGuard implements CanActivate, CanActivateChild, CanLoad {
+export class LoginGuard {
 	private isAccessTokenValidOnce$ = this.jwtTokenService.isAccessTokenValid$.pipe(take(1));
 
 	public constructor(private readonly jwtTokenService: JwtTokenService) {}

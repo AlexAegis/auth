@@ -26,7 +26,14 @@
 				"flat": true
 			}
 		},
-		"@nrwl/angular": {
+		"@nx/angular:application": {
+			"unitTestRunner": "jest",
+			"e2eTestRunner": "cypress"
+		},
+		"@nx/angular:library": {
+			"unitTestRunner": "jest"
+		},
+		"@nx/angular": {
 			"application": {
 				"linter": "eslint"
 			},
@@ -36,13 +43,6 @@
 			"storybook-configuration": {
 				"linter": "eslint"
 			}
-		},
-		"@nrwl/angular:application": {
-			"unitTestRunner": "jest",
-			"e2eTestRunner": "cypress"
-		},
-		"@nrwl/angular:library": {
-			"unitTestRunner": "jest"
 		}
 	},
 	"$schema": "./node_modules/nx/schemas/nx-schema.json",
@@ -72,7 +72,8 @@
 			"!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
 			"!{projectRoot}/tsconfig.spec.json",
 			"!{projectRoot}/jest.config.[jt]s",
-			"!{projectRoot}/.eslintrc.json"
+			"!{projectRoot}/.eslintrc.json",
+			"!{projectRoot}/src/test-setup.[jt]s"
 		]
 	}
 }
