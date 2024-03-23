@@ -18,19 +18,19 @@ export class ApiService {
 
 	public requestWhitelistedPathOnWhitelistedDomain(): Observable<unknown> {
 		return this.http.get<unknown>(
-			`${WHITELISTED_PROTOCOL}://${WHITELISTED_DOMAIN}/${WHITELISTED_PATH}`
+			`${WHITELISTED_PROTOCOL}://${WHITELISTED_DOMAIN}/${WHITELISTED_PATH}`,
 		);
 	}
 
 	public requestBlacklistedPathOnWhitelistedDomain(): Observable<unknown> {
 		return this.http.get<unknown>(
-			`${WHITELISTED_PROTOCOL}://${WHITELISTED_DOMAIN}/${BLACKLISTED_PATH}`
+			`${WHITELISTED_PROTOCOL}://${WHITELISTED_DOMAIN}/${BLACKLISTED_PATH}`,
 		);
 	}
 
 	public requestOnBlacklistedDomain(): Observable<unknown> {
 		return this.http.get<unknown>(
-			`${BLACKLISTED_PROTOCOL}://${BLACKLISTED_DOMAIN}/api/v1/employees`
+			`${BLACKLISTED_PROTOCOL}://${BLACKLISTED_DOMAIN}/api/v1/employees`,
 		);
 	}
 

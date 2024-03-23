@@ -19,7 +19,7 @@ describe('DashboardComponent', () => {
 							getToken: () => 'authService.accessTokenStorage$',
 						},
 					},
-					{ useValue: {} }
+					{ useValue: {} },
 				),
 			],
 			providers: [{ provide: APP_BASE_HREF, useValue: '/' }],

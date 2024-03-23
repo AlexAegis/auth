@@ -19,7 +19,7 @@ export const handleJwtError = <RefreshRequest = unknown, RefreshResponse = unkno
 		| { error?: { error: JwtError | JwtCannotRefreshError | JwtCouldntRefreshError } },
 	jwtConfiguration: JwtConfiguration,
 	jwtRefreshConfiguration?: JwtRefreshConfiguration<RefreshRequest, RefreshResponse>,
-	router?: Router
+	router?: Router,
 ): Observable<never> => {
 	const error: undefined | JwtError | JwtCannotRefreshError | JwtCouldntRefreshError =
 		wrappedError.error?.error;
@@ -33,7 +33,7 @@ export const handleJwtError = <RefreshRequest = unknown, RefreshResponse = unkno
 				jwtRefreshConfiguration.onFailure,
 				error,
 				router,
-				jwtRefreshConfiguration.onFailureRedirectParameters
+				jwtRefreshConfiguration.onFailureRedirectParameters,
 			);
 		}
 		// Rethrow the inner error, so observers of the user can see it
@@ -44,7 +44,7 @@ export const handleJwtError = <RefreshRequest = unknown, RefreshResponse = unkno
 				jwtConfiguration.onFailure,
 				error,
 				router,
-				jwtConfiguration.onFailureRedirectParameters
+				jwtConfiguration.onFailureRedirectParameters,
 			);
 		}
 		return throwError(error);

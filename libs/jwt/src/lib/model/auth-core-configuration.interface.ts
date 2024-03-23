@@ -251,7 +251,7 @@ export interface JwtErrorHandling {
 	 */
 	onFailureRedirectParameters?:
 		| ((
-				error: JwtError | JwtCouldntRefreshError | JwtCannotRefreshError
+				error: JwtError | JwtCouldntRefreshError | JwtCannotRefreshError,
 		  ) => HttpParams | Params)
 		| HttpParams
 		| Params;

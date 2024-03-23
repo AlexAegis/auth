@@ -13,10 +13,10 @@ export const createJwtRefreshConfigurationProvider = <RefreshRequest, RefreshRes
 	tokenRefreshConfigurationProvider: JwtModuleRefreshConfigurationProvider<
 		RefreshRequest,
 		RefreshResponse
-	>
+	>,
 ): JwtRefreshConfigurationProvider<RefreshRequest, RefreshResponse> =>
 	({
 		provide: JWT_REFRESH_CONFIGURATION_TOKEN,
 		multi: false,
 		...tokenRefreshConfigurationProvider,
-	} as JwtRefreshConfigurationProvider<RefreshRequest, RefreshResponse>);
+	}) as JwtRefreshConfigurationProvider<RefreshRequest, RefreshResponse>;

@@ -13,32 +13,32 @@ const REFRESH_TOKEN = 'refreshToken';
 })
 export class AuthService implements OnDestroy {
 	public accessTokenStorage$ = new BehaviorSubject<string | undefined | null>(
-		localStorage.getItem(ACCESS_TOKEN)
+		localStorage.getItem(ACCESS_TOKEN),
 	);
 	public refreshTokenStorage$ = new BehaviorSubject<string | undefined | null>(
-		localStorage.getItem(REFRESH_TOKEN)
+		localStorage.getItem(REFRESH_TOKEN),
 	);
 
 	private subscriptions = new Subscription();
 
 	public constructor(
 		private readonly http: HttpClient,
-		private readonly mockServerService: MockServerService
+		private readonly mockServerService: MockServerService,
 	) {
 		this.subscriptions.add(
 			this.accessTokenStorage$.subscribe((accessToken) =>
 				accessToken
 					? localStorage.setItem(ACCESS_TOKEN, accessToken)
-					: localStorage.removeItem(ACCESS_TOKEN)
-			)
+					: localStorage.removeItem(ACCESS_TOKEN),
+			),
 		);
 
 		this.subscriptions.add(
 			this.refreshTokenStorage$.subscribe((refreshToken) =>
 				refreshToken
 					? localStorage.setItem(REFRESH_TOKEN, refreshToken)
-					: localStorage.removeItem(REFRESH_TOKEN)
-			)
+					: localStorage.removeItem(REFRESH_TOKEN),
+			),
 		);
 	}
 
@@ -62,14 +62,14 @@ export class AuthService implements OnDestroy {
 					params: {
 						tokenTimeout: tokenTimeout.toString(),
 					},
-				}
+				},
 			)
 			.pipe(
 				tap((tokenPair) => {
 					console.log('tokenpair', tokenPair);
 					this.accessTokenStorage$.next(tokenPair.accessToken);
 					this.refreshTokenStorage$.next(tokenPair.refreshToken);
-				})
+				}),
 			);
 	}
 
@@ -84,14 +84,14 @@ export class AuthService implements OnDestroy {
 					params: {
 						tokenTimeout: tokenTimeout.toString(),
 					},
-				}
+				},
 			)
 			.pipe(
 				tap((tokenPair) => {
 					console.log('tokenpair', tokenPair);
 					this.accessTokenStorage$.next(tokenPair.accessToken);
 					this.refreshTokenStorage$.next(tokenPair.refreshToken);
-				})
+				}),
 			);
 	}
 

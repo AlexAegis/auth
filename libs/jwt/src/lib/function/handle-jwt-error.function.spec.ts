@@ -23,7 +23,7 @@ describe('handleJwtError', () => {
 	const jwtCannotRefreshError = wrappedJwtCannotRefreshError.error.error;
 	const wrappedJwtCouldntRefreshError = JwtCouldntRefreshError.createErrorResponse(
 		request,
-		error
+		error,
 	);
 	const jwtCouldntRefreshError = wrappedJwtCouldntRefreshError.error.error;
 	const router = {} as Router;
@@ -57,7 +57,7 @@ describe('handleJwtError', () => {
 
 	it('should call handleJwtError with the values from the base jwtConfig using a JwtError and rethrow the unwrapped error', () => {
 		handleJwtError(wrappedJwtError, jwtConfig, jwtRefreshConfig, router).subscribe(
-			mockObserver
+			mockObserver,
 		);
 
 		expect(mockHandleJwtFailure).toBeCalledTimes(1);
@@ -65,7 +65,7 @@ describe('handleJwtError', () => {
 			jwtConfig.onFailure,
 			jwtError,
 			router,
-			jwtConfig.onFailureRedirectParameters
+			jwtConfig.onFailureRedirectParameters,
 		);
 		expect(mockObserver.next).toBeCalledTimes(0);
 		expect(mockObserver.error).toBeCalledTimes(1);
@@ -76,7 +76,7 @@ describe('handleJwtError', () => {
 	it('should call handleJwtError with the values from the jwtRefreshConfig\
 	using a JwtCannotRefreshError and rethrow the unwrapped error', () => {
 		handleJwtError(wrappedJwtCannotRefreshError, jwtConfig, jwtRefreshConfig, router).subscribe(
-			mockObserver
+			mockObserver,
 		);
 
 		expect(mockHandleJwtFailure).toBeCalledTimes(1);
@@ -84,7 +84,7 @@ describe('handleJwtError', () => {
 			jwtRefreshConfig.onFailure,
 			jwtCannotRefreshError,
 			router,
-			jwtRefreshConfig.onFailureRedirectParameters
+			jwtRefreshConfig.onFailureRedirectParameters,
 		);
 		expect(mockObserver.next).toBeCalledTimes(0);
 		expect(mockObserver.error).toBeCalledTimes(1);
@@ -98,7 +98,7 @@ describe('handleJwtError', () => {
 			wrappedJwtCouldntRefreshError,
 			jwtConfig,
 			jwtRefreshConfig,
-			router
+			router,
 		).subscribe(mockObserver);
 
 		expect(mockHandleJwtFailure).toBeCalledTimes(1);
@@ -106,7 +106,7 @@ describe('handleJwtError', () => {
 			jwtRefreshConfig.onFailure,
 			jwtCouldntRefreshError,
 			router,
-			jwtRefreshConfig.onFailureRedirectParameters
+			jwtRefreshConfig.onFailureRedirectParameters,
 		);
 		expect(mockObserver.next).toBeCalledTimes(0);
 		expect(mockObserver.error).toBeCalledTimes(1);
@@ -127,7 +127,7 @@ describe('handleJwtError', () => {
 		handleJwtError(
 			wrappedJwtCouldntRefreshError,
 			jwtConfig,
-			{} as JwtRefreshConfiguration<unknown, unknown>
+			{} as JwtRefreshConfiguration<unknown, unknown>,
 		).subscribe(mockObserver);
 
 		expect(mockHandleJwtFailure).toBeCalledTimes(0);

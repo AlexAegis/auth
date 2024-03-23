@@ -9,7 +9,7 @@ import { SeparatedUrl } from './separate-url.function';
  */
 export const checkAgainstUrlFilter = (
 	urlFilter: UrlFilter,
-	{ domain, path, protocol }: SeparatedUrl
+	{ domain, path, protocol }: SeparatedUrl,
 ): boolean => {
 	const protocolMatcher = matchAgainst(protocol);
 	const domainMatcher = matchAgainst(domain);

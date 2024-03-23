@@ -14,23 +14,23 @@ describe('checkAgainstHttpErrorFilter', () => {
 		expect(
 			checkAgainstHttpErrorFilter(
 				{ errorCodeWhitelist: [HTTP_OK] },
-				unauthorizedErrorResponse
-			)
+				unauthorizedErrorResponse,
+			),
 		).toBeFalsy());
 
 	it('can not pass with a blacklist errorCode rule that is including the status', () =>
 		expect(
 			checkAgainstHttpErrorFilter(
 				{ errorCodeBlacklist: [HTTP_FORBIDDEN] },
-				forbiddenErrorResponse
-			)
+				forbiddenErrorResponse,
+			),
 		).toBeFalsy());
 
 	it('can not pass with a blacklist errorCode rule that is including the status, even if it is also whitelisted', () =>
 		expect(
 			checkAgainstHttpErrorFilter(
 				{ errorCodeBlacklist: [HTTP_FORBIDDEN], errorCodeWhitelist: [HTTP_FORBIDDEN] },
-				forbiddenErrorResponse
-			)
+				forbiddenErrorResponse,
+			),
 		).toBeFalsy());
 });

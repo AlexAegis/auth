@@ -65,7 +65,7 @@ describe('tryJwtRefresh', () => {
 			jwtRefreshConfiguration,
 			jwtRefreshStateService.refreshLock$,
 			onError,
-			originalAction
+			originalAction,
 		).subscribe(mockObserver);
 
 		expect(mockDoJwtRefresh).toHaveBeenCalledTimes(0);
@@ -87,7 +87,7 @@ describe('tryJwtRefresh', () => {
 			jwtRefreshConfiguration,
 			jwtRefreshStateService.refreshLock$,
 			onError,
-			originalAction
+			originalAction,
 		).subscribe(mockObserver);
 
 		expect(onError).toHaveBeenCalledTimes(1);
@@ -111,7 +111,7 @@ describe('tryJwtRefresh', () => {
 			jwtRefreshConfiguration,
 			jwtRefreshStateService.refreshLock$,
 			onError,
-			originalAction
+			originalAction,
 		).subscribe(mockObserver);
 
 		expect(mockDoJwtRefresh).toHaveBeenCalledTimes(1);

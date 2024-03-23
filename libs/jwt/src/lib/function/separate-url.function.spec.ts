@@ -10,7 +10,7 @@ describe('separateUrl', () => {
 
 	it('can split up a simple full url', () => {
 		const { protocol, domain, path } = separateUrl(
-			`${PROTOCOL}://${SIMPLE_DOMAIN}/${SHORT_PATH}`
+			`${PROTOCOL}://${SIMPLE_DOMAIN}/${SHORT_PATH}`,
 		);
 
 		expect(protocol).toBe(PROTOCOL);
@@ -20,7 +20,7 @@ describe('separateUrl', () => {
 
 	it('can split up a complex full url', () => {
 		const { protocol, domain, path } = separateUrl(
-			`${PROTOCOL}://${COMPLEX_DOMAIN}/${LONG_PATH}`
+			`${PROTOCOL}://${COMPLEX_DOMAIN}/${LONG_PATH}`,
 		);
 
 		expect(protocol).toBe(PROTOCOL);

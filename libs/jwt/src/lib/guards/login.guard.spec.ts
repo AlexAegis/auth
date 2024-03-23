@@ -77,7 +77,7 @@ describe('LoginGuard', () => {
 		const canActivateResult = guard.canActivate(activatedRoute.snapshot, routerStateSnapshot);
 		const canActivateChildResult = guard.canActivateChild(
 			activatedRoute.snapshot,
-			routerStateSnapshot
+			routerStateSnapshot,
 		);
 		const canLoadResult = guard.canLoad(route, urlSegments);
 
@@ -86,13 +86,13 @@ describe('LoginGuard', () => {
 				expect(a).toBeTruthy();
 				expect(b).toBeTruthy();
 				expect(c).toBeTruthy();
-			}
+			},
 		);
 
 		zip(
 			intoObservable(canActivateResult),
 			intoObservable(canActivateChildResult),
-			intoObservable(canLoadResult)
+			intoObservable(canLoadResult),
 		)
 			.pipe(take(1))
 			.subscribe(getMockObserver(mockNext));
@@ -118,7 +118,7 @@ describe('LoginGuard', () => {
 		const canActivateResult = guard.canActivate(activatedRoute.snapshot, routerStateSnapshot);
 		const canActivateChildResult = guard.canActivateChild(
 			activatedRoute.snapshot,
-			routerStateSnapshot
+			routerStateSnapshot,
 		);
 		const canLoadResult = guard.canLoad(route, urlSegments);
 
@@ -127,13 +127,13 @@ describe('LoginGuard', () => {
 				expect(a).toBeFalsy();
 				expect(b).toBeFalsy();
 				expect(c).toBeFalsy();
-			}
+			},
 		);
 
 		zip(
 			intoObservable(canActivateResult),
 			intoObservable(canActivateChildResult),
-			intoObservable(canLoadResult)
+			intoObservable(canLoadResult),
 		)
 			.pipe(take(1))
 			.subscribe(getMockObserver(mockNext));
@@ -160,7 +160,7 @@ describe('LoginGuard', () => {
 		const canActivateResult = guard.canActivate(activatedRoute.snapshot, routerStateSnapshot);
 		const canActivateChildResult = guard.canActivateChild(
 			activatedRoute.snapshot,
-			routerStateSnapshot
+			routerStateSnapshot,
 		);
 		const canLoadResult = guard.canLoad(route, urlSegments);
 
@@ -169,13 +169,13 @@ describe('LoginGuard', () => {
 				expect(a).toBeTruthy();
 				expect(b).toBeTruthy();
 				expect(c).toBeTruthy();
-			}
+			},
 		);
 
 		zip(
 			intoObservable(canActivateResult),
 			intoObservable(canActivateChildResult),
-			intoObservable(canLoadResult)
+			intoObservable(canLoadResult),
 		)
 			.pipe(take(1))
 			.subscribe(getMockObserver(mockNext));
@@ -210,7 +210,7 @@ describe('LoginGuard', () => {
 		const canActivateResult = guard.canActivate(activatedRoute.snapshot, routerStateSnapshot);
 		const canActivateChildResult = guard.canActivateChild(
 			activatedRoute.snapshot,
-			routerStateSnapshot
+			routerStateSnapshot,
 		);
 		const canLoadResult = guard.canLoad(routeWithData, urlSegments);
 
@@ -219,13 +219,13 @@ describe('LoginGuard', () => {
 				expect(a).toBeFalsy();
 				expect(b).toBeFalsy();
 				expect(c).toBeFalsy();
-			}
+			},
 		);
 
 		zip(
 			intoObservable(canActivateResult),
 			intoObservable(canActivateChildResult),
-			intoObservable(canLoadResult)
+			intoObservable(canLoadResult),
 		)
 			.pipe(take(1))
 			.subscribe(getMockObserver(mockNext));

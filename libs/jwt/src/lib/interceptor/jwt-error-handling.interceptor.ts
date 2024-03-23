@@ -40,7 +40,7 @@ export class JwtErrorHandlingInterceptor implements HttpInterceptor {
 		@Optional()
 		@Inject(DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN)
 		defaultJwtRefreshConfig?: JwtRefreshConfiguration<unknown, unknown>,
-		@Optional() private readonly router?: Router
+		@Optional() private readonly router?: Router,
 	) {
 		this.jwtConfiguration = {
 			...defaultJwtConfig,
@@ -52,12 +52,12 @@ export class JwtErrorHandlingInterceptor implements HttpInterceptor {
 				? {
 						...defaultJwtRefreshConfig,
 						...refreshConfig,
-				  }
+					}
 				: undefined;
 	}
 	public intercept(
 		request: HttpRequest<unknown>,
-		next: HttpHandler
+		next: HttpHandler,
 	): Observable<HttpEvent<unknown>> {
 		return next
 			.handle(request)
@@ -67,9 +67,9 @@ export class JwtErrorHandlingInterceptor implements HttpInterceptor {
 						errorResponse,
 						this.jwtConfiguration,
 						this.jwtRefreshConfiguration,
-						this.router
-					)
-				)
+						this.router,
+					),
+				),
 			);
 	}
 }

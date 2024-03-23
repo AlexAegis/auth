@@ -36,7 +36,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 					!isUnixTimestampExpired(JwtToken.from(refreshRequest.refreshToken)?.payload.exp)
 				) {
 					return this.makeResponse(
-						this.auth.generateTokenPair(refreshRequest.lifespan ?? 60)
+						this.auth.generateTokenPair(refreshRequest.lifespan ?? 60),
 					);
 				} else {
 					return throwError('ERROR from backend: Expired refresh token on refresh route');
@@ -56,7 +56,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
 	public checkAuthorization(
 		request: HttpRequest<unknown>,
-		response: unknown
+		response: unknown,
 	): Observable<HttpResponse<unknown>> {
 		const jwtHeader = request.headers.get(JWT_HEADER);
 		if (jwtHeader) {
@@ -77,7 +77,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
 	public intercept(
 		request: HttpRequest<unknown>,
-		next: HttpHandler
+		next: HttpHandler,
 	): Observable<HttpEvent<unknown>> {
 		const response = this.respond(request);
 		if (response) {
@@ -85,7 +85,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 				materialize(),
 				delay(100),
 				tap((a) => console.log('Fake Backend Responded: ', a)),
-				dematerialize()
+				dematerialize(),
 			);
 		} else {
 			return next.handle(request);

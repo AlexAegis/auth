@@ -118,8 +118,8 @@ describe('JwtTokenService', () => {
 				take(1),
 				tap(() => expect(mockGetToken).toBeCalledTimes(accessTokenObservables.length)),
 				tap(() =>
-					expect(mockGetRefreshToken).toBeCalledTimes(refreshTokenObservables.length)
-				)
+					expect(mockGetRefreshToken).toBeCalledTimes(refreshTokenObservables.length),
+				),
 			)
 			.toPromise();
 	});
@@ -168,8 +168,8 @@ describe('JwtTokenService', () => {
 				take(1),
 				tap(() => expect(mockGetToken).toBeCalledTimes(accessTokenObservables.length)),
 				tap(() =>
-					expect(mockGetRefreshToken).toBeCalledTimes(refreshTokenObservables.length)
-				)
+					expect(mockGetRefreshToken).toBeCalledTimes(refreshTokenObservables.length),
+				),
 			)
 			.toPromise();
 	});
@@ -201,27 +201,27 @@ describe('JwtTokenService', () => {
 			service.accessToken$.pipe(
 				tap(mockNoCall),
 				catchError((_e) => of('ERROR')),
-				tap((n) => expect(n).toBe('ERROR'))
+				tap((n) => expect(n).toBe('ERROR')),
 			),
 			service.accessTokenHeader$.pipe(
 				tap(mockNoCall),
 				catchError((_e) => of('ERROR')),
-				tap((n) => expect(n).toBe('ERROR'))
+				tap((n) => expect(n).toBe('ERROR')),
 			),
 			service.accessTokenPayload$.pipe(
 				tap(mockNoCall),
 				catchError((_e) => of('ERROR')),
-				tap((n) => expect(n).toBe('ERROR'))
+				tap((n) => expect(n).toBe('ERROR')),
 			),
 			service.isAccessTokenExpired$.pipe(
 				tap(mockNoCall),
 				catchError((_e) => of('ERROR')),
-				tap((n) => expect(n).toBe('ERROR'))
+				tap((n) => expect(n).toBe('ERROR')),
 			),
 			service.isAccessTokenValid$.pipe(
 				tap(mockNoCall),
 				catchError((_e) => of('ERROR')),
-				tap((n) => expect(n).toBe('ERROR'))
+				tap((n) => expect(n).toBe('ERROR')),
 			),
 		];
 
@@ -230,27 +230,27 @@ describe('JwtTokenService', () => {
 			service.refreshToken$.pipe(
 				tap(mockNoCall),
 				catchError((_e) => of('ERROR')),
-				tap((n) => expect(n).toBe('ERROR'))
+				tap((n) => expect(n).toBe('ERROR')),
 			),
 			service.refreshTokenHeader$.pipe(
 				tap(mockNoCall),
 				catchError((_e) => of('ERROR')),
-				tap((n) => expect(n).toBe('ERROR'))
+				tap((n) => expect(n).toBe('ERROR')),
 			),
 			service.refreshTokenPayload$.pipe(
 				tap(mockNoCall),
 				catchError((_e) => of('ERROR')),
-				tap((n) => expect(n).toBe('ERROR'))
+				tap((n) => expect(n).toBe('ERROR')),
 			),
 			service.isRefreshTokenExpired$.pipe(
 				tap(mockNoCall),
 				catchError((_e) => of('ERROR')),
-				tap((n) => expect(n).toBe('ERROR'))
+				tap((n) => expect(n).toBe('ERROR')),
 			),
 			service.isRefreshTokenValid$.pipe(
 				tap(mockNoCall),
 				catchError((_e) => of('ERROR')),
-				tap((n) => expect(n).toBe('ERROR'))
+				tap((n) => expect(n).toBe('ERROR')),
 			),
 		];
 
@@ -259,9 +259,9 @@ describe('JwtTokenService', () => {
 				take(1),
 				tap(() => expect(mockGetToken).toBeCalledTimes(accessTokenObservables.length)),
 				tap(() =>
-					expect(mockGetRefreshToken).toBeCalledTimes(refreshTokenObservables.length)
+					expect(mockGetRefreshToken).toBeCalledTimes(refreshTokenObservables.length),
 				),
-				tap(() => expect(mockNoCall).toBeCalledTimes(0))
+				tap(() => expect(mockNoCall).toBeCalledTimes(0)),
 			)
 			.toPromise();
 	});
@@ -310,8 +310,8 @@ describe('JwtTokenService', () => {
 				take(1),
 				tap(() => expect(mockGetToken).toBeCalledTimes(accessTokenObservables.length)),
 				tap(() =>
-					expect(mockGetRefreshToken).toBeCalledTimes(refreshTokenObservables.length)
-				)
+					expect(mockGetRefreshToken).toBeCalledTimes(refreshTokenObservables.length),
+				),
 			)
 			.toPromise();
 	});
@@ -350,7 +350,7 @@ describe('JwtTokenService', () => {
 		return zip(...accessTokenObservables, ...refreshTokenObservables)
 			.pipe(
 				take(1),
-				tap(() => expect(mockGetToken).toBeCalledTimes(accessTokenObservables.length))
+				tap(() => expect(mockGetToken).toBeCalledTimes(accessTokenObservables.length)),
 			)
 			.toPromise();
 	});
@@ -402,7 +402,7 @@ describe('JwtTokenService', () => {
 					createRefreshRequestBody: () => ({}),
 					refreshUrl,
 					setRefreshedTokens: mockSetRefreshedTokens as (
-						response: JwtRefreshResponse
+						response: JwtRefreshResponse,
 					) => void,
 					transformRefreshResponse: (a) => a,
 				},
@@ -431,7 +431,7 @@ describe('JwtTokenService', () => {
 					accessToken: TEST_VALID_TOKEN,
 					refreshToken: TEST_VALID_TOKEN,
 				},
-				{}
+				{},
 			);
 
 			expect(mockSetRefreshedTokens).toBeCalledTimes(1);
@@ -459,7 +459,7 @@ describe('JwtTokenService', () => {
 					createRefreshRequestBody: () => ({}),
 					refreshUrl,
 					setRefreshedTokens: mockSetRefreshedTokens as (
-						response: JwtRefreshResponse
+						response: JwtRefreshResponse,
 					) => void,
 					transformRefreshResponse: (a) => a,
 				},

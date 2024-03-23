@@ -24,8 +24,8 @@ describe('checkAgainstUrlFilter', () => {
 				},
 				{
 					domain: FOO,
-				}
-			)
+				},
+			),
 		).toBeFalsy());
 
 	it('can detect regex blacklisted domain for full url', () =>
@@ -34,8 +34,8 @@ describe('checkAgainstUrlFilter', () => {
 				{
 					domainBlacklist: [FOO_REGEX],
 				},
-				fullFooUrl
-			)
+				fullFooUrl,
+			),
 		).toBeFalsy());
 
 	it('can still pass when regex blacklisted path is for another url', () =>
@@ -47,8 +47,8 @@ describe('checkAgainstUrlFilter', () => {
 				{
 					domain: FOO,
 					path: FOO,
-				}
-			)
+				},
+			),
 		).toBeTruthy());
 
 	it('can still pass when regex blacklisted path when there is no path', () =>
@@ -59,8 +59,8 @@ describe('checkAgainstUrlFilter', () => {
 				},
 				{
 					domain: FOO,
-				}
-			)
+				},
+			),
 		).toBeTruthy());
 
 	it('can detect regex blacklisted domain for full url even if it is also whitelisted', () =>
@@ -70,8 +70,8 @@ describe('checkAgainstUrlFilter', () => {
 					domainBlacklist: [FOO_REGEX],
 					domainWhitelist: [FOO],
 				},
-				fullFooUrl
-			)
+				fullFooUrl,
+			),
 		).toBeFalsy());
 
 	it('can detect that the url is not whitelisted', () =>
@@ -80,8 +80,8 @@ describe('checkAgainstUrlFilter', () => {
 				{
 					domainWhitelist: [BAR],
 				},
-				fullFooUrl
-			)
+				fullFooUrl,
+			),
 		).toBeFalsy());
 
 	it('can be always falsy when a whitelist ruleset is empty', () =>
@@ -90,8 +90,8 @@ describe('checkAgainstUrlFilter', () => {
 				{
 					protocolWhitelist: [],
 				},
-				fullFooUrl
-			)
+				fullFooUrl,
+			),
 		).toBeFalsy());
 
 	it('can be always falsy when a whitelist ruleset is empty even if there is no such segment', () =>
@@ -102,8 +102,8 @@ describe('checkAgainstUrlFilter', () => {
 				},
 				{
 					domain: FOO,
-				}
-			)
+				},
+			),
 		).toBeFalsy());
 
 	it('can be still be truthy when a blacklist ruleset is empty', () =>
@@ -114,8 +114,8 @@ describe('checkAgainstUrlFilter', () => {
 				},
 				{
 					domain: FOO,
-				}
-			)
+				},
+			),
 		).toBeTruthy());
 
 	it('can detect a full match', () =>
@@ -129,7 +129,7 @@ describe('checkAgainstUrlFilter', () => {
 					pathWhitelist: [FOO],
 					pathBlacklist: [BAR],
 				},
-				fullFooUrl
-			)
+				fullFooUrl,
+			),
 		).toBeTruthy());
 });

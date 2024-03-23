@@ -8,7 +8,7 @@ import { isPromise } from './promise.predicate';
  * one is directly passed to it
  */
 export const intoObservable = <T>(
-	getValue: T | Observable<T> | Promise<T> | (() => T | Promise<T> | Observable<T>)
+	getValue: T | Observable<T> | Promise<T> | (() => T | Promise<T> | Observable<T>),
 ): Observable<T> => {
 	if (isObservable(getValue)) {
 		return getValue;
@@ -24,7 +24,7 @@ export const intoObservable = <T>(
 				} else {
 					return of(result);
 				}
-			})
+			}),
 		);
 	} else if (isPromise(getValue)) {
 		return from(getValue);

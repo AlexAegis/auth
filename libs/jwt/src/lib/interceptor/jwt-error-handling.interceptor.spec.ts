@@ -60,7 +60,7 @@ describe('JwtErrorHandlingInterceptor', () => {
 		const httpTestingController = TestBed.inject(HttpTestingController);
 		const interceptors = TestBed.inject(HTTP_INTERCEPTORS);
 		const jwtErrorHandlingInterceptor = interceptors.find(
-			(i) => i instanceof JwtErrorHandlingInterceptor
+			(i) => i instanceof JwtErrorHandlingInterceptor,
 		);
 		expect(jwtErrorHandlingInterceptor).toBeTruthy();
 		if (!jwtErrorHandlingInterceptor) {
@@ -112,7 +112,7 @@ describe('JwtErrorHandlingInterceptor', () => {
 	it('should be created', () => {
 		const interceptors = TestBed.inject(HTTP_INTERCEPTORS);
 		const jwtErrorHandlingInterceptor = interceptors.find(
-			(i) => i instanceof JwtErrorHandlingInterceptor
+			(i) => i instanceof JwtErrorHandlingInterceptor,
 		);
 		expect(jwtErrorHandlingInterceptor).toBeTruthy();
 	});
@@ -222,7 +222,7 @@ describe('JwtErrorHandlingInterceptor', () => {
 			(error) => {
 				expect(error).toBeInstanceOf(JwtCannotRefreshError);
 				return TEST_QUERY_PARAMS;
-			}
+			},
 		);
 
 		TestBed.overrideProvider(JWT_REFRESH_CONFIGURATION_TOKEN, {

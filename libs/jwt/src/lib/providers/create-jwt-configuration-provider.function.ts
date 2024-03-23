@@ -10,10 +10,10 @@ import {
  * @internal
  */
 export const createJwtConfigurationProvider = (
-	tokenConfigurationProvider: JwtModuleConfigurationProvider
+	tokenConfigurationProvider: JwtModuleConfigurationProvider,
 ): JwtConfigurationProvider =>
 	({
 		provide: JWT_CONFIGURATION_TOKEN,
 		multi: false,
 		...tokenConfigurationProvider,
-	} as JwtConfigurationProvider);
+	}) as JwtConfigurationProvider;

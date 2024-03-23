@@ -6,11 +6,11 @@ import {
 import { TypedProvider } from '../model/typed-providers.interface';
 
 export const JWT_CONFIGURATION_TOKEN = new InjectionToken<JwtConfiguration>(
-	'AegisJwtConfiguration'
+	'AegisJwtConfiguration',
 );
 
 export const DEFAULT_JWT_CONFIGURATION_TOKEN = new InjectionToken<Partial<JwtConfiguration>>(
-	'DefaultAegisJwtConfiguration'
+	'DefaultAegisJwtConfiguration',
 );
 
 export const JWT_REFRESH_CONFIGURATION_TOKEN = new InjectionToken<

@@ -12,34 +12,34 @@ export class RequestCounterInterceptor implements HttpInterceptor {
 
 	public intercept(
 		request: HttpRequest<unknown>,
-		next: HttpHandler
+		next: HttpHandler,
 	): Observable<HttpEvent<unknown>> {
 		if (request.url.indexOf(PATH_REFRESH) > 0 && request.method === HttpMethod.POST) {
 			this.stateService.refreshRequestCount$.next(
-				this.stateService.refreshRequestCount$.value + 1
+				this.stateService.refreshRequestCount$.value + 1,
 			);
 		} else if (request.url.indexOf(PATH_LOGIN) > 0 && request.method === HttpMethod.POST) {
 			this.stateService.loginRequestCount$.next(
-				this.stateService.loginRequestCount$.value + 1
+				this.stateService.loginRequestCount$.value + 1,
 			);
 		} else {
 			this.stateService.launchedRequestCount$.next(
-				this.stateService.launchedRequestCount$.value + 1
+				this.stateService.launchedRequestCount$.value + 1,
 			);
 		}
 
 		return next.handle(request).pipe(
 			tap(() => {
 				this.stateService.successfulResponseCount$.next(
-					this.stateService.successfulResponseCount$.value + 1
+					this.stateService.successfulResponseCount$.value + 1,
 				);
 			}),
 			catchError((error) => {
 				this.stateService.failedResponseCount$.next(
-					this.stateService.failedResponseCount$.value + 1
+					this.stateService.failedResponseCount$.value + 1,
 				);
 				return throwError(error);
-			})
+			}),
 		);
 	}
 }

@@ -45,7 +45,7 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 		@Inject(DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN)
 		readonly defaultJwtRefreshConfig: JwtRefreshConfiguration<unknown, unknown>,
 		private readonly jwtRefreshStateService: JwtRefreshStateService,
-		private readonly jwtTokenService: JwtTokenService
+		private readonly jwtTokenService: JwtTokenService,
 	) {
 		this.jwtConfiguration = {
 			...defaultJwtConfig,
@@ -58,7 +58,7 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 		};
 
 		this.rawRefreshToken$ = intoObservable(
-			this.jwtRefreshConfiguration.getRefreshToken ?? (() => null)
+			this.jwtRefreshConfiguration.getRefreshToken ?? (() => null),
 		);
 
 		this.isRawRefreshTokenGetterAvailable = !!this.jwtRefreshConfiguration.getRefreshToken;
@@ -67,12 +67,12 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 	private handleWithToken(
 		request: HttpRequest<unknown>,
 		next: HttpHandler,
-		token: string
+		token: string,
 	): Observable<HttpEvent<unknown>> {
 		const requestWithUpdatedTokens = request.clone({
 			headers: request.headers.set(
 				this.jwtConfiguration.header,
-				this.jwtConfiguration.scheme + token
+				this.jwtConfiguration.scheme + token,
 			),
 		});
 		return next.handle(requestWithUpdatedTokens);
@@ -80,7 +80,7 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 
 	public intercept(
 		request: HttpRequest<unknown>,
-		next: HttpHandler
+		next: HttpHandler,
 	): Observable<HttpEvent<unknown>> {
 		const separatedUrl = separateUrl(request.url);
 		const jwtHeaderValue = request.headers.get(this.jwtConfiguration.header);
@@ -111,11 +111,11 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 							return throwError(
 								JwtError.createErrorResponse(
 									request,
-									'No access token available after waiting for a refresh'
-								)
+									'No access token available after waiting for a refresh',
+								),
 							);
 						}
-					})
+					}),
 				);
 			}
 
@@ -124,7 +124,7 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 				switchMap((rawRefreshToken) => {
 					const rawToken = JwtToken.stripScheme(
 						jwtHeaderValue,
-						this.jwtConfiguration.scheme
+						this.jwtConfiguration.scheme,
 					);
 					const token = JwtToken.from(rawToken);
 					const refreshToken = rawRefreshToken ? JwtToken.from(rawRefreshToken) : null;
@@ -140,17 +140,17 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 						return throwError(
 							JwtCannotRefreshError.createErrorResponse(
 								request,
-								'Both access and refresh tokens are expired'
-							)
+								'Both access and refresh tokens are expired',
+							),
 						);
 					}
 					// If the conversion would fail, that would handle the same as an expired token
 					return (
 						isAccessTokenExpiredOrInvalid
 							? // If the token is used and is expired, don't even try the request.
-							  throwError('Expired token, refresh first')
+								throwError('Expired token, refresh first')
 							: // If it seems okay, try the request
-							  next.handle(request)
+								next.handle(request)
 					).pipe(
 						catchError((error: HttpErrorResponse | string) =>
 							// If the request failed, or we failed at the precheck
@@ -165,15 +165,19 @@ export class JwtRefreshInterceptor implements HttpInterceptor {
 									throwError(
 										JwtCouldntRefreshError.createErrorResponse(
 											request,
-											refreshError
-										)
+											refreshError,
+										),
 									),
 								(refreshResponse) =>
-									this.handleWithToken(request, next, refreshResponse.accessToken)
-							)
-						)
+									this.handleWithToken(
+										request,
+										next,
+										refreshResponse.accessToken,
+									),
+							),
+						),
 					);
-				})
+				}),
 			);
 		} else {
 			return next.handle(request);

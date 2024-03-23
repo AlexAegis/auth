@@ -48,21 +48,21 @@ export class JwtModule {
 	 * 	`createRefreshableAuthTokenProvider`
 	 */
 	public static forRoot(
-		jwtModuleConfigurationProvider: JwtModuleConfigurationProvider
+		jwtModuleConfigurationProvider: JwtModuleConfigurationProvider,
 	): ModuleWithProviders<JwtModule>;
 	public static forRoot<RefreshRequest, RefreshResponse>(
 		jwtModuleConfigurationProvider: JwtModuleConfigurationProvider,
 		jwtRefreshConfigurationProvider: JwtModuleRefreshConfigurationProvider<
 			RefreshRequest,
 			RefreshResponse
-		>
+		>,
 	): ModuleWithProviders<JwtModule>;
 	public static forRoot<RefreshRequest, RefreshResponse>(
 		jwtModuleConfigurationProvider: JwtModuleConfigurationProvider,
 		jwtRefreshConfigurationProvider?: JwtModuleRefreshConfigurationProvider<
 			RefreshRequest,
 			RefreshResponse
-		>
+		>,
 	): ModuleWithProviders<JwtModule> {
 		return {
 			ngModule: JwtModule,
@@ -94,9 +94,9 @@ export class JwtModule {
 								useValue: DEFAULT_JWT_REFRESH_CONFIG,
 							},
 							createJwtRefreshConfigurationProvider<RefreshRequest, RefreshResponse>(
-								jwtRefreshConfigurationProvider
+								jwtRefreshConfigurationProvider,
 							),
-					  ]
+						]
 					: []),
 			],
 		};

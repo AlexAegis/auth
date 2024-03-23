@@ -73,7 +73,7 @@ export declare interface TypedFactoryProvider<
 	W = any,
 	X = any,
 	Y = any,
-	Z = any
+	Z = any,
 > extends TypedFactorySansProvider<
 		T,
 		A,
@@ -132,7 +132,7 @@ export declare interface TypedFactorySansProvider<
 	W = any,
 	X = any,
 	Y = any,
-	Z = any
+	Z = any,
 > extends FactorySansProvider {
 	useFactory: (
 		a: A,
@@ -159,7 +159,7 @@ export declare interface TypedFactorySansProvider<
 		w: W,
 		x: X,
 		y: Y,
-		z: Z
+		z: Z,
 	) => T;
 	deps?: [
 		Type<A>?,
@@ -186,7 +186,7 @@ export declare interface TypedFactorySansProvider<
 		Type<W>?,
 		Type<X>?,
 		Type<Y>?,
-		Type<Z>?
+		Type<Z>?,
 	];
 }
 
@@ -216,7 +216,7 @@ export declare type TypedProvider<
 	W = any,
 	X = any,
 	Y = any,
-	Z = any
+	Z = any,
 > = TypedClassProvider<T> &
 	TypedValueProvider<T> &
 	TypedExistingProvider<T> &

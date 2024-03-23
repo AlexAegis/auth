@@ -7,7 +7,7 @@ describe('FakeBackendInterceptor', () => {
 		TestBed.configureTestingModule({
 			imports: [HttpClientModule],
 			providers: [FakeBackendInterceptor],
-		})
+		}),
 	);
 
 	it('should be created', () => {

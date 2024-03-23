@@ -41,19 +41,19 @@ export const mockJwtTokenCreation = (): void => {
 				return new JwtToken(
 					{ alg: '', typ: '' },
 					{ exp: getValidUnixTimestamp(), iat: getCurrentUnixTimestamp() },
-					''
+					'',
 				);
 			case TEST_EXPIRED_TOKEN:
 				return new JwtToken(
 					{ alg: '', typ: '' },
 					{ exp: getInvalidUnixTimestamp(), iat: getCurrentUnixTimestamp() },
-					''
+					'',
 				);
 			case TEST_INVALID_TOKEN:
 				return new JwtToken(
 					{ alg: '', typ: '' },
 					{ exp: getValidUnixTimestamp(), iat: getCurrentUnixTimestamp() },
-					'invalid'
+					'invalid',
 				);
 			case TEST_MALFORMED_TOKEN:
 			default:

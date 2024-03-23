@@ -30,7 +30,7 @@ export class JwtTokenService<
 	Claims = Record<string | number, unknown>,
 	RefreshClaims = Record<string | number, unknown>,
 	RefreshRequest = Record<string | number, unknown>,
-	RefreshResponse = Record<string | number, unknown>
+	RefreshResponse = Record<string | number, unknown>,
 > {
 	public readonly config: JwtConfiguration = {
 		...this.rawDefaultConfig,
@@ -42,7 +42,7 @@ export class JwtTokenService<
 			? {
 					...this.rawDefaultRefreshConfig,
 					...this.rawRefreshConfig,
-			  }
+				}
 			: undefined;
 
 	/**
@@ -66,7 +66,7 @@ export class JwtTokenService<
 			} else {
 				return null;
 			}
-		})
+		}),
 	);
 
 	public readonly refreshToken$ = this.rawRefreshToken$.pipe(
@@ -81,43 +81,43 @@ export class JwtTokenService<
 			} else {
 				return null;
 			}
-		})
+		}),
 	);
 
 	public readonly accessTokenHeader$ = this.accessToken$.pipe(
-		map((token) => token?.header ?? null)
+		map((token) => token?.header ?? null),
 	);
 
 	public readonly accessTokenPayload$ = this.accessToken$.pipe(
-		map((token) => token?.payload ?? null)
+		map((token) => token?.payload ?? null),
 	);
 
 	public readonly refreshTokenHeader$ = this.refreshToken$.pipe(
-		map((token) => token?.header ?? null)
+		map((token) => token?.header ?? null),
 	);
 
 	public readonly refreshTokenPayload$ = this.refreshToken$.pipe(
-		map((token) => token?.payload ?? null)
+		map((token) => token?.payload ?? null),
 	);
 
 	public readonly isAccessTokenExpired$ = this.accessToken$.pipe(
 		switchMap((token) =>
-			token ? isUnixTimestampExpiredNowAndWhenItIs(token.payload.exp) : of(null)
-		)
+			token ? isUnixTimestampExpiredNowAndWhenItIs(token.payload.exp) : of(null),
+		),
 	);
 
 	public readonly isRefreshTokenExpired$ = this.refreshToken$.pipe(
 		switchMap((token) =>
-			token ? isUnixTimestampExpiredNowAndWhenItIs(token.payload.exp) : of(null)
-		)
+			token ? isUnixTimestampExpiredNowAndWhenItIs(token.payload.exp) : of(null),
+		),
 	);
 
 	public readonly isAccessTokenValid$ = this.isAccessTokenExpired$.pipe(
-		map((isExpired) => isNotNullish(isExpired) && !isExpired)
+		map((isExpired) => isNotNullish(isExpired) && !isExpired),
 	);
 
 	public readonly isRefreshTokenValid$ = this.isRefreshTokenExpired$.pipe(
-		map((isExpired) => isNotNullish(isExpired) && !isExpired)
+		map((isExpired) => isNotNullish(isExpired) && !isExpired),
 	);
 
 	public constructor(
@@ -139,7 +139,7 @@ export class JwtTokenService<
 			RefreshRequest,
 			RefreshResponse
 		>,
-		@Optional() private readonly router?: Router
+		@Optional() private readonly router?: Router,
 	) {}
 
 	/**
@@ -157,9 +157,9 @@ export class JwtTokenService<
 						JwtCouldntRefreshError.createErrorResponse(undefined, refreshError),
 						this.config,
 						this.refreshConfig,
-						this.router
+						this.router,
 					).pipe(catchError(() => of(false))),
-				() => of(true)
+				() => of(true),
 			);
 		} else {
 			return of(false);

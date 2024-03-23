@@ -32,7 +32,7 @@ export class LoginGuard {
 
 	public canActivate(
 		route: ActivatedRouteSnapshot,
-		_state: RouterStateSnapshot
+		_state: RouterStateSnapshot,
 	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 		const data = route.data as LoginGuardData | undefined;
 		return this.isValid(data?.isRefreshAllowed);
@@ -40,7 +40,7 @@ export class LoginGuard {
 
 	public canActivateChild(
 		childRoute: ActivatedRouteSnapshot,
-		_state: RouterStateSnapshot
+		_state: RouterStateSnapshot,
 	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 		const data = childRoute.data as LoginGuardData | undefined;
 		return this.isValid(data?.isRefreshAllowed);
@@ -48,7 +48,7 @@ export class LoginGuard {
 
 	public canLoad(
 		route: Route,
-		_segments: UrlSegment[]
+		_segments: UrlSegment[],
 	): Observable<boolean> | Promise<boolean> | boolean {
 		const data = route.data as LoginGuardData | undefined;
 		return this.isValid(data?.isRefreshAllowed);
@@ -66,7 +66,7 @@ export class LoginGuard {
 				} else {
 					return of(isValid);
 				}
-			})
+			}),
 		);
 	}
 }

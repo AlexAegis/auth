@@ -12,7 +12,7 @@ export const handleJwtFailure = <E>(
 	errorCallbackOrRedirect: string | ((e: E) => void),
 	error: E,
 	router?: Router,
-	redirectParameters?: ((e: E) => HttpParams | Params) | HttpParams | Params
+	redirectParameters?: ((e: E) => HttpParams | Params) | HttpParams | Params,
 ): void => {
 	if (isString(errorCallbackOrRedirect)) {
 		if (router) {
@@ -30,7 +30,7 @@ export const handleJwtFailure = <E>(
 				'JWT Refresh configuration error! ' +
 					'`onFailure` is defined as a string, but the ' +
 					'Router is not available! Is @angular/router ' +
-					'installed and the RouterModule imported?'
+					'installed and the RouterModule imported?',
 			);
 		}
 	} else {

@@ -72,11 +72,11 @@ export class JwtToken<Claims = Record<string | number, unknown>> {
 	public constructor(
 		public header: JwtTokenHeader,
 		public payload: JwtTokenPayload & Claims,
-		public signature: string
+		public signature: string,
 	) {}
 
 	public static from<FromClaims = Record<string | number, unknown>>(
-		token: JwtTokenString
+		token: JwtTokenString,
 	): JwtToken<FromClaims> | null {
 		const convertedSegments = JwtToken.splitTokenString(token);
 		if (!convertedSegments) {
@@ -99,7 +99,7 @@ export class JwtToken<Claims = Record<string | number, unknown>> {
 
 	public static splitTokenString(
 		token: JwtTokenString,
-		separator: string = JwtToken.JWT_TOKEN_SEPARATOR
+		separator: string = JwtToken.JWT_TOKEN_SEPARATOR,
 	): [Base64String, Base64String, Base64String] | null {
 		const spl = token.split(separator);
 		if (spl.length !== 3) {

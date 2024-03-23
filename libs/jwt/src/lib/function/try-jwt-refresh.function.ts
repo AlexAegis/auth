@@ -15,7 +15,7 @@ export const tryJwtRefresh = <Req, Res, Ret>(
 	jwtRefreshConfiguration: JwtRefreshConfiguration<Req, Res>,
 	refreshLock: BehaviorSubject<boolean>,
 	onError: (refreshError: unknown) => Observable<Ret>,
-	originalAction: (refreshResponse: JwtRefreshResponse) => Observable<Ret>
+	originalAction: (refreshResponse: JwtRefreshResponse) => Observable<Ret>,
 ): Observable<Ret> => {
 	const isRefreshAllowed =
 		typeof originalError === 'string' ||
@@ -32,12 +32,12 @@ export const tryJwtRefresh = <Req, Res, Ret>(
 						jwtRefreshConfiguration,
 						refreshLock,
 						onError,
-						originalAction
+						originalAction,
 					);
 				} else {
 					return onError(originalError);
 				}
-			})
+			}),
 		);
 	} else {
 		return throwError(originalError);

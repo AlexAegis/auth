@@ -33,7 +33,7 @@ export class JwtInjectorInterceptor implements HttpInterceptor {
 		refreshConfig?: JwtRefreshConfiguration<unknown, unknown>,
 		@Optional()
 		@Inject(DEFAULT_JWT_REFRESH_CONFIGURATION_TOKEN)
-		defaultJwtRefreshConfig?: JwtRefreshConfiguration<unknown, unknown>
+		defaultJwtRefreshConfig?: JwtRefreshConfiguration<unknown, unknown>,
 	) {
 		this.jwtConfiguration = {
 			...defaultJwtConfig,
@@ -49,7 +49,7 @@ export class JwtInjectorInterceptor implements HttpInterceptor {
 
 	public intercept(
 		request: HttpRequest<unknown>,
-		next: HttpHandler
+		next: HttpHandler,
 	): Observable<HttpEvent<unknown>> {
 		const separatedUrl = separateUrl(request.url);
 		return intoObservable(this.jwtConfiguration.getToken).pipe(
@@ -68,7 +68,7 @@ export class JwtInjectorInterceptor implements HttpInterceptor {
 								this.jwtConfiguration.header,
 								this.jwtConfiguration.scheme
 									? this.jwtConfiguration.scheme + rawToken
-									: rawToken
+									: rawToken,
 							),
 						});
 						if (this.jwtConfiguration.handleWithCredentials) {
@@ -81,14 +81,14 @@ export class JwtInjectorInterceptor implements HttpInterceptor {
 						return throwError(
 							JwtError.createErrorResponse(
 								request,
-								'Token is expired or invalid, and refresh is not configured.'
-							)
+								'Token is expired or invalid, and refresh is not configured.',
+							),
 						);
 					}
 				} else {
 					return next.handle(request);
 				}
-			})
+			}),
 		);
 	}
 }

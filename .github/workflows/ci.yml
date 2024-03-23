@@ -31,10 +31,6 @@ jobs:
         run: npm install
       - name: Lint packages
         run: npm run lint
-      - name: Lint scss stylesheets
-        run: npm run lint:scss
-      - name: Lint css stylesheets
-        run: npm run lint:css
       - name: Lint markdown
         run: npm run lint:md
       - name: Lint markdown with remark

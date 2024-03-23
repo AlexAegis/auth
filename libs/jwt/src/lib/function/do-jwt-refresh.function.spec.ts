@@ -62,7 +62,7 @@ describe('doJwtRefresh', () => {
 			jwtRefreshConfig,
 			jwtRefreshStateService.refreshLock$,
 			mockOnError,
-			mockOriginalAction
+			mockOriginalAction,
 		).subscribe(mockObserver);
 
 		const mockRequest = httpTestingController.expectOne(jwtRefreshConfig.refreshUrl);
@@ -94,7 +94,7 @@ describe('doJwtRefresh', () => {
 			jwtRefreshConfig,
 			jwtRefreshStateService.refreshLock$,
 			mockOnError,
-			mockOriginalAction
+			mockOriginalAction,
 		).subscribe(mockObserver);
 
 		const mockRequest = httpTestingController.expectOne(jwtRefreshConfig.refreshUrl);
@@ -130,7 +130,7 @@ describe('doJwtRefresh', () => {
 			jwtRefreshConfig,
 			jwtRefreshStateService.refreshLock$,
 			mockOnError,
-			mockOriginalAction
+			mockOriginalAction,
 		);
 		expect(lockSpy).toHaveBeenLastCalledWith(true);
 		doJwtRefreshObservable.subscribe();

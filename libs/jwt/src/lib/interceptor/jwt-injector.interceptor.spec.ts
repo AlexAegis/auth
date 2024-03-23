@@ -55,7 +55,7 @@ describe('JwtInjectorInterceptor', () => {
 		const httpTestingController = TestBed.inject(HttpTestingController);
 		const interceptors = TestBed.inject(HTTP_INTERCEPTORS);
 		const jwtInjectorInterceptor = interceptors.find(
-			(i) => i instanceof JwtInjectorInterceptor
+			(i) => i instanceof JwtInjectorInterceptor,
 		);
 		expect(jwtInjectorInterceptor).toBeTruthy();
 		if (!jwtInjectorInterceptor) {
@@ -118,7 +118,7 @@ describe('JwtInjectorInterceptor', () => {
 		const mockResult = httpTestingController.expectOne(
 			(request) =>
 				request.headers.has(TEST_AUTH_HEADER) &&
-				request.headers.get(TEST_AUTH_HEADER) === TEST_AUTH_HEADER_VALUE
+				request.headers.get(TEST_AUTH_HEADER) === TEST_AUTH_HEADER_VALUE,
 		);
 		mockResult.flush({ result: 'okay' });
 
@@ -147,7 +147,7 @@ describe('JwtInjectorInterceptor', () => {
 			(request) =>
 				request.headers.has(TEST_AUTH_HEADER) &&
 				request.headers.get(TEST_AUTH_HEADER) ===
-					TEST_AUTH_SCHEME_VALUE + TEST_AUTH_HEADER_VALUE
+					TEST_AUTH_SCHEME_VALUE + TEST_AUTH_HEADER_VALUE,
 		);
 		mockResult.flush({ result: 'okay' });
 
@@ -175,7 +175,7 @@ describe('JwtInjectorInterceptor', () => {
 
 		const mockResult = httpTestingController.expectOne(
 			(request) =>
-				request.url === TEST_REQUEST_DOMAIN && !request.headers.has(TEST_AUTH_HEADER)
+				request.url === TEST_REQUEST_DOMAIN && !request.headers.has(TEST_AUTH_HEADER),
 		);
 		mockResult.flush({ result: 'okay' });
 
@@ -204,7 +204,7 @@ describe('JwtInjectorInterceptor', () => {
 		httpClient.get<unknown>(path).subscribe(requestObserverMock);
 
 		const mockResult = httpTestingController.expectOne(
-			(request) => request.url === path && !request.headers.has(TEST_AUTH_HEADER)
+			(request) => request.url === path && !request.headers.has(TEST_AUTH_HEADER),
 		);
 
 		mockResult.flush({ result: 'okay' });
@@ -234,7 +234,7 @@ describe('JwtInjectorInterceptor', () => {
 		httpClient.get<unknown>(path).subscribe(requestObserverMock);
 
 		const mockResult = httpTestingController.expectOne(
-			(request) => request.url === path && !request.headers.has(TEST_AUTH_HEADER)
+			(request) => request.url === path && !request.headers.has(TEST_AUTH_HEADER),
 		);
 		mockResult.flush({ result: 'okay' });
 
@@ -272,7 +272,7 @@ describe('JwtInjectorInterceptor', () => {
 		});
 
 		httpTestingController.expectNone(
-			(request) => request.url === path && !request.headers.has(TEST_AUTH_HEADER)
+			(request) => request.url === path && !request.headers.has(TEST_AUTH_HEADER),
 		);
 
 		expect(jwtInjectorInterceptSpy).toBeCalledTimes(1); // Have the interceptor activated

@@ -19,7 +19,7 @@ export class DashboardComponent {
 	public tokenString$ = this.jwtTokenService.rawAccessToken$;
 
 	public usernameFromToken$ = this.jwtTokenService.accessToken$.pipe(
-		map((token) => token?.payload.username)
+		map((token) => token?.payload.username),
 	);
 
 	public defaultLifespan = 5;
@@ -35,7 +35,7 @@ export class DashboardComponent {
 		public readonly api: ApiService,
 		public readonly state: StateService,
 		public readonly jwtRefreshState: JwtRefreshStateService,
-		public readonly jwtTokenService: JwtTokenService<Claims>
+		public readonly jwtTokenService: JwtTokenService<Claims>,
 	) {}
 
 	public login(): void {

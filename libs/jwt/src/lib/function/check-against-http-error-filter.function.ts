@@ -8,7 +8,7 @@ import { HttpErrorFilter } from '../model/auth-core-configuration.interface';
  */
 export const checkAgainstHttpErrorFilter = (
 	httpErrorFilter: HttpErrorFilter,
-	error: HttpErrorResponse
+	error: HttpErrorResponse,
 ): boolean => {
 	const statusMatcher = (code: number) => code === error.status;
 	const errorCodeWhitelistRulesPass =

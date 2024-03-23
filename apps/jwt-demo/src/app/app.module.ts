@@ -37,7 +37,7 @@ import { AuthService } from './service';
 					canActivate: [LoginGuard],
 				},
 			],
-			{ initialNavigation: 'enabledBlocking' }
+			{ initialNavigation: 'enabledBlocking' },
 		),
 		JwtModule.forRoot<RefreshRequest, RefreshResponse>(
 			{
@@ -75,7 +75,7 @@ import { AuthService } from './service';
 						map((refreshToken) => ({
 							refreshToken,
 							lifespan: 4,
-						}))
+						})),
 					),
 					transformRefreshResponse: (response) => {
 						console.log('transformRefreshResponse', response);
@@ -85,7 +85,7 @@ import { AuthService } from './service';
 					onFailure: '/login',
 				}),
 				deps: [AuthService],
-			}
+			},
 		),
 	],
 	providers: [

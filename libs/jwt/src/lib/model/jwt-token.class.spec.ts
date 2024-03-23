@@ -6,7 +6,7 @@ describe('JwtToken', () => {
 		'eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ';
 	const validSignature = 'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
 	const validToken = [validHeader, validPayload, validSignature].join(
-		JwtToken.JWT_TOKEN_SEPARATOR
+		JwtToken.JWT_TOKEN_SEPARATOR,
 	);
 
 	const invalidToken = [validHeader, validPayload].join(JwtToken.JWT_TOKEN_SEPARATOR);

@@ -16,8 +16,8 @@ export class StateService {
 	]).pipe(
 		map(
 			([launchedRequestCount, refreshRequestCount, loginRequestCount]) =>
-				launchedRequestCount + refreshRequestCount + loginRequestCount
-		)
+				launchedRequestCount + refreshRequestCount + loginRequestCount,
+		),
 	);
 
 	public readonly successfulResponseCount$ = new BehaviorSubject(0);
@@ -28,7 +28,7 @@ export class StateService {
 	]).pipe(
 		map(
 			([successfulResponseCount, failedResponseCount]) =>
-				successfulResponseCount + failedResponseCount
-		)
+				successfulResponseCount + failedResponseCount,
+		),
 	);
 }
