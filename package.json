@@ -161,7 +161,7 @@
 		"nx": "15.2.4",
 		"pinst": "^3.0.0",
 		"postcss": "^8.4.19",
-		"postcss-import": "15.0.0",
+		"postcss-import": "16.1.0",
 		"postcss-preset-env": "7.8.3",
 		"postcss-scss": "^4.0.6",
 		"postcss-url": "10.1.3",
