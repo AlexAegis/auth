@@ -9,8 +9,7 @@
 			"executor": "@nx/angular:package",
 			"options": {
 				"tsConfig": "libs/core/tsconfig.lib.json",
-				"project": "libs/core/ng-package.json",
-				"updateBuildableProjectDepsInPackageJson": true
+				"project": "libs/core/ng-package.json"
 			},
 			"configurations": {
 				"production": {

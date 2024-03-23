@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import packageJson from './../../../../package.json';
 
 @Component({
 	selector: 'aegis-auth-root',
@@ -10,5 +9,5 @@ import packageJson from './../../../../package.json';
 })
 export class AppComponent {
 	faGithub = faGithub;
-	homepage = packageJson.homepage;
+	homepage = 'https://www.github.com/AlexAegis/auth';
 }
